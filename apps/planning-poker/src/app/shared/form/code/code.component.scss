@@ -1,0 +1,90 @@
+@import "@styles/shared";
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(180deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+:host {
+  @include primaryOutline();
+  height: em($controlHeight);
+  min-width: em($controlMinWidth);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+form {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-right: em(50);
+}
+
+input {
+  position: relative;
+  width: em(20);
+  height: 100%;
+  text-align: center;
+  background: transparent;
+  border-style: none;
+  color: $colorSecondary;
+  font: {
+    weight: 700;
+    size: em(30);
+  }
+}
+
+.spacer {
+  height: 50%;
+  opacity: .5;
+  width: 1px;
+  display: flex;
+  border: {
+    style: none solid none none;
+    width: 1px;
+    color: $colorPrimary;
+  };
+}
+
+.submit-button {
+  position: absolute;
+  top: 0;
+  right: em($controlSidePadding - 4);
+  bottom: 0;
+  padding: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  planning-poker-icon {
+    ::ng-deep {
+      .material-icons {
+        font-size: em(38);
+      }
+    }
+  }
+}
+
+.loop-loader {
+  ::ng-deep {
+    .material-icons {
+      animation: {
+        name: rotate;
+        duration: 1s;
+        iteration-count: infinite;
+      };
+    }
+  }
+}

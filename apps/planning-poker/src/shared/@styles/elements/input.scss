@@ -1,0 +1,10 @@
+@import "@styles/shared";
+
+.planing-poker-input {
+  @include primaryOutline();
+  height: em($controlHeight);
+  min-width: em($controlMinWidth);
+  padding: 0 em($controlSidePadding + 5);
+  background: transparent;
+  color: $colorSecondary;
+}

@@ -1,0 +1,25 @@
+@import "@styles/shared";
+
+.has-planing-poker-button {
+  position: relative;
+
+  ::ng-deep {
+    button {
+      position: absolute;
+      top: 0;
+      right: em($controlSidePadding);
+      bottom: 0;
+      padding: 0;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      planning-poker-icon {
+        .material-icons {
+          font-size: em(38);
+        }
+      }
+    }
+  }
+}

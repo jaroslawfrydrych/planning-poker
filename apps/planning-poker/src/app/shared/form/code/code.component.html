@@ -1,0 +1,35 @@
+<form [formGroup]="formGroup">
+  <ng-container *ngFor="let control of codeFormArray.controls; let i = index">
+    <input #inputElement
+           type="tel"
+           maxlength="1"
+           (keypress)="onInputKeyPress($event, control)"
+           (keydown)="onInputKeyUp($event, control)"
+           [formControl]="control">
+    <span class="spacer"
+          *ngIf="i < codeFormArray.controls.length - 1"></span>
+  </ng-container>
+  <button #submitButton
+          planningPokerButton
+          buttonColor="transparent"
+          class="submit-button"
+          small
+          [disabled]="isLoading$ | async"
+          (click)="submit()">
+
+    <ng-container *ngIf="!(isSuccess$ | async)">
+      <planning-poker-icon *ngIf="(isLoading$ | async) === false">
+        arrow_forward
+      </planning-poker-icon>
+
+      <planning-poker-icon class="loop-loader"
+                           *ngIf="isLoading$ | async">
+        loop
+      </planning-poker-icon>
+    </ng-container>
+
+    <planning-poker-icon *ngIf="isSuccess$ | async">
+      check
+    </planning-poker-icon>
+  </button>
+</form>

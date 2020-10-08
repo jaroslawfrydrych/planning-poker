@@ -1,0 +1,12 @@
+<planning-poker-layout>
+  <planning-poker-header>
+    <h1>Join to exsiting room</h1>
+  </planning-poker-header>
+
+  <planning-poker-content>
+    <planning-poker-code [codeLength]="5"
+                         [isLoading$]="loading$"
+                         [isSuccess$]="success$"
+                         (codeSubmit)="onCodeSubmit($event)"></planning-poker-code>
+  </planning-poker-content>
+</planning-poker-layout>

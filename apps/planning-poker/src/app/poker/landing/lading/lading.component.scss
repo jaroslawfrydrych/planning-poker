@@ -1,0 +1,40 @@
+@import "@styles/shared";
+
+planning-poker-content {
+  font-weight: 700;
+
+  > * {
+    margin: 0 em(15);
+  }
+}
+
+planning-poker-header {
+  position: relative;
+
+  h2 {
+    position: absolute;
+    top: em(40);
+    display: flex;
+    width: 100%;
+  }
+}
+
+.poker-footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text: {
+    align: center;
+    transform: uppercase;
+  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: em(14);
+  color: $colorInactive;
+  padding-bottom: em(15);
+  margin: {
+    top: auto;
+    bottom: 0;
+  }
+}

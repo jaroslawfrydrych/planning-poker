@@ -16,7 +16,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@planning-poker/api-interfaces": ["libs/api-interfaces/src/index.ts"]
+      "@planning-poker/api-interfaces": ["libs/api-interfaces/src/index.ts"],
+      "@shared/*": ["apps/planning-poker/src/app/shared/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]

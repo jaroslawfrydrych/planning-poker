@@ -1,0 +1,42 @@
+@import "@styles/shared";
+
+:host {
+  padding: em(30);
+  display: flex;
+  width: 100%;
+}
+
+.cards {
+  display: flex;
+  width: 75%;
+  flex: {
+    direction: row;
+    wrap: wrap;
+  }
+
+  planning-poker-card {
+    margin: 1%;
+  }
+}
+
+.sidebar {
+  width: 25%;
+  padding: em(25);
+
+  ul {
+    margin: 0;
+    padding: em(20) 0;
+    display: block;
+
+    li {
+      margin: 0;
+      padding: em(2) 0;
+      display: block;
+      list-style: none;
+
+      &:before {
+        content: '- ';
+      }
+    }
+  }
+}

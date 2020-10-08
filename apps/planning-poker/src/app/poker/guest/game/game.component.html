@@ -1,0 +1,16 @@
+<div class="cards">
+  <ng-container *ngFor="let card of cards">
+    <planning-poker-card [card]="card"
+                         [selected$]="selectedCard$"
+                         (cardClick)="onCardClick(card)"></planning-poker-card>
+  </ng-container>
+</div>
+
+<div class="sidebar">
+  <h3>Other players:</h3>
+  <ul>
+    <li>Stefan</li>
+    <li>Marian (voted)</li>
+    <li>Lucjan</li>
+  </ul>
+</div>

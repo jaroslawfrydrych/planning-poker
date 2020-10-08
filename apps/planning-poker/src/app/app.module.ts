@@ -1,13 +1,27 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule } from "@angular/router";
 
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import { PokerModule } from "./poker/poker.module";
+import { SharedModule } from "./shared/shared.module";
 
 @NgModule({
-  declarations: [AppComponent],
-  imports: [BrowserModule, HttpClientModule],
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    SharedModule,
+    PokerModule,
+    RouterModule
+  ],
   providers: [],
-  bootstrap: [AppComponent],
+  bootstrap: [
+    AppComponent
+  ]
 })
-export class AppModule {}
+export class AppModule {
+}

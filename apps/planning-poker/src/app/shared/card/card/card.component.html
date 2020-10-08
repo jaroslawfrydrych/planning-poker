@@ -1,0 +1,29 @@
+<div class="label"
+     *ngIf="boardCard && label">{{label}}</div>
+<button class="card"
+        [class.board-card]="boardCard"
+        [class.is-not-selected]="isCardSelected === false"
+        [class.is-selected]="isCardSelected === true"
+        (click)="onCardClick()">
+  <div class="header">
+    Planing Poker
+  </div>
+  <div class="content">
+    <ng-container *ngIf="card !== cards.COFFEE && card !== cards.INFINITE ">
+      {{card}}
+    </ng-container>
+    <ng-container *ngIf="card === cards.COFFEE">
+      <planning-poker-icon>local_cafe</planning-poker-icon>
+    </ng-container>
+    <ng-container *ngIf="card === cards.INFINITE">
+      <planning-poker-icon>all_inclusive</planning-poker-icon>
+    </ng-container>
+    <ng-contianer *ngIf="boardCard && !playerReady">
+      <planning-poker-icon>hourglass_empty</planning-poker-icon>
+    </ng-contianer>
+    <ng-contianer *ngIf="boardCard && playerReady">
+      <planning-poker-icon>check</planning-poker-icon>
+    </ng-contianer>
+  </div>
+  <div class="footer">Scrum Game</div>
+</button>

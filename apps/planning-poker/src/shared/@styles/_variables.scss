@@ -1,0 +1,14 @@
+$baseFontSize: 18;
+$h1FontSize: 48;
+$h2FontSize: 24;
+$controlHeight: 72;
+$controlMinWidth: 270;
+$controlSidePadding: 15;
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1440px
+) !default;

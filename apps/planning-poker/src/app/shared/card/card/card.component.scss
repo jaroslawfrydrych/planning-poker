@@ -1,0 +1,90 @@
+@import "@styles/shared";
+
+$cardSizeMultiply: 1.8;
+
+:host {
+  position: relative;
+  width: $cardSizeMultiply * 10%;
+  height: 0;
+  padding-bottom: $cardSizeMultiply * 12.6347305389221557%;
+  display: flex;
+  box-sizing: content-box;
+}
+
+.card {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-content: stretch;
+  align-items: stretch;
+  background: $colorPrimary;
+  color: $colorBackgroundPrimary;
+  border-style: none;
+  cursor: pointer;
+  transition: opacity 500ms ease, transform 250ms ease;
+
+  &.is-not-selected {
+    opacity: .2;
+  }
+
+  &.is-selected {
+    transform: scale(1.075);
+  }
+
+  &.board-card {
+    opacity: 1;
+    cursor: auto;
+  }
+
+  .header, .footer {
+    padding: em(10) 0;
+    font: {
+      size: em(12);
+      weight: 700;
+    }
+    order: 0;
+    flex: 0 1 auto;
+    align-self: auto;
+    text: {
+      transform: uppercase;
+      align: center;
+    }
+  }
+
+  .content {
+    order: 0;
+    flex: 1 1 auto;
+    align-self: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: em(80);
+
+    planning-poker-icon {
+      ::ng-deep {
+        .material-icons {
+          font-size: em(20);
+        }
+      }
+    }
+  }
+}
+
+.label {
+  position: absolute;
+  bottom: 100%;
+  text-transform: uppercase;
+  color: $colorSecondary;
+  font: {
+    weight: 700;
+  }
+  margin-bottom: .5em;
+}

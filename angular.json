@@ -25,7 +25,16 @@
               "apps/planning-poker/src/favicon.ico",
               "apps/planning-poker/src/assets"
             ],
-            "styles": ["apps/planning-poker/src/styles.scss"],
+            "styles": [
+              "node_modules/normalize.css/normalize.css",
+              "apps/planning-poker/src/shared/@styles/styles.scss",
+              "apps/planning-poker/src/shared/@styles/elements/elements.scss"
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "./apps/planning-poker/src/shared"
+              ]
+            },
             "scripts": []
           },
           "configurations": {
@@ -92,7 +101,12 @@
           "builder": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "apps/planning-poker/jest.config.js",
-            "passWithNoTests": true
+            "passWithNoTests": true,
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "./apps/planning-poker/src/shared"
+              ]
+            }
           }
         }
       }

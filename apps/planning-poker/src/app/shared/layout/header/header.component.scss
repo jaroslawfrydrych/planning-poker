@@ -1,0 +1,16 @@
+@import "@styles/shared";
+
+:host {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: em(160);
+
+  ::ng-deep {
+    > * {
+      align-items: center;
+      display: flex;
+      text-align: center;
+      justify-content: center;
+    }
+  }
+}

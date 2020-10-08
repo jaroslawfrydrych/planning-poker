@@ -1,0 +1,24 @@
+<planning-poker-layout>
+  <planning-poker-header>
+    <h1>Planning Poker</h1>
+    <h2>Scrum Game</h2>
+  </planning-poker-header>
+
+  <planning-poker-content>
+    <button planningPokerButton
+            buttonColor="secondary"
+            (click)="goToGuestPath()">Join existing room
+    </button>
+    <span>or</span>
+    <button planningPokerButton
+            (click)="goToHostPath()">Create new one
+    </button>
+  </planning-poker-content>
+
+
+</planning-poker-layout>
+
+<div class="poker-footer">
+  Created by&nbsp;<a href="http://haxit.pl/"
+                     target="_blank">haxit</a>
+</div>

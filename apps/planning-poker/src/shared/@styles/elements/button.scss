@@ -1,0 +1,44 @@
+@import "@styles/shared";
+
+.planning-poker-button {
+  @include primaryOutline();
+  font: {
+    weight: 700;
+  }
+  cursor: pointer;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: em($controlHeight);
+  min-width: em($controlMinWidth);
+  padding: 0 em($controlSidePadding);
+  -webkit-appearance: none;
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+  &.planning-poker-button-color-primary {
+    background: $colorPrimary;
+    color: $colorBackgroundPrimary;
+  }
+
+  &.planning-poker-button-color-secondary {
+    background: transparent;
+    color: $colorPrimary;
+  }
+
+  &.planning-poker-button-color-transparent {
+    background: transparent;
+    color: $colorPrimary;
+    border-style: none;
+  }
+
+  &.planning-poker-button-small {
+    height: auto;
+    min-width: unset;
+    padding: 0;
+  }
+}

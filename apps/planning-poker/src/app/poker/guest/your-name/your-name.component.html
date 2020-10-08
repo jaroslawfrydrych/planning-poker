@@ -1,0 +1,22 @@
+<planning-poker-layout>
+  <planning-poker-header>
+    <h1>Introduce yourself</h1>
+  </planning-poker-header>
+
+  <planning-poker-content>
+    <planning-poker-form-container>
+      <form [formGroup]="formGroup">
+        <input type="text"
+               formControlName="name"
+               planningPokerFocus
+               planningPokerInput>
+        <button planningPokerButton
+                (click)="submit()">
+          <planning-poker-icon>
+            arrow_forward
+          </planning-poker-icon>
+        </button>
+      </form>
+    </planning-poker-form-container>
+  </planning-poker-content>
+</planning-poker-layout>

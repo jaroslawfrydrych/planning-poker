@@ -1,0 +1,21 @@
+<header>
+  <h1>ROOM ID: 12345</h1>
+</header>
+
+<div class="cards">
+  <planning-poker-card [boardCard]="true"
+                       label="Andrzej"
+                       [playerReady]="false"></planning-poker-card>
+  <planning-poker-card [boardCard]="true"
+                       label="Stefan"
+                       [playerReady]="true"></planning-poker-card>
+  <planning-poker-card [boardCard]="true"
+                       label="Maria"
+                       [playerReady]="false"></planning-poker-card>
+</div>
+
+<footer>
+  <button planningPokerButton
+          class="finish-voting">Finish Voting
+  </button>
+</footer>
