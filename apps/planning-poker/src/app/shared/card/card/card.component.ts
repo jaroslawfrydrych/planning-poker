@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostBinding, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Cards } from '@shared/card/cards.enum';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -12,10 +12,12 @@ export class CardComponent implements OnInit, OnDestroy {
 
   @Input() public card: Cards;
   @Input() public selected$: Observable<Cards>;
-  @Input() public boardCard: boolean;
+  @Input()
+  @HostBinding('class.board-card-host') public boardCard: boolean;
+  @Output() public cardClick: EventEmitter<null> = new EventEmitter<null>();
   @Input() public playerReady = false;
   @Input() public label: string;
-  @Output() public cardClick: EventEmitter<null> = new EventEmitter<null>();
+  @Input() public review: boolean;
   public cards = Cards;
   public isCardSelected = false;
   private destroySubject$: Subject<null> = new Subject<null>();

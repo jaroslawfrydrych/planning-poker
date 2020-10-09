@@ -9,8 +9,8 @@
 <div class="sidebar">
   <h3>Other players:</h3>
   <ul>
-    <li>Stefan</li>
-    <li>Marian (voted)</li>
-    <li>Lucjan</li>
+    <li *ngFor="let user of users$ | async">
+      {{user.name}}<span *ngIf="user.status === userStatuses.VOTED"> (voted)</span>
+    </li>
   </ul>
 </div>

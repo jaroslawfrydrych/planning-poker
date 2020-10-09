@@ -1,6 +1,6 @@
 export enum Cards {
   'ZERO' = 0,
-  'HALF' = 0.5,
+  'HALF' = '1/2',
   'ONE' = 1,
   'TWO' = 2,
   'THREE' = 3,

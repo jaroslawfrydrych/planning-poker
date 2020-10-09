@@ -1,21 +1,25 @@
 <header>
   <h1>ROOM ID: 12345</h1>
+  <span class="clock">{{currentTime$ | async | date:'HH:mm'}}</span>
 </header>
 
 <div class="cards">
-  <planning-poker-card [boardCard]="true"
-                       label="Andrzej"
-                       [playerReady]="false"></planning-poker-card>
-  <planning-poker-card [boardCard]="true"
-                       label="Stefan"
-                       [playerReady]="true"></planning-poker-card>
-  <planning-poker-card [boardCard]="true"
-                       label="Maria"
-                       [playerReady]="false"></planning-poker-card>
+  <ng-container *ngFor="let user of users$ | async">
+    <planning-poker-card [boardCard]="true"
+                         [review]="reviewCardsSubject$ | async"
+                         [card]="user.card"
+                         [label]="user.name"
+                         [playerReady]="user.status === userStatues.VOTED"></planning-poker-card>
+  </ng-container>
 </div>
 
 <footer>
   <button planningPokerButton
-          class="finish-voting">Finish Voting
+          class="toggle-game-state"
+          [buttonColor]="buttonColors.SECONDARY"
+          [ngSwitch]="gameState$ | async"
+          (click)="toggleGameState()">
+    <ng-container *ngSwitchCase="gameStates.IN_PROGRESS">Finish Voting</ng-container>
+    <ng-container *ngSwitchCase="gameStates.REVIEW">New voting</ng-container>
   </button>
 </footer>
