@@ -15,7 +15,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/apps/planning-poker",
+            "outputPath": "public",
             "index": "apps/planning-poker/src/index.html",
             "main": "apps/planning-poker/src/main.ts",
             "polyfills": "apps/planning-poker/src/polyfills.ts",
@@ -148,7 +148,7 @@
         "build": {
           "builder": "@nrwl/node:build",
           "options": {
-            "outputPath": "dist/apps/api",
+            "outputPath": "dist/api",
             "main": "apps/api/src/main.ts",
             "tsConfig": "apps/api/tsconfig.app.json",
             "assets": ["apps/api/src/assets"]
