@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
+import { GameStates, UserStatuses } from '@planning-poker/api-interfaces';
 import { Cards } from '@shared/card/cards.enum';
-import { GameState } from '@shared/enum/game-state.enum';
-import { UserStatus } from '@shared/enum/user-status.enum';
 import { User } from '@shared/model/user';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
@@ -21,8 +20,8 @@ export class GuestService {
   public sendCard(card: Cards): void {
   }
 
-  public getGameState(): Observable<GameState> {
-    return of(GameState.IN_PROGRESS);
+  public getGameState(): Observable<GameStates> {
+    return of(GameStates.IN_PROGRESS);
   }
 
   public getUsers(): Observable<User[]> {
@@ -30,19 +29,19 @@ export class GuestService {
       {
         id: '1',
         name: 'Stefan',
-        status: UserStatus.WAITING,
+        status: UserStatuses.WAITING,
         card: null
       },
       {
         id: '1',
         name: 'Marian',
-        status: UserStatus.VOTED,
+        status: UserStatuses.VOTED,
         card: Cards.EIGHT
       },
       {
         id: '1',
         name: 'Andrzej',
-        status: UserStatus.WAITING,
+        status: UserStatuses.WAITING,
         card: null
       }
     ]);

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { GameStates, UserStatuses } from '@planning-poker/api-interfaces';
 import { ButtonColor } from '@shared/button/button-color.enum';
-import { GameState } from '@shared/enum/game-state.enum';
-import { UserStatus } from '@shared/enum/user-status.enum';
 import { User } from '@shared/model/user';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -15,9 +14,9 @@ import { HostService } from '../host.service';
 export class BoardComponent implements OnInit {
 
   public users$: Observable<User[]>;
-  public userStatues = UserStatus;
-  public gameState$: Observable<GameState>;
-  public gameStates = GameState;
+  public userStatues = UserStatuses;
+  public gameState$: Observable<GameStates>;
+  public gameStates = GameStates;
   public buttonColors = ButtonColor;
   public reviewCardsSubject$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public currentTime$: Observable<Date>;
@@ -30,7 +29,7 @@ export class BoardComponent implements OnInit {
     this.currentTime$ = this.hostService.currentTime();
     this.gameState$ = this.hostService.gameState$
       .pipe(
-        tap((gameState: GameState) => this.handleGameStateChange(gameState))
+        tap((gameState: GameStates) => this.handleGameStateChange(gameState))
       );
   }
 
@@ -38,7 +37,7 @@ export class BoardComponent implements OnInit {
     this.hostService.toggleGameState();
   }
 
-  private handleGameStateChange(gameState: GameState): void {
-    this.reviewCardsSubject$.next(gameState === GameState.REVIEW);
+  private handleGameStateChange(gameState: GameStates): void {
+    this.reviewCardsSubject$.next(gameState === GameStates.REVIEW);
   }
 }

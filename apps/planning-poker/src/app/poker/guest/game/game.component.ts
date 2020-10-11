@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { GameStates, UserStatuses } from '@planning-poker/api-interfaces';
 import { Cards } from '@shared/card/cards.enum';
-import { GameState } from '@shared/enum/game-state.enum';
-import { UserStatus } from '@shared/enum/user-status.enum';
 import { User } from '@shared/model/user';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -31,9 +30,9 @@ export class GameComponent implements OnInit, OnDestroy {
     Cards.COFFEE,
     Cards.INFINITE
   ];
-  public gameState$: Observable<GameState>;
+  public gameState$: Observable<GameStates>;
   public users$: Observable<User[]>;
-  public userStatuses = UserStatus;
+  public userStatuses = UserStatuses;
   private selectedCardValueSubject$: BehaviorSubject<Cards> = new BehaviorSubject<Cards>(null);
   private destroySubject$: Subject<null> = new Subject<null>();
 
@@ -48,7 +47,7 @@ export class GameComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroySubject$)
       )
-      .subscribe((gameState: GameState) => this.handleGameState(gameState));
+      .subscribe((gameState: GameStates) => this.handleGameState(gameState));
   }
 
   public ngOnDestroy(): void {
@@ -68,9 +67,9 @@ export class GameComponent implements OnInit, OnDestroy {
     this.guestService.sendCard(card);
   }
 
-  private handleGameState(gameState: GameState): void {
+  private handleGameState(gameState: GameStates): void {
     switch (gameState) {
-      case GameState.IN_PROGRESS:
+      case GameStates.IN_PROGRESS:
         this.selectedCard = null;
         break;
     }

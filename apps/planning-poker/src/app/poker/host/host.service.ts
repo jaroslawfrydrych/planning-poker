@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
+import { GameStates, UserStatuses } from '@planning-poker/api-interfaces';
 import { Cards } from '@shared/card/cards.enum';
-import { GameState } from '@shared/enum/game-state.enum';
-import { UserStatus } from '@shared/enum/user-status.enum';
 import { User } from '@shared/model/user';
 import { BehaviorSubject, interval, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -11,93 +10,93 @@ import { map } from 'rxjs/operators';
 })
 export class HostService {
 
-  public gameState$: Observable<GameState>;
-  private gameStateSubject$: BehaviorSubject<GameState>;
+  public gameState$: Observable<GameStates>;
+  private gameStateSubject$: BehaviorSubject<GameStates>;
   private mockUserData: User[] = [
     {
       id: '1',
       name: 'Stefan',
-      status: UserStatus.WAITING,
+      status: UserStatuses.WAITING,
       card: null
     },
     {
       id: '1',
       name: 'Marian',
-      status: UserStatus.VOTED,
+      status: UserStatuses.VOTED,
       card: Cards.HUNDRED
     },
     {
       id: '1',
       name: 'Andrzej',
-      status: UserStatus.WAITING,
+      status: UserStatuses.WAITING,
       card: null
     },
     {
       id: '1',
       name: 'Stefan',
-      status: UserStatus.WAITING,
+      status: UserStatuses.WAITING,
       card: null
     },
     {
       id: '1',
       name: 'Marian',
-      status: UserStatus.VOTED,
+      status: UserStatuses.VOTED,
       card: Cards.HALF
     },
     {
       id: '1',
       name: 'Andrzej',
-      status: UserStatus.WAITING,
+      status: UserStatuses.WAITING,
       card: null
     },
     {
       id: '1',
       name: 'Stefan',
-      status: UserStatus.WAITING,
+      status: UserStatuses.WAITING,
       card: null
     },
     {
       id: '1',
       name: 'Marian',
-      status: UserStatus.VOTED,
+      status: UserStatuses.VOTED,
       card: Cards.FORTY
     },
     {
       id: '1',
       name: 'Andrzej',
-      status: UserStatus.WAITING,
+      status: UserStatuses.WAITING,
       card: null
     },
     {
       id: '1',
       name: 'Stefan',
-      status: UserStatus.WAITING,
+      status: UserStatuses.WAITING,
       card: null
     },
     {
       id: '1',
       name: 'Marian',
-      status: UserStatus.VOTED,
+      status: UserStatuses.VOTED,
       card: Cards.ONE
     },
     {
       id: '1',
       name: 'Andrzej',
-      status: UserStatus.WAITING,
+      status: UserStatuses.WAITING,
       card: null
     }
   ];
 
   constructor() {
-    this.gameStateSubject$ = new BehaviorSubject<GameState>(GameState.IN_PROGRESS);
+    this.gameStateSubject$ = new BehaviorSubject<GameStates>(GameStates.IN_PROGRESS);
     this.gameState$ = this.gameStateSubject$.asObservable();
   }
 
-  public set gameState(value: GameState) {
+  public set gameState(value: GameStates) {
     this.gameStateSubject$.next(value);
   }
 
-  public get gameState(): GameState {
+  public get gameState(): GameStates {
     return this.gameStateSubject$.getValue();
   }
 
@@ -107,13 +106,13 @@ export class HostService {
 
   public toggleGameState(): void {
     switch (this.gameState) {
-      case GameState.IN_PROGRESS:
-        this.gameState = GameState.REVIEW;
+      case GameStates.IN_PROGRESS:
+        this.gameState = GameStates.REVIEW;
         break;
 
-      case GameState.REVIEW:
-        this.gameState = GameState.IN_PROGRESS;
-        // this.mockUserData[1].status = UserStatus.WAITING;
+      case GameStates.REVIEW:
+        this.gameState = GameStates.IN_PROGRESS;
+        // this.mockUserData[1].status = UserStatuses.WAITING;
         break;
     }
   }
