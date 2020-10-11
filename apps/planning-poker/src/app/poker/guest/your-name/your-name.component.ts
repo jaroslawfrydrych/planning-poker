@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { GuestService } from '../guest.service';
 
 @Component({
   selector: 'planning-poker-your-name',
@@ -13,6 +14,7 @@ export class YourNameComponent implements OnInit {
   public formGroup: FormGroup;
 
   constructor(private formBuilder: FormBuilder,
+              private guestService: GuestService,
               private router: Router) {
   }
 
@@ -28,6 +30,7 @@ export class YourNameComponent implements OnInit {
 
   public submit(): void {
     if (this.formGroup.valid) {
+      this.guestService.joinRoom(this.formGroup.get('name').value);
       this.router.navigateByUrl('/guest/game');
     }
   }

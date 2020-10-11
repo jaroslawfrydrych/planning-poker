@@ -27,6 +27,7 @@ export class CodeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input() public isLoading$: Observable<boolean>;
   @Input() public isSuccess$: Observable<boolean>;
+  @Input() public isError$: Observable<boolean>;
   @Input() public codeLength = 6;
   @Output() public codeSubmit: EventEmitter<string> = new EventEmitter<string>();
   @ViewChildren('inputElement') public inputElements: QueryList<ElementRef>;
@@ -57,9 +58,6 @@ export class CodeComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.codeFormArray = this.formGroup.get('code') as FormArray;
 
-    this.formGroup.valueChanges
-      .subscribe(() => this.onCodeValueChange());
-
     this.isLoading$
       .pipe(
         takeUntil(this.destroySubject$)
@@ -68,8 +66,7 @@ export class CodeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public ngAfterViewInit(): void {
-    const firstInputElement: HTMLInputElement = this.inputElements.first.nativeElement;
-    this.focusInputElement(firstInputElement);
+    this.focusFirstInputElement();
   }
 
   public ngOnDestroy(): void {
@@ -107,14 +104,18 @@ export class CodeComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  public reset() {
+    this.formGroup.reset();
+    this.focusFirstInputElement();
+  }
+
   private focusInputElement(element: HTMLInputElement) {
     element.focus();
   }
 
-  private onCodeValueChange(): void {
-    if (this.formGroup.valid) {
-      this.submit();
-    }
+  private focusFirstInputElement() {
+    const firstInputElement: HTMLInputElement = this.inputElements.first.nativeElement;
+    this.focusInputElement(firstInputElement);
   }
 
   private handleLoading(value: boolean) {

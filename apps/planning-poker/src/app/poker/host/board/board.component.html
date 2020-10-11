@@ -1,5 +1,5 @@
 <header>
-  <h1>ROOM ID: 12345</h1>
+  <h1>ROOM ID: {{roomId}}</h1>
   <span class="clock">{{currentTime$ | async | date:'HH:mm'}}</span>
 </header>
 
@@ -19,7 +19,7 @@
           [buttonColor]="buttonColors.SECONDARY"
           [ngSwitch]="gameState$ | async"
           (click)="toggleGameState()">
-    <ng-container *ngSwitchCase="gameStates.IN_PROGRESS">Finish Voting</ng-container>
     <ng-container *ngSwitchCase="gameStates.REVIEW">New voting</ng-container>
+    <ng-container *ngSwitchDefault>Finish Voting</ng-container>
   </button>
 </footer>

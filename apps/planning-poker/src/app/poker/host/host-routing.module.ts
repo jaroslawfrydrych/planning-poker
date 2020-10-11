@@ -1,11 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { BoardComponent } from './board/board.component';
+import { BoardResolver } from './board/board.resolver';
 
 const routes: Routes = [
   {
     path: '',
-    component: BoardComponent
+    component: BoardComponent,
+    resolve: {
+      data: BoardResolver
+    }
   }
 ];
 

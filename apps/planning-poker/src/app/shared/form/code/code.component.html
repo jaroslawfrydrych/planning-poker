@@ -17,7 +17,7 @@
           [disabled]="isLoading$ | async"
           (click)="submit()">
 
-    <ng-container *ngIf="!(isSuccess$ | async)">
+    <ng-container *ngIf="!(isSuccess$ | async) && !(isError$ | async)">
       <planning-poker-icon *ngIf="(isLoading$ | async) === false">
         arrow_forward
       </planning-poker-icon>
@@ -30,6 +30,10 @@
 
     <planning-poker-icon *ngIf="isSuccess$ | async">
       check
+    </planning-poker-icon>
+
+    <planning-poker-icon *ngIf="isError$ | async">
+      close
     </planning-poker-icon>
   </button>
 </form>

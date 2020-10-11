@@ -1,5 +1,5 @@
 import { Component, EventEmitter, HostBinding, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { Cards } from '@shared/card/cards.enum';
+import { Cards } from '@planning-poker/api-interfaces';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 

@@ -1,49 +1,49 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { GameStates, UserStatuses } from '@planning-poker/api-interfaces';
-import { Cards } from '@shared/card/cards.enum';
-import { User } from '@shared/model/user';
+import {
+  Cards,
+  Client,
+  GameStateBroadcastDto,
+  GameStates,
+  JoinRoomCodeResponseDto,
+  UserStatuses
+} from '@planning-poker/api-interfaces';
 import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { delay, tap } from 'rxjs/operators';
+import { PokerService } from '../services/poker.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GuestService {
 
-  constructor() { }
+  public roomId: string;
 
-  public checkCode(code: string): Observable<null> {
-    return of(null)
-      .pipe(delay(1500));
+  constructor(private httpClient: HttpClient,
+              private pokerService: PokerService) {
+  }
+
+  public checkCode(code: string): Observable<JoinRoomCodeResponseDto> {
+    return this.pokerService.checkRoomCode(code)
+      .pipe(
+        delay(1500),
+        tap((response: JoinRoomCodeResponseDto) => {
+          if (response.valid) {
+            this.roomId = code;
+          }
+        })
+      );
   }
 
   public sendCard(card: Cards): void {
+    this.pokerService.sendVote({card});
   }
 
-  public getGameState(): Observable<GameStates> {
-    return of(GameStates.IN_PROGRESS);
+  public getGameState(): Observable<GameStateBroadcastDto> {
+    return this.pokerService.receiveGameState();
   }
 
-  public getUsers(): Observable<User[]> {
-    return of([
-      {
-        id: '1',
-        name: 'Stefan',
-        status: UserStatuses.WAITING,
-        card: null
-      },
-      {
-        id: '1',
-        name: 'Marian',
-        status: UserStatuses.VOTED,
-        card: Cards.EIGHT
-      },
-      {
-        id: '1',
-        name: 'Andrzej',
-        status: UserStatuses.WAITING,
-        card: null
-      }
-    ]);
+  public joinRoom(name: string): void {
+    this.pokerService.joinRoom(this.roomId, name);
   }
 }

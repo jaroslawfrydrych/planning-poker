@@ -1,9 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { GameStates, UserStatuses } from '@planning-poker/api-interfaces';
-import { Cards } from '@shared/card/cards.enum';
-import { User } from '@shared/model/user';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Cards, GameStateBroadcastDto, GameStates } from '@planning-poker/api-interfaces';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs/operators';
 import { GuestService } from '../guest.service';
 
 @Component({
@@ -13,6 +11,7 @@ import { GuestService } from '../guest.service';
 })
 export class GameComponent implements OnInit, OnDestroy {
 
+  public inReview = false;
   public selectedCard$: Observable<Cards>;
   public cards: Cards[] = [
     Cards.ZERO,
@@ -30,24 +29,21 @@ export class GameComponent implements OnInit, OnDestroy {
     Cards.COFFEE,
     Cards.INFINITE
   ];
-  public gameState$: Observable<GameStates>;
-  public users$: Observable<User[]>;
-  public userStatuses = UserStatuses;
   private selectedCardValueSubject$: BehaviorSubject<Cards> = new BehaviorSubject<Cards>(null);
   private destroySubject$: Subject<null> = new Subject<null>();
 
-  constructor(private guestService: GuestService) {
+  constructor(private guestService: GuestService,
+              private changeDetectorRef: ChangeDetectorRef) {
     this.selectedCard$ = this.selectedCardValueSubject$.asObservable();
   }
 
   public ngOnInit(): void {
-    this.gameState$ = this.guestService.getGameState();
-    this.users$ = this.guestService.getUsers();
-    this.gameState$
+    this.guestService.getGameState()
       .pipe(
-        takeUntil(this.destroySubject$)
+        takeUntil(this.destroySubject$),
+        filter((gameState: GameStateBroadcastDto) => gameState.room === this.guestService.roomId)
       )
-      .subscribe((gameState: GameStates) => this.handleGameState(gameState));
+      .subscribe((gameState: GameStateBroadcastDto) => this.handleGameState(gameState));
   }
 
   public ngOnDestroy(): void {
@@ -55,11 +51,11 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   public set selectedCard(value: Cards) {
-    this.selectedCardValueSubject$.next(value);
-  }
+    if (this.inReview) {
+      return;
+    }
 
-  public get selectedCard(): Cards {
-    return this.selectedCardValueSubject$.getValue();
+    this.selectedCardValueSubject$.next(value);
   }
 
   public onCardClick(card: Cards): void {
@@ -67,11 +63,12 @@ export class GameComponent implements OnInit, OnDestroy {
     this.guestService.sendCard(card);
   }
 
-  private handleGameState(gameState: GameStates): void {
-    switch (gameState) {
-      case GameStates.IN_PROGRESS:
-        this.selectedCard = null;
-        break;
+  private handleGameState(gameState: GameStateBroadcastDto): void {
+    this.inReview = gameState.state === GameStates.REVIEW;
+
+    if (gameState.state === GameStates.IN_PROGRESS) {
+      this.selectedCardValueSubject$.next(null);
+      this.changeDetectorRef.detectChanges();
     }
   }
 }

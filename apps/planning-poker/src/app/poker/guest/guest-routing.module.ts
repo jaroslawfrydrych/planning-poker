@@ -1,8 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { GameComponent } from './game/game.component';
+import { GameGuard } from './game/game.guard';
 import { RoomCodeComponent } from './room-code/room-code.component';
+import { RoomCodeGuard } from './room-code/room-code.guard';
 import { YourNameComponent } from './your-name/your-name.component';
+import { YourNameGuard } from './your-name/your-name.guard';
 
 const routes: Routes = [
   {
@@ -11,15 +14,24 @@ const routes: Routes = [
   },
   {
     path: 'room-code',
-    component: RoomCodeComponent
+    component: RoomCodeComponent,
+    canActivate: [
+      RoomCodeGuard
+    ]
   },
   {
     path: 'your-name',
-    component: YourNameComponent
+    component: YourNameComponent,
+    canActivate: [
+      YourNameGuard
+    ]
   },
   {
     path: 'game',
-    component: GameComponent
+    component: GameComponent,
+    canActivate: [
+      GameGuard
+    ]
   }
 ];
 
