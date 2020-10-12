@@ -671,11 +671,11 @@ class RoomCodeComponent {
             .subscribe((response) => {
             if (response.valid) {
                 this.router.navigateByUrl('/guest/your-name');
-                this.$gaService.event('code_enter', 'guest', 'Enter code', 1);
+                this.$gaService.event('code_enter_valid', 'guest', 'Enter code valid');
             }
             else {
                 this.codeComponent.reset();
-                this.$gaService.event('code_enter', 'guest', 'Enter code', 0);
+                this.$gaService.event('code_enter_invalid', 'guest', 'Enter code invalid');
             }
         });
     }
