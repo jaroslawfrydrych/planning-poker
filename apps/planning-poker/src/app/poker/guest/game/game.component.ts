@@ -1,7 +1,8 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { Cards, GameStateBroadcastDto, GameStates } from '@planning-poker/api-interfaces';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Cards, GameStateBroadcastDto, GameStates, RoomInfoInterface } from '@planning-poker/api-interfaces';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { GuestService } from '../guest.service';
 
 @Component({
@@ -33,17 +34,27 @@ export class GameComponent implements OnInit, OnDestroy {
   private destroySubject$: Subject<null> = new Subject<null>();
 
   constructor(private guestService: GuestService,
-              private changeDetectorRef: ChangeDetectorRef) {
+              private changeDetectorRef: ChangeDetectorRef,
+              private activatedRoute: ActivatedRoute,
+              private router: Router) {
     this.selectedCard$ = this.selectedCardValueSubject$.asObservable();
   }
 
   public ngOnInit(): void {
+    const roomInfo: RoomInfoInterface = this.activatedRoute.snapshot.data.data;
+    this.inReview = roomInfo.state === GameStates.REVIEW;
+
     this.guestService.getGameState()
       .pipe(
-        takeUntil(this.destroySubject$),
-        filter((gameState: GameStateBroadcastDto) => gameState.room === this.guestService.roomId)
+        takeUntil(this.destroySubject$)
       )
       .subscribe((gameState: GameStateBroadcastDto) => this.handleGameState(gameState));
+
+    this.guestService.onRoomRemove()
+      .pipe(
+        takeUntil(this.destroySubject$)
+      )
+      .subscribe(() => this.handleRoomRemove());
   }
 
   public ngOnDestroy(): void {
@@ -56,11 +67,11 @@ export class GameComponent implements OnInit, OnDestroy {
     }
 
     this.selectedCardValueSubject$.next(value);
+    this.guestService.sendCard(value);
   }
 
   public onCardClick(card: Cards): void {
     this.selectedCard = card;
-    this.guestService.sendCard(card);
   }
 
   private handleGameState(gameState: GameStateBroadcastDto): void {
@@ -70,5 +81,9 @@ export class GameComponent implements OnInit, OnDestroy {
       this.selectedCardValueSubject$.next(null);
       this.changeDetectorRef.detectChanges();
     }
+  }
+
+  private handleRoomRemove(): void {
+    this.router.navigateByUrl('/');
   }
 }

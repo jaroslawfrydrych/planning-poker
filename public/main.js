@@ -871,9 +871,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/platform-browser */ "e4iD");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "sEIs");
 /* harmony import */ var _shared_shared_module__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @shared/shared.module */ "PCNd");
-/* harmony import */ var ngx_socket_io__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ngx-socket-io */ "d7Fm");
-/* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./app.component */ "Sy1n");
-/* harmony import */ var _poker_poker_module__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./poker/poker.module */ "8tIG");
+/* harmony import */ var ngx_google_analytics__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ngx-google-analytics */ "PKRn");
+/* harmony import */ var ngx_socket_io__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ngx-socket-io */ "d7Fm");
+/* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./app.component */ "Sy1n");
+/* harmony import */ var _poker_poker_module__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./poker/poker.module */ "8tIG");
+
+
 
 
 
@@ -887,37 +890,39 @@ __webpack_require__.r(__webpack_exports__);
 const config = { url: '/', options: {} };
 class AppModule {
 }
-AppModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineNgModule"]({ type: AppModule, bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_6__["AppComponent"]] });
+AppModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineNgModule"]({ type: AppModule, bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_7__["AppComponent"]] });
 AppModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjector"]({ factory: function AppModule_Factory(t) { return new (t || AppModule)(); }, providers: [], imports: [[
             _angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__["BrowserModule"],
             _angular_common_http__WEBPACK_IMPORTED_MODULE_0__["HttpClientModule"],
             _shared_shared_module__WEBPACK_IMPORTED_MODULE_4__["SharedModule"],
-            _poker_poker_module__WEBPACK_IMPORTED_MODULE_7__["PokerModule"],
+            _poker_poker_module__WEBPACK_IMPORTED_MODULE_8__["PokerModule"],
             _angular_router__WEBPACK_IMPORTED_MODULE_3__["RouterModule"],
-            ngx_socket_io__WEBPACK_IMPORTED_MODULE_5__["SocketIoModule"].forRoot(config)
+            ngx_socket_io__WEBPACK_IMPORTED_MODULE_6__["SocketIoModule"].forRoot(config),
+            ngx_google_analytics__WEBPACK_IMPORTED_MODULE_5__["NgxGoogleAnalyticsModule"].forRoot('UA-180323084-1')
         ]] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵsetNgModuleScope"](AppModule, { declarations: [_app_component__WEBPACK_IMPORTED_MODULE_6__["AppComponent"]], imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__["BrowserModule"],
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵsetNgModuleScope"](AppModule, { declarations: [_app_component__WEBPACK_IMPORTED_MODULE_7__["AppComponent"]], imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__["BrowserModule"],
         _angular_common_http__WEBPACK_IMPORTED_MODULE_0__["HttpClientModule"],
         _shared_shared_module__WEBPACK_IMPORTED_MODULE_4__["SharedModule"],
-        _poker_poker_module__WEBPACK_IMPORTED_MODULE_7__["PokerModule"],
-        _angular_router__WEBPACK_IMPORTED_MODULE_3__["RouterModule"], ngx_socket_io__WEBPACK_IMPORTED_MODULE_5__["SocketIoModule"]] }); })();
+        _poker_poker_module__WEBPACK_IMPORTED_MODULE_8__["PokerModule"],
+        _angular_router__WEBPACK_IMPORTED_MODULE_3__["RouterModule"], ngx_socket_io__WEBPACK_IMPORTED_MODULE_6__["SocketIoModule"], ngx_google_analytics__WEBPACK_IMPORTED_MODULE_5__["NgxGoogleAnalyticsModule"]] }); })();
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵsetClassMetadata"](AppModule, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"],
         args: [{
                 declarations: [
-                    _app_component__WEBPACK_IMPORTED_MODULE_6__["AppComponent"]
+                    _app_component__WEBPACK_IMPORTED_MODULE_7__["AppComponent"]
                 ],
                 imports: [
                     _angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__["BrowserModule"],
                     _angular_common_http__WEBPACK_IMPORTED_MODULE_0__["HttpClientModule"],
                     _shared_shared_module__WEBPACK_IMPORTED_MODULE_4__["SharedModule"],
-                    _poker_poker_module__WEBPACK_IMPORTED_MODULE_7__["PokerModule"],
+                    _poker_poker_module__WEBPACK_IMPORTED_MODULE_8__["PokerModule"],
                     _angular_router__WEBPACK_IMPORTED_MODULE_3__["RouterModule"],
-                    ngx_socket_io__WEBPACK_IMPORTED_MODULE_5__["SocketIoModule"].forRoot(config)
+                    ngx_socket_io__WEBPACK_IMPORTED_MODULE_6__["SocketIoModule"].forRoot(config),
+                    ngx_google_analytics__WEBPACK_IMPORTED_MODULE_5__["NgxGoogleAnalyticsModule"].forRoot('UA-180323084-1')
                 ],
                 providers: [],
                 bootstrap: [
-                    _app_component__WEBPACK_IMPORTED_MODULE_6__["AppComponent"]
+                    _app_component__WEBPACK_IMPORTED_MODULE_7__["AppComponent"]
                 ]
             }]
     }], null, null); })();

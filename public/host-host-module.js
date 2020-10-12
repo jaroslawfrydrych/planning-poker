@@ -28,28 +28,14 @@ class HostService {
         this.gameStateSubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_1__["GameStates"].IN_PROGRESS);
         this.gameState$ = this.gameStateSubject$.asObservable();
     }
-    set gameState(value) {
-        this.pokerService.changeGameState(value);
-        // this.gameStateSubject$.next(value);
-    }
-    get gameState() {
-        return this.gameStateSubject$.getValue();
-    }
     getUsers() {
         return this.pokerService.getUsers()
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])((response) => {
             return response.clients;
         }));
     }
-    toggleGameState() {
-        switch (this.gameState) {
-            case _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_1__["GameStates"].IN_PROGRESS:
-                this.gameState = _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_1__["GameStates"].REVIEW;
-                break;
-            case _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_1__["GameStates"].REVIEW:
-                this.gameState = _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_1__["GameStates"].IN_PROGRESS;
-                break;
-        }
+    toggleGameState(roomId) {
+        this.pokerService.toggleGameState(roomId);
     }
     currentTime() {
         return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["interval"])(1000)
@@ -60,6 +46,9 @@ class HostService {
     }
     getGameState() {
         return this.pokerService.receiveGameState();
+    }
+    joinRoom(room) {
+        this.pokerService.joinRoom(room, _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_1__["ClientType"].HOST);
     }
 }
 HostService.ɵfac = function HostService_Factory(t) { return new (t || HostService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_services_poker_service__WEBPACK_IMPORTED_MODULE_4__["PokerService"])); };
@@ -269,19 +258,20 @@ class BoardComponent {
     ngOnInit() {
         const resolverData = this.activatedRoute.snapshot.data.data;
         this.roomId = resolverData.id;
+        this.hostService.joinRoom(this.roomId);
         this.users$ = this.hostService.getUsers()
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])((users) => {
-            return users.filter((user) => user.room === this.roomId && user.type === _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["ClientType"].VOTER);
+            return users.filter((user) => user.type === _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["ClientType"].VOTER);
         }));
         this.currentTime$ = this.hostService.currentTime();
         this.gameState$ = this.hostService.getGameState()
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["filter"])((data) => data.room === this.roomId), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])((data) => data.state), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["tap"])((gameState) => this.handleGameStateChange(gameState)));
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])((data) => data.state), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["tap"])((gameState) => this.handleGameStateChange(gameState)));
     }
     ngOnDestroy() {
         this.onDestroySubject.next(null);
     }
     toggleGameState() {
-        this.hostService.toggleGameState();
+        this.hostService.toggleGameState(this.roomId);
     }
     handleGameStateChange(gameState) {
         this.reviewCardsSubject$.next(gameState === _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["GameStates"].REVIEW);

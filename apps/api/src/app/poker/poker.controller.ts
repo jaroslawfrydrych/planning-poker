@@ -1,7 +1,9 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import {
+  ClientType,
   CreateRoomDto,
-  JoinRoomCodeRequestDto, JoinRoomCodeResponseDto, JoinRoomNameRequestDto,
+  JoinRoomCodeRequestDto,
+  JoinRoomCodeResponseDto,
   RoomInfoInterface
 } from '@planning-poker/api-interfaces';
 import { PokerService } from './poker.service';
@@ -16,8 +18,11 @@ export class PokerController {
   @Post('create-room')
   public createRoom(@Body() request: CreateRoomDto): RoomInfoInterface {
     const room: Room = this.pokerService.createRoom();
-    this.pokerService.setClientAsHost(request.clientId);
-    this.pokerService.assignClientToRoom(request.clientId, room.id);
+
+    room.addClientToRoom({
+      id: request.clientId,
+      type: ClientType.HOST
+    });
 
     return {
       id: room.id,
@@ -30,5 +35,15 @@ export class PokerController {
     return {
       valid: this.pokerService.checkIsRoomExists(request.id)
     };
+  }
+
+  @Post('room-info')
+  public roomInfo(@Body() request: JoinRoomCodeRequestDto): RoomInfoInterface {
+    const room: Room = this.pokerService.getRoomById(request.id);
+
+    return {
+      id: room.id,
+      state: room.state
+    }
   }
 }

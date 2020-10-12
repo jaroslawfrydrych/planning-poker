@@ -41,6 +41,9 @@ class PokerService {
         };
         this.socket.emit(_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["SocketEvents"].STATE, stateMessage);
     }
+    toggleGameState(roomId) {
+        this.socket.emit(_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["SocketEvents"].STATE, roomId);
+    }
     receiveVote() {
         return this.socket.fromEvent(_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["SocketEvents"].VOTED);
     }
@@ -50,10 +53,11 @@ class PokerService {
     getUsers() {
         return this.socket.fromEvent(_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["SocketEvents"].USERS);
     }
-    joinRoom(room, name) {
+    joinRoom(room, type, name) {
         const request = {
             name,
-            room
+            room,
+            type
         };
         this.socket.emit(_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["SocketEvents"].JOIN, request);
     }
@@ -62,6 +66,15 @@ class PokerService {
             id: code
         };
         return this.httpClient.post('/api/join-room-code', request);
+    }
+    getRoomInfo(code) {
+        const request = {
+            id: code
+        };
+        return this.httpClient.post('/api/room-info', request);
+    }
+    onRoomRemove() {
+        return this.socket.fromEvent(_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["SocketEvents"].ROOM_REMOVED);
     }
 }
 PokerService.ɵfac = function PokerService_Factory(t) { return new (t || PokerService)(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵinject"](ngx_socket_io__WEBPACK_IMPORTED_MODULE_3__["Socket"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_0__["HttpClient"])); };

@@ -6,11 +6,11 @@ import {
   GameStateBroadcastDto,
   GameStates,
   RoomInfoInterface,
-  UserStatuses, Voted
+  UserStatuses
 } from '@planning-poker/api-interfaces';
 import { ButtonColor } from '@shared/button/button-color.enum';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { filter, map, takeUntil, tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { HostService } from '../host.service';
 
 @Component({
@@ -37,18 +37,18 @@ export class BoardComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     const resolverData: RoomInfoInterface = this.activatedRoute.snapshot.data.data;
     this.roomId = resolverData.id;
+    this.hostService.joinRoom(this.roomId);
 
     this.users$ = this.hostService.getUsers()
       .pipe(
         map((users: Client[]) => {
-          return users.filter((user: Client) => user.room === this.roomId && user.type === ClientType.VOTER);
+          return users.filter((user: Client) => user.type === ClientType.VOTER);
         })
       );
 
     this.currentTime$ = this.hostService.currentTime();
     this.gameState$ = this.hostService.getGameState()
       .pipe(
-        filter((data: GameStateBroadcastDto) => data.room === this.roomId),
         map((data: GameStateBroadcastDto) => data.state),
         tap((gameState: GameStates) => this.handleGameStateChange(gameState))
       );
@@ -59,7 +59,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   }
 
   public toggleGameState(): void {
-    this.hostService.toggleGameState();
+    this.hostService.toggleGameState(this.roomId);
   }
 
   private handleGameStateChange(gameState: GameStates): void {

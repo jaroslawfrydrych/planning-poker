@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { GameComponent } from './game/game.component';
 import { GameGuard } from './game/game.guard';
+import { GameResolver } from './game/game.resolver';
 import { RoomCodeComponent } from './room-code/room-code.component';
 import { RoomCodeGuard } from './room-code/room-code.guard';
 import { YourNameComponent } from './your-name/your-name.component';
@@ -31,7 +32,10 @@ const routes: Routes = [
     component: GameComponent,
     canActivate: [
       GameGuard
-    ]
+    ],
+    resolve: {
+      data: GameResolver
+    }
   }
 ];
 

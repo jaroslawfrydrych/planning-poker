@@ -44,6 +44,7 @@
     "@nestjs/websockets": "^7.4.4",
     "@ngxs/store": "^3.7.0",
     "@nrwl/angular": "10.3.0",
+    "ngx-google-analytics": "^9.0.1",
     "ngx-socket-io": "^3.2.0",
     "normalize.css": "^8.0.1",
     "reflect-metadata": "^0.1.13",

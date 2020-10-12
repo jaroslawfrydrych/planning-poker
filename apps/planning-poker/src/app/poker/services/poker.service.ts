@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
+  ClientType,
   GameStateBroadcastDto,
   GameStates,
   JoinRequestDto,
@@ -44,6 +45,10 @@ export class PokerService {
     this.socket.emit(SocketEvents.STATE, stateMessage);
   }
 
+  public toggleGameState(roomId: string): void {
+    this.socket.emit(SocketEvents.STATE, roomId);
+  }
+
   public receiveVote(): Observable<Voted> {
     return this.socket.fromEvent(SocketEvents.VOTED);
   }
@@ -56,10 +61,11 @@ export class PokerService {
     return this.socket.fromEvent(SocketEvents.USERS);
   }
 
-  public joinRoom(room: string, name: string) {
+  public joinRoom(room: string, type: ClientType, name?: string): void {
     const request: JoinRequestDto = {
       name,
-      room
+      room,
+      type
     };
     this.socket.emit(SocketEvents.JOIN, request);
   }
@@ -70,5 +76,17 @@ export class PokerService {
     };
 
     return this.httpClient.post<JoinRoomCodeResponseDto>('/api/join-room-code', request);
+  }
+
+  public getRoomInfo(code: string): Observable<RoomInfoInterface> {
+    const request: JoinRoomCodeRequestDto = {
+      id: code
+    };
+
+    return this.httpClient.post<RoomInfoInterface>('/api/room-info', request);
+  }
+
+  public onRoomRemove(): Observable<null> {
+    return this.socket.fromEvent(SocketEvents.ROOM_REMOVED);
   }
 }

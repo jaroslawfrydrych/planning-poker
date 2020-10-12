@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import {
   Client,
+  ClientType,
   GameStateBroadcastDto,
   GameStates,
   RoomInfoInterface,
-  UsersResponseDto, Voted
+  UsersResponseDto
 } from '@planning-poker/api-interfaces';
 import { BehaviorSubject, interval, Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { PokerService } from '../services/poker.service';
 
 @Injectable({
@@ -23,15 +24,6 @@ export class HostService {
     this.gameState$ = this.gameStateSubject$.asObservable();
   }
 
-  public set gameState(value: GameStates) {
-    this.pokerService.changeGameState(value);
-    // this.gameStateSubject$.next(value);
-  }
-
-  public get gameState(): GameStates {
-    return this.gameStateSubject$.getValue();
-  }
-
   public getUsers(): Observable<Client[]> {
     return this.pokerService.getUsers()
       .pipe(
@@ -41,16 +33,8 @@ export class HostService {
       );
   }
 
-  public toggleGameState(): void {
-    switch (this.gameState) {
-      case GameStates.IN_PROGRESS:
-        this.gameState = GameStates.REVIEW;
-        break;
-
-      case GameStates.REVIEW:
-        this.gameState = GameStates.IN_PROGRESS;
-        break;
-    }
+  public toggleGameState(roomId: string): void {
+    this.pokerService.toggleGameState(roomId);
   }
 
   public currentTime(): Observable<Date> {
@@ -67,4 +51,9 @@ export class HostService {
   public getGameState(): Observable<GameStateBroadcastDto> {
     return this.pokerService.receiveGameState();
   }
+
+  public joinRoom(room: string): void {
+    this.pokerService.joinRoom(room, ClientType.HOST);
+  }
 }
+

@@ -1,14 +1,12 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   Cards,
-  Client,
+  ClientType,
   GameStateBroadcastDto,
-  GameStates,
   JoinRoomCodeResponseDto,
-  UserStatuses
+  RoomInfoInterface
 } from '@planning-poker/api-interfaces';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { delay, tap } from 'rxjs/operators';
 import { PokerService } from '../services/poker.service';
 
@@ -19,8 +17,7 @@ export class GuestService {
 
   public roomId: string;
 
-  constructor(private httpClient: HttpClient,
-              private pokerService: PokerService) {
+  constructor(private pokerService: PokerService) {
   }
 
   public checkCode(code: string): Observable<JoinRoomCodeResponseDto> {
@@ -36,7 +33,10 @@ export class GuestService {
   }
 
   public sendCard(card: Cards): void {
-    this.pokerService.sendVote({card});
+    this.pokerService.sendVote({
+      card,
+      room: this.roomId
+    });
   }
 
   public getGameState(): Observable<GameStateBroadcastDto> {
@@ -44,6 +44,14 @@ export class GuestService {
   }
 
   public joinRoom(name: string): void {
-    this.pokerService.joinRoom(this.roomId, name);
+    this.pokerService.joinRoom(this.roomId, ClientType.VOTER, name);
+  }
+
+  public getRoomInfo(): Observable<RoomInfoInterface> {
+    return this.pokerService.getRoomInfo(this.roomId);
+  }
+
+  public onRoomRemove(): Observable<null> {
+    return this.pokerService.onRoomRemove();
   }
 }

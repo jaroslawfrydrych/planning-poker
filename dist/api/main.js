@@ -211,7 +211,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _nestjs_common__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @planning-poker/api-interfaces */ "./libs/api-interfaces/src/index.ts");
 /* harmony import */ var _poker_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./poker.service */ "./apps/api/src/app/poker/poker.service.ts");
-var _a, _b, _c, _d, _e;
+var _a, _b, _c, _d, _e, _f, _g;
 
 
 
@@ -222,8 +222,10 @@ let PokerController = class PokerController {
     }
     createRoom(request) {
         const room = this.pokerService.createRoom();
-        this.pokerService.setClientAsHost(request.clientId);
-        this.pokerService.assignClientToRoom(request.clientId, room.id);
+        room.addClientToRoom({
+            id: request.clientId,
+            type: _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["ClientType"].HOST
+        });
         return {
             id: room.id,
             state: room.state
@@ -232,6 +234,13 @@ let PokerController = class PokerController {
     joinRoomCode(request) {
         return {
             valid: this.pokerService.checkIsRoomExists(request.id)
+        };
+    }
+    roomInfo(request) {
+        const room = this.pokerService.getRoomById(request.id);
+        return {
+            id: room.id,
+            state: room.state
         };
     }
 };
@@ -249,9 +258,16 @@ Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [typeof (_c = typeof _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["JoinRoomCodeRequestDto"] !== "undefined" && _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["JoinRoomCodeRequestDto"]) === "function" ? _c : Object]),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:returntype", typeof (_d = typeof _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["JoinRoomCodeResponseDto"] !== "undefined" && _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["JoinRoomCodeResponseDto"]) === "function" ? _d : Object)
 ], PokerController.prototype, "joinRoomCode", null);
+Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+    Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Post"])('room-info'),
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__param"])(0, Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Body"])()),
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:type", Function),
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [typeof (_e = typeof _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["JoinRoomCodeRequestDto"] !== "undefined" && _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["JoinRoomCodeRequestDto"]) === "function" ? _e : Object]),
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:returntype", typeof (_f = typeof _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["RoomInfoInterface"] !== "undefined" && _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["RoomInfoInterface"]) === "function" ? _f : Object)
+], PokerController.prototype, "roomInfo", null);
 PokerController = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
     Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Controller"])(),
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [typeof (_e = typeof _poker_service__WEBPACK_IMPORTED_MODULE_3__["PokerService"] !== "undefined" && _poker_service__WEBPACK_IMPORTED_MODULE_3__["PokerService"]) === "function" ? _e : Object])
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [typeof (_g = typeof _poker_service__WEBPACK_IMPORTED_MODULE_3__["PokerService"] !== "undefined" && _poker_service__WEBPACK_IMPORTED_MODULE_3__["PokerService"]) === "function" ? _g : Object])
 ], PokerController);
 
 
@@ -293,44 +309,65 @@ let PokerGateway = class PokerGateway {
     }
     handleDisconnect(client) {
         const clientId = client.id;
-        if (this.pokerService.isClientHost(clientId)) {
-            const clientData = this.pokerService.getClientById(clientId);
+        const clientData = this.pokerService.getClientById(clientId);
+        const roomId = clientData.room;
+        const room = this.pokerService.getRoomById(roomId);
+        if (!room) {
+            return;
+        }
+        const clientInRoom = room.getClientFromRoom(clientId);
+        if (clientInRoom.type === _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["ClientType"].HOST) {
             this.pokerService.removeRoom(clientData.room);
-            this.server.emit(_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["SocketEvents"].ROOM_REMOVED, clientData.room);
+            this.server.to(roomId).emit(_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["SocketEvents"].ROOM_REMOVED);
+        }
+        else if (room) {
+            room.removeClientFromFrom(client.id);
         }
         this.pokerService.removeClient(client.id);
-        this.emitUsersChange();
+        this.emitUsersChangeToRoom(clientData.room);
     }
     onVote(client, message) {
-        this.pokerService.setClientCard(client.id, message.card);
-        this.emitUsersChange();
+        const room = this.pokerService.getRoomById(message.room);
+        const clientData = room.getClientFromRoom(client.id);
+        clientData.card = message.card;
+        clientData.status = _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["UserStatuses"].VOTED;
+        room.updateClientInRoom(clientData);
+        this.emitUsersChangeToRoom(message.room);
     }
-    onState(client) {
-        const clientData = this.pokerService.getClientById(client.id);
-        const state = this.pokerService.toggleRoomGameState(clientData.room);
+    onState(client, roomId) {
+        const state = this.pokerService.toggleRoomGameState(roomId);
         const broadcastMessage = {
-            state,
-            room: clientData.room
+            state
         };
-        this.server.emit(_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["SocketEvents"].STATE, broadcastMessage);
+        this.server.to(roomId).emit(_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["SocketEvents"].STATE, broadcastMessage);
         if (state === _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["GameStates"].IN_PROGRESS) {
-            this.pokerService.resetVotingForRoom(clientData.room);
-            this.emitUsersChange();
+            this.pokerService.resetVotingForRoom(roomId);
+            this.emitUsersChangeToRoom(roomId);
         }
     }
     onJoin(client, message) {
-        this.pokerService.setClientName(client.id, message.name);
-        this.pokerService.assignClientToRoom(client.id, message.room);
-        this.pokerService.setClientAsVoter(client.id);
-        this.emitUsersChange();
+        const roomId = message.room;
+        const room = this.pokerService.getRoomById(roomId);
+        room.addClientToRoom({
+            id: client.id,
+            name: message.name,
+            type: message.type
+        });
+        client.join(roomId);
+        this.pokerService.setClientARoom(client.id, roomId);
+        this.emitUsersChangeToRoom(roomId);
     }
-    emitUsersChange() {
-        const clients = Array.from(this.pokerService.clients.values())
-            .sort((clientA, clientB) => clientA.date - clientB.date);
+    emitUsersChangeToRoom(roomId) {
+        const room = this.pokerService.getRoomById(roomId);
+        if (!room) {
+            return;
+        }
+        const clients = Array.from(room.clients.values())
+            .sort((clientA, clientB) => clientB.date - clientA.date);
         const clientsResponse = {
             clients
         };
-        this.server.emit(_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["SocketEvents"].USERS, clientsResponse);
+        this.server.to(roomId).emit(_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["SocketEvents"].USERS, clientsResponse);
     }
 };
 Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
@@ -346,7 +383,7 @@ Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
 Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
     Object(_nestjs_websockets__WEBPACK_IMPORTED_MODULE_1__["SubscribeMessage"])(_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["SocketEvents"].STATE),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:type", Function),
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [typeof (_d = typeof socket_io__WEBPACK_IMPORTED_MODULE_3__["Socket"] !== "undefined" && socket_io__WEBPACK_IMPORTED_MODULE_3__["Socket"]) === "function" ? _d : Object]),
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [typeof (_d = typeof socket_io__WEBPACK_IMPORTED_MODULE_3__["Socket"] !== "undefined" && socket_io__WEBPACK_IMPORTED_MODULE_3__["Socket"]) === "function" ? _d : Object, String]),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:returntype", void 0)
 ], PokerGateway.prototype, "onState", null);
 Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
@@ -459,26 +496,16 @@ let PokerService = class PokerService {
     addClient(client) {
         this.clients.set(client.id, client);
     }
+    setClientARoom(clientId, roomId) {
+        const client = this.clients.get(clientId);
+        client.room = roomId;
+        this.clients.set(clientId, client);
+    }
     removeClient(id) {
         this.clients.delete(id);
     }
     isClientHost(id) {
         return this.clients.get(id).type === _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["ClientType"].HOST;
-    }
-    assignClientToRoom(clientId, roomId) {
-        const client = this.getClientById(clientId);
-        client.room = roomId;
-        this.clients.set(clientId, client);
-    }
-    setClientAsHost(clientId) {
-        const client = this.getClientById(clientId);
-        client.type = _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["ClientType"].HOST;
-        this.clients.set(clientId, client);
-    }
-    setClientAsVoter(clientId) {
-        const client = this.getClientById(clientId);
-        client.type = _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["ClientType"].VOTER;
-        this.clients.set(clientId, client);
     }
     getClientById(id) {
         return this.clients.get(id);
@@ -486,27 +513,16 @@ let PokerService = class PokerService {
     checkIsRoomExists(id) {
         return this.rooms.has(id);
     }
-    setClientName(id, name) {
-        const client = this.getClientById(id);
-        client.name = name;
-        client.date = new Date().getTime();
-        this.clients.set(id, client);
-    }
-    setClientCard(id, card) {
-        const client = this.getClientById(id);
-        client.card = card;
-        client.status = _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["UserStatuses"].VOTED;
-        this.clients.set(id, client);
-    }
-    resetVotingForRoom(room) {
-        this.clients.forEach((client) => {
-            console.log(client);
-            if (client.room === room) {
-                client.card = null;
-                client.status = _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["UserStatuses"].WAITING;
-                this.clients.set(client.id, client);
-            }
+    resetVotingForRoom(roomId) {
+        const room = this.getRoomById(roomId);
+        room.clients.forEach((client) => {
+            client.card = null;
+            client.status = _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["UserStatuses"].WAITING;
+            room.updateClientInRoom(client);
         });
+    }
+    getRoomById(id) {
+        return this.rooms.get(id);
     }
 };
 PokerService = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
@@ -535,9 +551,9 @@ __webpack_require__.r(__webpack_exports__);
 
 class Room {
     constructor() {
+        this.clients = new Map();
         this.stateSubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_1__["BehaviorSubject"](_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_0__["GameStates"].IN_PROGRESS);
         this.id = this.generateId();
-        console.log('create room', this.id);
     }
     get state() {
         return this.stateSubject$.getValue();
@@ -547,6 +563,18 @@ class Room {
     }
     regenerateId() {
         this.id = this.generateId();
+    }
+    addClientToRoom(client) {
+        this.clients.set(client.id, client);
+    }
+    removeClientFromFrom(clientId) {
+        this.clients.delete(clientId);
+    }
+    updateClientInRoom(client) {
+        this.clients.set(client.id, client);
+    }
+    getClientFromRoom(clientId) {
+        return this.clients.get(clientId);
     }
     generateId() {
         const calculation = Math.floor(Math.random() * 90000) + 10000;

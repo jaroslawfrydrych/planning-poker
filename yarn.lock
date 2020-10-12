@@ -7931,6 +7931,13 @@ next-tick@~1.0.0:
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.0.0.tgz#ca86d1fe8828169b0120208e3dc8424b9db8342c"
   integrity sha1-yobR/ogoFpsBICCOPchCS524NCw=
 
+ngx-google-analytics@^9.0.1:
+  version "9.0.1"
+  resolved "https://registry.yarnpkg.com/ngx-google-analytics/-/ngx-google-analytics-9.0.1.tgz#664be980b52f4da1b84fdd28cf931add16c50571"
+  integrity sha512-4MyYFF7IFsVdnt1gDKqL0UAX+jP40lpI/PMYty9UqeL/43UG9JJ0ryPqwX0NjMvqWvh3emYEUUwG3BCEAtpFbw==
+  dependencies:
+    tslib "^1.10.0"
+
 ngx-socket-io@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/ngx-socket-io/-/ngx-socket-io-3.2.0.tgz#afd9e6f8937e4b6d4cf2492e29cc8f01cc5d1b44"
