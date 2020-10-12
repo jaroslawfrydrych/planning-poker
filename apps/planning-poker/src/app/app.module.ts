@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from "@angular/router";
 import { SharedModule } from '@shared/shared.module';
-import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics';
+import { NgxGoogleAnalyticsModule, NgxGoogleAnalyticsRouterModule } from 'ngx-google-analytics';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { AppComponent } from './app.component';
 import { PokerModule } from "./poker/poker.module";
@@ -21,7 +21,8 @@ const config: SocketIoConfig = {url: '/', options: {}};
     PokerModule,
     RouterModule,
     SocketIoModule.forRoot(config),
-    NgxGoogleAnalyticsModule.forRoot('UA-180323084-1')
+    NgxGoogleAnalyticsModule.forRoot('UA-180323084-1'),
+    NgxGoogleAnalyticsRouterModule
   ],
   providers: [],
   bootstrap: [

@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Cards, GameStateBroadcastDto, GameStates, RoomInfoInterface } from '@planning-poker/api-interfaces';
+import { GoogleAnalyticsService } from 'ngx-google-analytics';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { GuestService } from '../guest.service';
@@ -36,7 +37,8 @@ export class GameComponent implements OnInit, OnDestroy {
   constructor(private guestService: GuestService,
               private changeDetectorRef: ChangeDetectorRef,
               private activatedRoute: ActivatedRoute,
-              private router: Router) {
+              private router: Router,
+              private $gaService: GoogleAnalyticsService) {
     this.selectedCard$ = this.selectedCardValueSubject$.asObservable();
   }
 
@@ -71,6 +73,7 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   public onCardClick(card: Cards): void {
+    this.$gaService.event('user_voted', 'guest', 'User voted');
     this.selectedCard = card;
   }
 

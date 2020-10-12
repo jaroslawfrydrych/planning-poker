@@ -30,7 +30,7 @@ export class YourNameComponent implements OnInit {
 
   public submit(): void {
     if (this.formGroup.valid) {
-      this.guestService.joinRoom(this.formGroup.get('name').value);
+      this.guestService.joinRoom(this.nameFormControl.value);
       this.router.navigateByUrl('/guest/game');
     }
   }

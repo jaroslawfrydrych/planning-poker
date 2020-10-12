@@ -313,11 +313,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "EM62");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "sEIs");
 /* harmony import */ var _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @planning-poker/api-interfaces */ "l3rL");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "+kfY");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators */ "0Wlh");
-/* harmony import */ var _guest_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../guest.service */ "lQSW");
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common */ "2kYt");
-/* harmony import */ var _shared_card_card_card_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../shared/card/card/card.component */ "M8cf");
+/* harmony import */ var ngx_google_analytics__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ngx-google-analytics */ "PKRn");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ "+kfY");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators */ "0Wlh");
+/* harmony import */ var _guest_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../guest.service */ "lQSW");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/common */ "2kYt");
+/* harmony import */ var _shared_card_card_card_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../shared/card/card/card.component */ "M8cf");
+
+
 
 
 
@@ -343,11 +346,12 @@ function GameComponent_ng_container_1_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("card", card_r1)("selected$", ctx_r0.selectedCard$);
 } }
 class GameComponent {
-    constructor(guestService, changeDetectorRef, activatedRoute, router) {
+    constructor(guestService, changeDetectorRef, activatedRoute, router, $gaService) {
         this.guestService = guestService;
         this.changeDetectorRef = changeDetectorRef;
         this.activatedRoute = activatedRoute;
         this.router = router;
+        this.$gaService = $gaService;
         this.inReview = false;
         this.cards = [
             _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["Cards"].ZERO,
@@ -365,18 +369,18 @@ class GameComponent {
             _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["Cards"].COFFEE,
             _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["Cards"].INFINITE
         ];
-        this.selectedCardValueSubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_3__["BehaviorSubject"](null);
-        this.destroySubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_3__["Subject"]();
+        this.selectedCardValueSubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_4__["BehaviorSubject"](null);
+        this.destroySubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_4__["Subject"]();
         this.selectedCard$ = this.selectedCardValueSubject$.asObservable();
     }
     ngOnInit() {
         const roomInfo = this.activatedRoute.snapshot.data.data;
         this.inReview = roomInfo.state === _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["GameStates"].REVIEW;
         this.guestService.getGameState()
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["takeUntil"])(this.destroySubject$))
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["takeUntil"])(this.destroySubject$))
             .subscribe((gameState) => this.handleGameState(gameState));
         this.guestService.onRoomRemove()
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["takeUntil"])(this.destroySubject$))
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["takeUntil"])(this.destroySubject$))
             .subscribe(() => this.handleRoomRemove());
     }
     ngOnDestroy() {
@@ -390,6 +394,7 @@ class GameComponent {
         this.guestService.sendCard(value);
     }
     onCardClick(card) {
+        this.$gaService.event('user_voted', 'guest', 'User voted');
         this.selectedCard = card;
     }
     handleGameState(gameState) {
@@ -403,7 +408,7 @@ class GameComponent {
         this.router.navigateByUrl('/');
     }
 }
-GameComponent.ɵfac = function GameComponent_Factory(t) { return new (t || GameComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_guest_service__WEBPACK_IMPORTED_MODULE_5__["GuestService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"])); };
+GameComponent.ɵfac = function GameComponent_Factory(t) { return new (t || GameComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_guest_service__WEBPACK_IMPORTED_MODULE_6__["GuestService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](ngx_google_analytics__WEBPACK_IMPORTED_MODULE_3__["GoogleAnalyticsService"])); };
 GameComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: GameComponent, selectors: [["planning-poker-game"]], decls: 4, vars: 1, consts: [[1, "cards"], [4, "ngFor", "ngForOf"], [1, "sidebar"], [3, "card", "selected$", "cardClick"]], template: function GameComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](1, GameComponent_ng_container_1_Template, 2, 2, "ng-container", 1);
@@ -414,7 +419,7 @@ GameComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComp
     } if (rf & 2) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx.cards);
-    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_6__["NgForOf"], _shared_card_card_card_component__WEBPACK_IMPORTED_MODULE_7__["CardComponent"]], styles: ["[_nghost-%COMP%] {\n  padding: 1.6666666667em;\n  display: flex;\n  width: 100%;\n}\n\n.cards[_ngcontent-%COMP%] {\n  display: flex;\n  width: 65%;\n  flex-direction: row;\n  flex-wrap: wrap;\n}\n\n.cards[_ngcontent-%COMP%]   planning-poker-card[_ngcontent-%COMP%] {\n  margin: 1%;\n}\n\n.sidebar[_ngcontent-%COMP%] {\n  width: 35%;\n  padding: 1.3888888889em;\n}\n\n.sidebar[_ngcontent-%COMP%]   ul[_ngcontent-%COMP%] {\n  margin: 0;\n  padding: 1.1111111111em 0;\n  display: block;\n}\n\n.sidebar[_ngcontent-%COMP%]   ul[_ngcontent-%COMP%]   li[_ngcontent-%COMP%] {\n  margin: 0;\n  padding: 0.1111111111em 0;\n  display: block;\n  list-style: none;\n}\n\n.sidebar[_ngcontent-%COMP%]   ul[_ngcontent-%COMP%]   li[_ngcontent-%COMP%]:before {\n  content: \"- \";\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImFwcHMvcGxhbm5pbmctcG9rZXIvc3JjL2FwcC9wb2tlci9ndWVzdC9nYW1lL2dhbWUuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBRUE7RUFDRSx1QkFBQTtFQUNBLGFBQUE7RUFDQSxXQUFBO0FBREY7O0FBSUE7RUFDRSxhQUFBO0VBQ0EsVUFBQTtFQUVFLG1CQUFBO0VBQ0EsZUFBQTtBQUZKOztBQUtFO0VBQ0UsVUFBQTtBQUhKOztBQU9BO0VBQ0UsVUFBQTtFQUNBLHVCQUFBO0FBSkY7O0FBTUU7RUFDRSxTQUFBO0VBQ0EseUJBQUE7RUFDQSxjQUFBO0FBSko7O0FBTUk7RUFDRSxTQUFBO0VBQ0EseUJBQUE7RUFDQSxjQUFBO0VBQ0EsZ0JBQUE7QUFKTjs7QUFNTTtFQUNFLGFBQUE7QUFKUiIsImZpbGUiOiJhcHBzL3BsYW5uaW5nLXBva2VyL3NyYy9hcHAvcG9rZXIvZ3Vlc3QvZ2FtZS9nYW1lLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiQGltcG9ydCBcIkBzdHlsZXMvc2hhcmVkXCI7XG5cbjpob3N0IHtcbiAgcGFkZGluZzogZW0oMzApO1xuICBkaXNwbGF5OiBmbGV4O1xuICB3aWR0aDogMTAwJTtcbn1cblxuLmNhcmRzIHtcbiAgZGlzcGxheTogZmxleDtcbiAgd2lkdGg6IDY1JTtcbiAgZmxleDoge1xuICAgIGRpcmVjdGlvbjogcm93O1xuICAgIHdyYXA6IHdyYXA7XG4gIH1cblxuICBwbGFubmluZy1wb2tlci1jYXJkIHtcbiAgICBtYXJnaW46IDElO1xuICB9XG59XG5cbi5zaWRlYmFyIHtcbiAgd2lkdGg6IDM1JTtcbiAgcGFkZGluZzogZW0oMjUpO1xuXG4gIHVsIHtcbiAgICBtYXJnaW46IDA7XG4gICAgcGFkZGluZzogZW0oMjApIDA7XG4gICAgZGlzcGxheTogYmxvY2s7XG5cbiAgICBsaSB7XG4gICAgICBtYXJnaW46IDA7XG4gICAgICBwYWRkaW5nOiBlbSgyKSAwO1xuICAgICAgZGlzcGxheTogYmxvY2s7XG4gICAgICBsaXN0LXN0eWxlOiBub25lO1xuXG4gICAgICAmOmJlZm9yZSB7XG4gICAgICAgIGNvbnRlbnQ6ICctICc7XG4gICAgICB9XG4gICAgfVxuICB9XG59XG4iXX0= */"] });
+    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_7__["NgForOf"], _shared_card_card_card_component__WEBPACK_IMPORTED_MODULE_8__["CardComponent"]], styles: ["[_nghost-%COMP%] {\n  padding: 1.6666666667em;\n  display: flex;\n  width: 100%;\n}\n\n.cards[_ngcontent-%COMP%] {\n  display: flex;\n  width: 65%;\n  flex-direction: row;\n  flex-wrap: wrap;\n}\n\n.cards[_ngcontent-%COMP%]   planning-poker-card[_ngcontent-%COMP%] {\n  margin: 1%;\n}\n\n.sidebar[_ngcontent-%COMP%] {\n  width: 35%;\n  padding: 1.3888888889em;\n}\n\n.sidebar[_ngcontent-%COMP%]   ul[_ngcontent-%COMP%] {\n  margin: 0;\n  padding: 1.1111111111em 0;\n  display: block;\n}\n\n.sidebar[_ngcontent-%COMP%]   ul[_ngcontent-%COMP%]   li[_ngcontent-%COMP%] {\n  margin: 0;\n  padding: 0.1111111111em 0;\n  display: block;\n  list-style: none;\n}\n\n.sidebar[_ngcontent-%COMP%]   ul[_ngcontent-%COMP%]   li[_ngcontent-%COMP%]:before {\n  content: \"- \";\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImFwcHMvcGxhbm5pbmctcG9rZXIvc3JjL2FwcC9wb2tlci9ndWVzdC9nYW1lL2dhbWUuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBRUE7RUFDRSx1QkFBQTtFQUNBLGFBQUE7RUFDQSxXQUFBO0FBREY7O0FBSUE7RUFDRSxhQUFBO0VBQ0EsVUFBQTtFQUVFLG1CQUFBO0VBQ0EsZUFBQTtBQUZKOztBQUtFO0VBQ0UsVUFBQTtBQUhKOztBQU9BO0VBQ0UsVUFBQTtFQUNBLHVCQUFBO0FBSkY7O0FBTUU7RUFDRSxTQUFBO0VBQ0EseUJBQUE7RUFDQSxjQUFBO0FBSko7O0FBTUk7RUFDRSxTQUFBO0VBQ0EseUJBQUE7RUFDQSxjQUFBO0VBQ0EsZ0JBQUE7QUFKTjs7QUFNTTtFQUNFLGFBQUE7QUFKUiIsImZpbGUiOiJhcHBzL3BsYW5uaW5nLXBva2VyL3NyYy9hcHAvcG9rZXIvZ3Vlc3QvZ2FtZS9nYW1lLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiQGltcG9ydCBcIkBzdHlsZXMvc2hhcmVkXCI7XG5cbjpob3N0IHtcbiAgcGFkZGluZzogZW0oMzApO1xuICBkaXNwbGF5OiBmbGV4O1xuICB3aWR0aDogMTAwJTtcbn1cblxuLmNhcmRzIHtcbiAgZGlzcGxheTogZmxleDtcbiAgd2lkdGg6IDY1JTtcbiAgZmxleDoge1xuICAgIGRpcmVjdGlvbjogcm93O1xuICAgIHdyYXA6IHdyYXA7XG4gIH1cblxuICBwbGFubmluZy1wb2tlci1jYXJkIHtcbiAgICBtYXJnaW46IDElO1xuICB9XG59XG5cbi5zaWRlYmFyIHtcbiAgd2lkdGg6IDM1JTtcbiAgcGFkZGluZzogZW0oMjUpO1xuXG4gIHVsIHtcbiAgICBtYXJnaW46IDA7XG4gICAgcGFkZGluZzogZW0oMjApIDA7XG4gICAgZGlzcGxheTogYmxvY2s7XG5cbiAgICBsaSB7XG4gICAgICBtYXJnaW46IDA7XG4gICAgICBwYWRkaW5nOiBlbSgyKSAwO1xuICAgICAgZGlzcGxheTogYmxvY2s7XG4gICAgICBsaXN0LXN0eWxlOiBub25lO1xuXG4gICAgICAmOmJlZm9yZSB7XG4gICAgICAgIGNvbnRlbnQ6ICctICc7XG4gICAgICB9XG4gICAgfVxuICB9XG59XG4iXX0= */"] });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](GameComponent, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
         args: [{
@@ -422,7 +427,7 @@ GameComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComp
                 templateUrl: './game.component.html',
                 styleUrls: ['./game.component.scss']
             }]
-    }], function () { return [{ type: _guest_service__WEBPACK_IMPORTED_MODULE_5__["GuestService"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"] }, { type: _angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"] }, { type: _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"] }]; }, null); })();
+    }], function () { return [{ type: _guest_service__WEBPACK_IMPORTED_MODULE_6__["GuestService"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"] }, { type: _angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"] }, { type: _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"] }, { type: ngx_google_analytics__WEBPACK_IMPORTED_MODULE_3__["GoogleAnalyticsService"] }]; }, null); })();
 
 
 /***/ }),
@@ -481,7 +486,7 @@ class YourNameComponent {
     }
     submit() {
         if (this.formGroup.valid) {
-            this.guestService.joinRoom(this.formGroup.get('name').value);
+            this.guestService.joinRoom(this.nameFormControl.value);
             this.router.navigateByUrl('/guest/game');
         }
     }
@@ -601,12 +606,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "EM62");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "sEIs");
 /* harmony import */ var _shared_form_code_code_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @shared/form/code/code.component */ "ur7N");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "+kfY");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators */ "0Wlh");
-/* harmony import */ var _guest_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../guest.service */ "lQSW");
-/* harmony import */ var _shared_layout_layout_layout_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../shared/layout/layout/layout.component */ "rqBn");
-/* harmony import */ var _shared_layout_header_header_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../shared/layout/header/header.component */ "6EaX");
-/* harmony import */ var _shared_layout_content_content_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../shared/layout/content/content.component */ "hi3J");
+/* harmony import */ var ngx_google_analytics__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ngx-google-analytics */ "PKRn");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ "+kfY");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators */ "0Wlh");
+/* harmony import */ var _guest_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../guest.service */ "lQSW");
+/* harmony import */ var _shared_layout_layout_layout_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../shared/layout/layout/layout.component */ "rqBn");
+/* harmony import */ var _shared_layout_header_header_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../shared/layout/header/header.component */ "6EaX");
+/* harmony import */ var _shared_layout_content_content_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../shared/layout/content/content.component */ "hi3J");
+
+
 
 
 
@@ -621,13 +629,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class RoomCodeComponent {
-    constructor(router, guestService) {
+    constructor(router, guestService, $gaService) {
         this.router = router;
         this.guestService = guestService;
-        this.loadingSubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_3__["BehaviorSubject"](false);
-        this.successSubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_3__["BehaviorSubject"](false);
-        this.errorSubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_3__["BehaviorSubject"](false);
-        this.destroySubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_3__["Subject"]();
+        this.$gaService = $gaService;
+        this.loadingSubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_4__["BehaviorSubject"](false);
+        this.successSubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_4__["BehaviorSubject"](false);
+        this.errorSubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_4__["BehaviorSubject"](false);
+        this.destroySubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_4__["Subject"]();
         this.loading$ = this.loadingSubject$.asObservable();
         this.success$ = this.successSubject$.asObservable();
         this.error$ = this.errorSubject$.asObservable();
@@ -641,7 +650,7 @@ class RoomCodeComponent {
         }
         this.loadingSubject$.next(true);
         this.guestService.checkCode(code)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["takeUntil"])(this.destroySubject$), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["finalize"])(() => this.loadingSubject$.next(false)), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["tap"])((response) => {
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["takeUntil"])(this.destroySubject$), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["finalize"])(() => this.loadingSubject$.next(false)), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["tap"])((response) => {
             this.loadingSubject$.next(false);
             if (response.valid) {
                 this.successSubject$.next(true);
@@ -649,18 +658,20 @@ class RoomCodeComponent {
             else {
                 this.errorSubject$.next(true);
             }
-        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["delay"])(1000), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["tap"])(() => this.errorSubject$.next(false)))
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["delay"])(1000), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["tap"])(() => this.errorSubject$.next(false)))
             .subscribe((response) => {
             if (response.valid) {
                 this.router.navigateByUrl('/guest/your-name');
+                this.$gaService.event('code_enter', 'guest', 'Enter code', 1);
             }
             else {
                 this.codeComponent.reset();
+                this.$gaService.event('code_enter', 'guest', 'Enter code', 0);
             }
         });
     }
 }
-RoomCodeComponent.ɵfac = function RoomCodeComponent_Factory(t) { return new (t || RoomCodeComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_guest_service__WEBPACK_IMPORTED_MODULE_5__["GuestService"])); };
+RoomCodeComponent.ɵfac = function RoomCodeComponent_Factory(t) { return new (t || RoomCodeComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_guest_service__WEBPACK_IMPORTED_MODULE_6__["GuestService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](ngx_google_analytics__WEBPACK_IMPORTED_MODULE_3__["GoogleAnalyticsService"])); };
 RoomCodeComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: RoomCodeComponent, selectors: [["planning-poker-room-code"]], viewQuery: function RoomCodeComponent_Query(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵviewQuery"](_shared_form_code_code_component__WEBPACK_IMPORTED_MODULE_2__["CodeComponent"], true);
     } if (rf & 2) {
@@ -682,7 +693,7 @@ RoomCodeComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefine
     } if (rf & 2) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](5);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("codeLength", 5)("isLoading$", ctx.loading$)("isSuccess$", ctx.success$)("isError$", ctx.error$);
-    } }, directives: [_shared_layout_layout_layout_component__WEBPACK_IMPORTED_MODULE_6__["LayoutComponent"], _shared_layout_header_header_component__WEBPACK_IMPORTED_MODULE_7__["HeaderComponent"], _shared_layout_content_content_component__WEBPACK_IMPORTED_MODULE_8__["ContentComponent"], _shared_form_code_code_component__WEBPACK_IMPORTED_MODULE_2__["CodeComponent"]], styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJhcHBzL3BsYW5uaW5nLXBva2VyL3NyYy9hcHAvcG9rZXIvZ3Vlc3Qvcm9vbS1jb2RlL3Jvb20tY29kZS5jb21wb25lbnQuc2NzcyJ9 */"], changeDetection: 0 });
+    } }, directives: [_shared_layout_layout_layout_component__WEBPACK_IMPORTED_MODULE_7__["LayoutComponent"], _shared_layout_header_header_component__WEBPACK_IMPORTED_MODULE_8__["HeaderComponent"], _shared_layout_content_content_component__WEBPACK_IMPORTED_MODULE_9__["ContentComponent"], _shared_form_code_code_component__WEBPACK_IMPORTED_MODULE_2__["CodeComponent"]], styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJhcHBzL3BsYW5uaW5nLXBva2VyL3NyYy9hcHAvcG9rZXIvZ3Vlc3Qvcm9vbS1jb2RlL3Jvb20tY29kZS5jb21wb25lbnQuc2NzcyJ9 */"], changeDetection: 0 });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](RoomCodeComponent, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
         args: [{
@@ -691,7 +702,7 @@ RoomCodeComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefine
                 styleUrls: ['./room-code.component.scss'],
                 changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectionStrategy"].OnPush
             }]
-    }], function () { return [{ type: _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"] }, { type: _guest_service__WEBPACK_IMPORTED_MODULE_5__["GuestService"] }]; }, { codeComponent: [{
+    }], function () { return [{ type: _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"] }, { type: _guest_service__WEBPACK_IMPORTED_MODULE_6__["GuestService"] }, { type: ngx_google_analytics__WEBPACK_IMPORTED_MODULE_3__["GoogleAnalyticsService"] }]; }, { codeComponent: [{
             type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"],
             args: [_shared_form_code_code_component__WEBPACK_IMPORTED_MODULE_2__["CodeComponent"]]
         }] }); })();

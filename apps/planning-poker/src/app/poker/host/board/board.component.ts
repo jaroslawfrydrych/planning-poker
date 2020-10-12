@@ -9,6 +9,7 @@ import {
   UserStatuses
 } from '@planning-poker/api-interfaces';
 import { ButtonColor } from '@shared/button/button-color.enum';
+import { GoogleAnalyticsService } from 'ngx-google-analytics';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { HostService } from '../host.service';
@@ -31,7 +32,8 @@ export class BoardComponent implements OnInit, OnDestroy {
   private onDestroySubject: Subject<null> = new Subject<null>();
 
   constructor(private hostService: HostService,
-              private activatedRoute: ActivatedRoute) {
+              private activatedRoute: ActivatedRoute,
+              private $gaService: GoogleAnalyticsService) {
   }
 
   public ngOnInit(): void {
@@ -60,6 +62,7 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   public toggleGameState(): void {
     this.hostService.toggleGameState(this.roomId);
+    this.$gaService.event('toggle_game_state', 'host', 'Toggle game state');
   }
 
   private handleGameStateChange(gameState: GameStates): void {

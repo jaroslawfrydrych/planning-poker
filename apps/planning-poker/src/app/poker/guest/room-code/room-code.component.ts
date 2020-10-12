@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnDestroy, ViewChild } from '@angul
 import { Router } from '@angular/router';
 import { JoinRoomCodeResponseDto } from '@planning-poker/api-interfaces';
 import { CodeComponent } from '@shared/form/code/code.component';
+import { GoogleAnalyticsService } from 'ngx-google-analytics';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { delay, finalize, takeUntil, tap } from 'rxjs/operators';
 import { GuestService } from '../guest.service';
@@ -24,7 +25,8 @@ export class RoomCodeComponent implements OnDestroy {
   private destroySubject$: Subject<null> = new Subject<null>();
 
   constructor(private router: Router,
-              private guestService: GuestService) {
+              private guestService: GuestService,
+              private $gaService: GoogleAnalyticsService) {
     this.loading$ = this.loadingSubject$.asObservable();
     this.success$ = this.successSubject$.asObservable();
     this.error$ = this.errorSubject$.asObservable();
@@ -60,8 +62,10 @@ export class RoomCodeComponent implements OnDestroy {
       .subscribe((response: JoinRoomCodeResponseDto) => {
         if (response.valid) {
           this.router.navigateByUrl('/guest/your-name');
+          this.$gaService.event('code_enter', 'guest', 'Enter code', 1);
         } else {
           this.codeComponent.reset();
+          this.$gaService.event('code_enter', 'guest', 'Enter code', 0);
         }
       });
   }

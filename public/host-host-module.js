@@ -205,12 +205,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "sEIs");
 /* harmony import */ var _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @planning-poker/api-interfaces */ "l3rL");
 /* harmony import */ var _shared_button_button_color_enum__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @shared/button/button-color.enum */ "ybPn");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ "+kfY");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators */ "0Wlh");
-/* harmony import */ var _host_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../host.service */ "+cqM");
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/common */ "2kYt");
-/* harmony import */ var _shared_button_button_directive__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../shared/button/button.directive */ "M0Hd");
-/* harmony import */ var _shared_card_card_card_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../shared/card/card/card.component */ "M8cf");
+/* harmony import */ var ngx_google_analytics__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ngx-google-analytics */ "PKRn");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs */ "+kfY");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs/operators */ "0Wlh");
+/* harmony import */ var _host_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../host.service */ "+cqM");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/common */ "2kYt");
+/* harmony import */ var _shared_button_button_directive__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../shared/button/button.directive */ "M0Hd");
+/* harmony import */ var _shared_card_card_card_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../../shared/card/card/card.component */ "M8cf");
+
+
 
 
 
@@ -246,38 +249,40 @@ function BoardComponent_ng_container_14_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementContainerEnd"]();
 } }
 class BoardComponent {
-    constructor(hostService, activatedRoute) {
+    constructor(hostService, activatedRoute, $gaService) {
         this.hostService = hostService;
         this.activatedRoute = activatedRoute;
+        this.$gaService = $gaService;
         this.userStatues = _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["UserStatuses"];
         this.gameStates = _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["GameStates"];
         this.buttonColors = _shared_button_button_color_enum__WEBPACK_IMPORTED_MODULE_3__["ButtonColor"];
-        this.reviewCardsSubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_4__["BehaviorSubject"](false);
-        this.onDestroySubject = new rxjs__WEBPACK_IMPORTED_MODULE_4__["Subject"]();
+        this.reviewCardsSubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_5__["BehaviorSubject"](false);
+        this.onDestroySubject = new rxjs__WEBPACK_IMPORTED_MODULE_5__["Subject"]();
     }
     ngOnInit() {
         const resolverData = this.activatedRoute.snapshot.data.data;
         this.roomId = resolverData.id;
         this.hostService.joinRoom(this.roomId);
         this.users$ = this.hostService.getUsers()
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])((users) => {
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["map"])((users) => {
             return users.filter((user) => user.type === _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["ClientType"].VOTER);
         }));
         this.currentTime$ = this.hostService.currentTime();
         this.gameState$ = this.hostService.getGameState()
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])((data) => data.state), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["tap"])((gameState) => this.handleGameStateChange(gameState)));
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["map"])((data) => data.state), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["tap"])((gameState) => this.handleGameStateChange(gameState)));
     }
     ngOnDestroy() {
         this.onDestroySubject.next(null);
     }
     toggleGameState() {
         this.hostService.toggleGameState(this.roomId);
+        this.$gaService.event('toggle_game_state', 'host', 'Toggle game state');
     }
     handleGameStateChange(gameState) {
         this.reviewCardsSubject$.next(gameState === _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["GameStates"].REVIEW);
     }
 }
-BoardComponent.ɵfac = function BoardComponent_Factory(t) { return new (t || BoardComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_host_service__WEBPACK_IMPORTED_MODULE_6__["HostService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"])); };
+BoardComponent.ɵfac = function BoardComponent_Factory(t) { return new (t || BoardComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_host_service__WEBPACK_IMPORTED_MODULE_7__["HostService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](ngx_google_analytics__WEBPACK_IMPORTED_MODULE_4__["GoogleAnalyticsService"])); };
 BoardComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: BoardComponent, selectors: [["planning-poker-board"]], decls: 15, vars: 15, consts: [[1, "clock"], [1, "cards"], [4, "ngFor", "ngForOf"], ["planningPokerButton", "", 1, "toggle-game-state", 3, "buttonColor", "ngSwitch", "click"], [4, "ngSwitchCase"], [4, "ngSwitchDefault"], [3, "boardCard", "review", "card", "label", "playerReady"]], template: function BoardComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "header");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "h1");
@@ -312,7 +317,7 @@ BoardComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineCom
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("buttonColor", ctx.buttonColors.SECONDARY)("ngSwitch", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpipeBind1"](12, 13, ctx.gameState$));
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngSwitchCase", ctx.gameStates.REVIEW);
-    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_7__["NgForOf"], _shared_button_button_directive__WEBPACK_IMPORTED_MODULE_8__["ButtonDirective"], _angular_common__WEBPACK_IMPORTED_MODULE_7__["NgSwitch"], _angular_common__WEBPACK_IMPORTED_MODULE_7__["NgSwitchCase"], _angular_common__WEBPACK_IMPORTED_MODULE_7__["NgSwitchDefault"], _shared_card_card_card_component__WEBPACK_IMPORTED_MODULE_9__["CardComponent"]], pipes: [_angular_common__WEBPACK_IMPORTED_MODULE_7__["DatePipe"], _angular_common__WEBPACK_IMPORTED_MODULE_7__["AsyncPipe"]], styles: ["[_nghost-%COMP%] {\n  padding: 1.6666666667em;\n  display: flex;\n  width: 100%;\n  flex-direction: column;\n  height: 100%;\n}\n\nheader[_ngcontent-%COMP%] {\n  padding: 0 0 2.2222222222em;\n  margin: 0 1%;\n  display: flex;\n}\n\nheader[_ngcontent-%COMP%]   .clock[_ngcontent-%COMP%] {\n  margin-left: auto;\n  color: #ffffff;\n  font-size: 2.6666666667em;\n  font-weight: 700;\n}\n\n.cards[_ngcontent-%COMP%] {\n  width: 100%;\n  height: 100%;\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  justify-content: flex-start;\n  align-content: flex-start;\n  align-items: flex-start;\n}\n\n.cards[_ngcontent-%COMP%]   planning-poker-card[_ngcontent-%COMP%] {\n  margin: 2.7777777778em 1% 1% 1%;\n}\n\nfooter[_ngcontent-%COMP%] {\n  display: flex;\n  width: 100%;\n  margin: 0 1%;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImFwcHMvcGxhbm5pbmctcG9rZXIvc3JjL2FwcC9wb2tlci9ob3N0L2JvYXJkL2JvYXJkLmNvbXBvbmVudC5zY3NzIiwiYXBwcy9wbGFubmluZy1wb2tlci9zcmMvc2hhcmVkL0BzdHlsZXMvX2NvbG9ycy5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUVBO0VBQ0UsdUJBQUE7RUFDQSxhQUFBO0VBQ0EsV0FBQTtFQUNBLHNCQUFBO0VBQ0EsWUFBQTtBQURGOztBQUlBO0VBQ0UsMkJBQUE7RUFDQSxZQUFBO0VBQ0EsYUFBQTtBQURGOztBQUdFO0VBQ0UsaUJBQUE7RUFDQSxjQ2ZhO0VEaUJYLHlCQUFBO0VBQ0EsZ0JBQUE7QUFGTjs7QUFPQTtFQUNFLFdBQUE7RUFDQSxZQUFBO0VBQ0EsYUFBQTtFQUNBLG1CQUFBO0VBQ0EsZUFBQTtFQUNBLDJCQUFBO0VBQ0EseUJBQUE7RUFDQSx1QkFBQTtBQUpGOztBQU1FO0VBQ0UsK0JBQUE7QUFKSjs7QUFPQTtFQUNFLGFBQUE7RUFDQSxXQUFBO0VBQ0EsWUFBQTtBQUpGIiwiZmlsZSI6ImFwcHMvcGxhbm5pbmctcG9rZXIvc3JjL2FwcC9wb2tlci9ob3N0L2JvYXJkL2JvYXJkLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiQGltcG9ydCBcIkBzdHlsZXMvc2hhcmVkXCI7XG5cbjpob3N0IHtcbiAgcGFkZGluZzogZW0oMzApO1xuICBkaXNwbGF5OiBmbGV4O1xuICB3aWR0aDogMTAwJTtcbiAgZmxleC1kaXJlY3Rpb246IGNvbHVtbjtcbiAgaGVpZ2h0OiAxMDAlO1xufVxuXG5oZWFkZXIge1xuICBwYWRkaW5nOiAwIDAgZW0oNDApO1xuICBtYXJnaW46IDAgMSU7XG4gIGRpc3BsYXk6IGZsZXg7XG5cbiAgLmNsb2NrIHtcbiAgICBtYXJnaW4tbGVmdDogYXV0bztcbiAgICBjb2xvcjogJGNvbG9yU2Vjb25kYXJ5O1xuICAgIGZvbnQ6IHtcbiAgICAgIHNpemU6IGVtKCRoMUZvbnRTaXplKTtcbiAgICAgIHdlaWdodDogNzAwO1xuICAgIH1cbiAgfVxufVxuXG4uY2FyZHMge1xuICB3aWR0aDogMTAwJTtcbiAgaGVpZ2h0OiAxMDAlO1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbGV4LWRpcmVjdGlvbjogcm93O1xuICBmbGV4LXdyYXA6IHdyYXA7XG4gIGp1c3RpZnktY29udGVudDogZmxleC1zdGFydDtcbiAgYWxpZ24tY29udGVudDogZmxleC1zdGFydDtcbiAgYWxpZ24taXRlbXM6IGZsZXgtc3RhcnQ7XG5cbiAgcGxhbm5pbmctcG9rZXItY2FyZCB7XG4gICAgbWFyZ2luOiBlbSg1MCkgMSUgMSUgMSU7XG4gIH1cbn1cbmZvb3RlciB7XG4gIGRpc3BsYXk6IGZsZXg7XG4gIHdpZHRoOiAxMDAlO1xuICBtYXJnaW46IDAgMSU7XG59XG4iLCIkY29sb3JCYWNrZ3JvdW5kUHJpbWFyeTogIzFiMWMyYTtcbiRjb2xvclByaW1hcnk6ICNmMGNhMjA7XG4kY29sb3JTZWNvbmRhcnk6ICNmZmZmZmY7XG4kY29sb3JJbmFjdGl2ZTogIzcxNzE3MTtcbiJdfQ== */"] });
+    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_8__["NgForOf"], _shared_button_button_directive__WEBPACK_IMPORTED_MODULE_9__["ButtonDirective"], _angular_common__WEBPACK_IMPORTED_MODULE_8__["NgSwitch"], _angular_common__WEBPACK_IMPORTED_MODULE_8__["NgSwitchCase"], _angular_common__WEBPACK_IMPORTED_MODULE_8__["NgSwitchDefault"], _shared_card_card_card_component__WEBPACK_IMPORTED_MODULE_10__["CardComponent"]], pipes: [_angular_common__WEBPACK_IMPORTED_MODULE_8__["DatePipe"], _angular_common__WEBPACK_IMPORTED_MODULE_8__["AsyncPipe"]], styles: ["[_nghost-%COMP%] {\n  padding: 1.6666666667em;\n  display: flex;\n  width: 100%;\n  flex-direction: column;\n  height: 100%;\n}\n\nheader[_ngcontent-%COMP%] {\n  padding: 0 0 2.2222222222em;\n  margin: 0 1%;\n  display: flex;\n}\n\nheader[_ngcontent-%COMP%]   .clock[_ngcontent-%COMP%] {\n  margin-left: auto;\n  color: #ffffff;\n  font-size: 2.6666666667em;\n  font-weight: 700;\n}\n\n.cards[_ngcontent-%COMP%] {\n  width: 100%;\n  height: 100%;\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  justify-content: flex-start;\n  align-content: flex-start;\n  align-items: flex-start;\n}\n\n.cards[_ngcontent-%COMP%]   planning-poker-card[_ngcontent-%COMP%] {\n  margin: 2.7777777778em 1% 1% 1%;\n}\n\nfooter[_ngcontent-%COMP%] {\n  display: flex;\n  width: 100%;\n  margin: 0 1%;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImFwcHMvcGxhbm5pbmctcG9rZXIvc3JjL2FwcC9wb2tlci9ob3N0L2JvYXJkL2JvYXJkLmNvbXBvbmVudC5zY3NzIiwiYXBwcy9wbGFubmluZy1wb2tlci9zcmMvc2hhcmVkL0BzdHlsZXMvX2NvbG9ycy5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUVBO0VBQ0UsdUJBQUE7RUFDQSxhQUFBO0VBQ0EsV0FBQTtFQUNBLHNCQUFBO0VBQ0EsWUFBQTtBQURGOztBQUlBO0VBQ0UsMkJBQUE7RUFDQSxZQUFBO0VBQ0EsYUFBQTtBQURGOztBQUdFO0VBQ0UsaUJBQUE7RUFDQSxjQ2ZhO0VEaUJYLHlCQUFBO0VBQ0EsZ0JBQUE7QUFGTjs7QUFPQTtFQUNFLFdBQUE7RUFDQSxZQUFBO0VBQ0EsYUFBQTtFQUNBLG1CQUFBO0VBQ0EsZUFBQTtFQUNBLDJCQUFBO0VBQ0EseUJBQUE7RUFDQSx1QkFBQTtBQUpGOztBQU1FO0VBQ0UsK0JBQUE7QUFKSjs7QUFPQTtFQUNFLGFBQUE7RUFDQSxXQUFBO0VBQ0EsWUFBQTtBQUpGIiwiZmlsZSI6ImFwcHMvcGxhbm5pbmctcG9rZXIvc3JjL2FwcC9wb2tlci9ob3N0L2JvYXJkL2JvYXJkLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiQGltcG9ydCBcIkBzdHlsZXMvc2hhcmVkXCI7XG5cbjpob3N0IHtcbiAgcGFkZGluZzogZW0oMzApO1xuICBkaXNwbGF5OiBmbGV4O1xuICB3aWR0aDogMTAwJTtcbiAgZmxleC1kaXJlY3Rpb246IGNvbHVtbjtcbiAgaGVpZ2h0OiAxMDAlO1xufVxuXG5oZWFkZXIge1xuICBwYWRkaW5nOiAwIDAgZW0oNDApO1xuICBtYXJnaW46IDAgMSU7XG4gIGRpc3BsYXk6IGZsZXg7XG5cbiAgLmNsb2NrIHtcbiAgICBtYXJnaW4tbGVmdDogYXV0bztcbiAgICBjb2xvcjogJGNvbG9yU2Vjb25kYXJ5O1xuICAgIGZvbnQ6IHtcbiAgICAgIHNpemU6IGVtKCRoMUZvbnRTaXplKTtcbiAgICAgIHdlaWdodDogNzAwO1xuICAgIH1cbiAgfVxufVxuXG4uY2FyZHMge1xuICB3aWR0aDogMTAwJTtcbiAgaGVpZ2h0OiAxMDAlO1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbGV4LWRpcmVjdGlvbjogcm93O1xuICBmbGV4LXdyYXA6IHdyYXA7XG4gIGp1c3RpZnktY29udGVudDogZmxleC1zdGFydDtcbiAgYWxpZ24tY29udGVudDogZmxleC1zdGFydDtcbiAgYWxpZ24taXRlbXM6IGZsZXgtc3RhcnQ7XG5cbiAgcGxhbm5pbmctcG9rZXItY2FyZCB7XG4gICAgbWFyZ2luOiBlbSg1MCkgMSUgMSUgMSU7XG4gIH1cbn1cbmZvb3RlciB7XG4gIGRpc3BsYXk6IGZsZXg7XG4gIHdpZHRoOiAxMDAlO1xuICBtYXJnaW46IDAgMSU7XG59XG4iLCIkY29sb3JCYWNrZ3JvdW5kUHJpbWFyeTogIzFiMWMyYTtcbiRjb2xvclByaW1hcnk6ICNmMGNhMjA7XG4kY29sb3JTZWNvbmRhcnk6ICNmZmZmZmY7XG4kY29sb3JJbmFjdGl2ZTogIzcxNzE3MTtcbiJdfQ== */"] });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](BoardComponent, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
         args: [{
@@ -320,7 +325,7 @@ BoardComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineCom
                 templateUrl: './board.component.html',
                 styleUrls: ['./board.component.scss']
             }]
-    }], function () { return [{ type: _host_service__WEBPACK_IMPORTED_MODULE_6__["HostService"] }, { type: _angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"] }]; }, null); })();
+    }], function () { return [{ type: _host_service__WEBPACK_IMPORTED_MODULE_7__["HostService"] }, { type: _angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"] }, { type: ngx_google_analytics__WEBPACK_IMPORTED_MODULE_4__["GoogleAnalyticsService"] }]; }, null); })();
 
 
 /***/ })
