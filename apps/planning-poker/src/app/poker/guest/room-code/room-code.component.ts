@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { JoinRoomCodeResponseDto } from '@planning-poker/api-interfaces';
 import { CodeComponent } from '@shared/form/code/code.component';
@@ -13,7 +13,7 @@ import { GuestService } from '../guest.service';
   styleUrls: ['./room-code.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RoomCodeComponent implements OnDestroy {
+export class RoomCodeComponent implements OnInit, OnDestroy {
 
   @ViewChild(CodeComponent) public codeComponent: CodeComponent;
   public loading$: Observable<boolean>;
@@ -30,6 +30,10 @@ export class RoomCodeComponent implements OnDestroy {
     this.loading$ = this.loadingSubject$.asObservable();
     this.success$ = this.successSubject$.asObservable();
     this.error$ = this.errorSubject$.asObservable();
+  }
+
+  public ngOnInit(): void {
+    this.$gaService.pageView('/room-code');
   }
 
   public ngOnDestroy(): void {

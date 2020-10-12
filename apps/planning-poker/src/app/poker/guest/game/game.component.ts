@@ -43,6 +43,8 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
+    this.$gaService.pageView('/game');
+
     const roomInfo: RoomInfoInterface = this.activatedRoute.snapshot.data.data;
     this.inReview = roomInfo.state === GameStates.REVIEW;
 

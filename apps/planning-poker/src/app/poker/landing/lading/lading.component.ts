@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { GoogleAnalyticsService } from 'ngx-google-analytics';
 
 @Component({
   selector: 'planning-poker-lading',
@@ -7,9 +8,14 @@ import { Router } from '@angular/router';
   styleUrls: ['./lading.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LadingComponent {
+export class LadingComponent implements OnInit {
 
-  constructor(private router: Router) {
+  constructor(private router: Router,
+              private $gaService: GoogleAnalyticsService) {
+  }
+
+  ngOnInit() {
+    this.$gaService.pageView('/');
   }
 
   public goToGuestPath(): void {

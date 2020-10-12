@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { GoogleAnalyticsService } from 'ngx-google-analytics';
 import { GuestService } from '../guest.service';
 
 @Component({
@@ -15,10 +16,13 @@ export class YourNameComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
               private guestService: GuestService,
-              private router: Router) {
+              private router: Router,
+              private $gaService: GoogleAnalyticsService) {
   }
 
   public ngOnInit(): void {
+    this.$gaService.pageView('/your-name');
+
     this.formGroup = this.formBuilder.group({
       name: this.formBuilder.control(null, [Validators.required])
     });
