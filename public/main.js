@@ -898,14 +898,13 @@ AppModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjector
             _poker_poker_module__WEBPACK_IMPORTED_MODULE_8__["PokerModule"],
             _angular_router__WEBPACK_IMPORTED_MODULE_3__["RouterModule"],
             ngx_socket_io__WEBPACK_IMPORTED_MODULE_6__["SocketIoModule"].forRoot(config),
-            ngx_google_analytics__WEBPACK_IMPORTED_MODULE_5__["NgxGoogleAnalyticsModule"].forRoot('UA-180323084-1'),
-            ngx_google_analytics__WEBPACK_IMPORTED_MODULE_5__["NgxGoogleAnalyticsRouterModule"]
+            ngx_google_analytics__WEBPACK_IMPORTED_MODULE_5__["NgxGoogleAnalyticsModule"].forRoot('UA-180323084-1')
         ]] });
 (function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵsetNgModuleScope"](AppModule, { declarations: [_app_component__WEBPACK_IMPORTED_MODULE_7__["AppComponent"]], imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__["BrowserModule"],
         _angular_common_http__WEBPACK_IMPORTED_MODULE_0__["HttpClientModule"],
         _shared_shared_module__WEBPACK_IMPORTED_MODULE_4__["SharedModule"],
         _poker_poker_module__WEBPACK_IMPORTED_MODULE_8__["PokerModule"],
-        _angular_router__WEBPACK_IMPORTED_MODULE_3__["RouterModule"], ngx_socket_io__WEBPACK_IMPORTED_MODULE_6__["SocketIoModule"], ngx_google_analytics__WEBPACK_IMPORTED_MODULE_5__["NgxGoogleAnalyticsModule"], ngx_google_analytics__WEBPACK_IMPORTED_MODULE_5__["NgxGoogleAnalyticsRouterModule"]] }); })();
+        _angular_router__WEBPACK_IMPORTED_MODULE_3__["RouterModule"], ngx_socket_io__WEBPACK_IMPORTED_MODULE_6__["SocketIoModule"], ngx_google_analytics__WEBPACK_IMPORTED_MODULE_5__["NgxGoogleAnalyticsModule"]] }); })();
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵsetClassMetadata"](AppModule, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"],
         args: [{
@@ -919,8 +918,7 @@ AppModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjector
                     _poker_poker_module__WEBPACK_IMPORTED_MODULE_8__["PokerModule"],
                     _angular_router__WEBPACK_IMPORTED_MODULE_3__["RouterModule"],
                     ngx_socket_io__WEBPACK_IMPORTED_MODULE_6__["SocketIoModule"].forRoot(config),
-                    ngx_google_analytics__WEBPACK_IMPORTED_MODULE_5__["NgxGoogleAnalyticsModule"].forRoot('UA-180323084-1'),
-                    ngx_google_analytics__WEBPACK_IMPORTED_MODULE_5__["NgxGoogleAnalyticsRouterModule"]
+                    ngx_google_analytics__WEBPACK_IMPORTED_MODULE_5__["NgxGoogleAnalyticsModule"].forRoot('UA-180323084-1')
                 ],
                 providers: [],
                 bootstrap: [
