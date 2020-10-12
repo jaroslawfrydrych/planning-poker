@@ -1,11 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LadingComponent } from "./lading/lading.component";
+import { LandingComponent } from './lading/landing.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: LadingComponent
+    component: LandingComponent,
+    data: {
+      animation: 'LandingComponent'
+    }
   }
 ];
 

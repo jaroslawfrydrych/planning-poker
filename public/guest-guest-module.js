@@ -40,14 +40,20 @@ const routes = [
         component: _room_code_room_code_component__WEBPACK_IMPORTED_MODULE_5__["RoomCodeComponent"],
         canActivate: [
             _room_code_room_code_guard__WEBPACK_IMPORTED_MODULE_6__["RoomCodeGuard"]
-        ]
+        ],
+        data: {
+            animation: 'RoomCodeComponent'
+        }
     },
     {
         path: 'your-name',
         component: _your_name_your_name_component__WEBPACK_IMPORTED_MODULE_7__["YourNameComponent"],
         canActivate: [
             _your_name_your_name_guard__WEBPACK_IMPORTED_MODULE_8__["YourNameGuard"]
-        ]
+        ],
+        data: {
+            animation: 'YourNameComponent'
+        }
     },
     {
         path: 'game',
@@ -57,6 +63,9 @@ const routes = [
         ],
         resolve: {
             data: _game_game_resolver__WEBPACK_IMPORTED_MODULE_4__["GameResolver"]
+        },
+        data: {
+            animation: 'GameComponent'
         }
     }
 ];
@@ -407,6 +416,7 @@ class GameComponent {
     }
     handleRoomRemove() {
         this.router.navigateByUrl('/');
+        this.guestService.roomId = null;
     }
 }
 GameComponent.ɵfac = function GameComponent_Factory(t) { return new (t || GameComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_guest_service__WEBPACK_IMPORTED_MODULE_6__["GuestService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](ngx_google_analytics__WEBPACK_IMPORTED_MODULE_3__["GoogleAnalyticsService"])); };
@@ -562,7 +572,7 @@ class GuestService {
     }
     checkCode(code) {
         return this.pokerService.checkRoomCode(code)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["delay"])(1500), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["tap"])((response) => {
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["delay"])(500), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["tap"])((response) => {
             if (response.valid) {
                 this.roomId = code;
             }

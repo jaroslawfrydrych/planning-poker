@@ -23,7 +23,7 @@ export class GuestService {
   public checkCode(code: string): Observable<JoinRoomCodeResponseDto> {
     return this.pokerService.checkRoomCode(code)
       .pipe(
-        delay(1500),
+        delay(500),
         tap((response: JoinRoomCodeResponseDto) => {
           if (response.valid) {
             this.roomId = code;

@@ -9,6 +9,9 @@ const routes: Routes = [
     component: BoardComponent,
     resolve: {
       data: BoardResolver
+    },
+    data: {
+      animation: 'BoardComponent'
     }
   }
 ];

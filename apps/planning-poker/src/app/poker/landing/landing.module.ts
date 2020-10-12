@@ -1,14 +1,12 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { LandingRoutingModule } from './landing-routing.module';
-import { LadingComponent } from './lading/lading.component';
+import { NgModule } from '@angular/core';
 import { SharedModule } from '@shared/shared.module';
-
+import { LandingComponent } from './lading/landing.component';
+import { LandingRoutingModule } from './landing-routing.module';
 
 @NgModule({
   declarations: [
-    LadingComponent
+    LandingComponent
   ],
   imports: [
     CommonModule,

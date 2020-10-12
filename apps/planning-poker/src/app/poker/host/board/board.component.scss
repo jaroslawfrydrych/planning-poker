@@ -1,7 +1,7 @@
 @import "@styles/shared";
 
 :host {
-  padding: em(30);
+  padding: em(30) em(30) em(130);
   display: flex;
   width: 100%;
   flex-direction: column;
@@ -38,7 +38,16 @@ header {
   }
 }
 footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
   display: flex;
   width: 100%;
-  margin: 0 1%;
+  padding: em(30);
+  background: $colorBackgroundPrimary;
+
+  button {
+    margin: 0 1%;
+  }
 }

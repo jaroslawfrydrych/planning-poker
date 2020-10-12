@@ -18,14 +18,20 @@ const routes: Routes = [
     component: RoomCodeComponent,
     canActivate: [
       RoomCodeGuard
-    ]
+    ],
+    data: {
+      animation: 'RoomCodeComponent'
+    }
   },
   {
     path: 'your-name',
     component: YourNameComponent,
     canActivate: [
       YourNameGuard
-    ]
+    ],
+    data: {
+      animation: 'YourNameComponent'
+    }
   },
   {
     path: 'game',
@@ -35,6 +41,9 @@ const routes: Routes = [
     ],
     resolve: {
       data: GameResolver
+    },
+    data: {
+      animation: 'GameComponent'
     }
   }
 ];

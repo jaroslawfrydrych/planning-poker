@@ -1,6 +1,7 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from "@angular/router";
 import { SharedModule } from '@shared/shared.module';
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics';
@@ -16,6 +17,7 @@ const config: SocketIoConfig = {url: '/', options: {}};
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     SharedModule,
     PokerModule,
