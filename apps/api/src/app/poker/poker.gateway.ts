@@ -29,12 +29,14 @@ export class PokerGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   public handleConnection(client: Socket): void {
+    console.log('on connect', client.id);
     this.pokerService.addClient({
       id: client.id
     });
   }
 
   public handleDisconnect(client: Socket): void {
+    console.log('on disconnect', client.id);
     const clientId: string = client.id;
     const clientData: Client = this.pokerService.getClientById(clientId);
     const roomId: string = clientData.room;
@@ -61,6 +63,11 @@ export class PokerGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage(SocketEvents.VOTE)
   public onVote(client: Socket, message: Vote): void {
     const room: Room = this.pokerService.getRoomById(message.room);
+
+    if (!room) {
+      return;
+    }
+
     const clientData: Client = room.getClientFromRoom(client.id);
     clientData.card = message.card;
     clientData.status = UserStatuses.VOTED;

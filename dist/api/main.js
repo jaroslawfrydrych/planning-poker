@@ -303,11 +303,13 @@ let PokerGateway = class PokerGateway {
         this.pokerService = pokerService;
     }
     handleConnection(client) {
+        console.log('on connect', client.id);
         this.pokerService.addClient({
             id: client.id
         });
     }
     handleDisconnect(client) {
+        console.log('on disconnect', client.id);
         const clientId = client.id;
         const clientData = this.pokerService.getClientById(clientId);
         const roomId = clientData.room;
@@ -328,6 +330,9 @@ let PokerGateway = class PokerGateway {
     }
     onVote(client, message) {
         const room = this.pokerService.getRoomById(message.room);
+        if (!room) {
+            return;
+        }
         const clientData = room.getClientFromRoom(client.id);
         clientData.card = message.card;
         clientData.status = _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["UserStatuses"].VOTED;
