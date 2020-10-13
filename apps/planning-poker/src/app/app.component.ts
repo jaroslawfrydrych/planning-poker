@@ -4,6 +4,7 @@ import { Socket } from 'ngx-socket-io';
 import { Subject } from 'rxjs';
 import { filter, pairwise, takeUntil } from 'rxjs/operators';
 import { routerAnimations } from './app.animations';
+import { AppService } from './app.service';
 
 @Component({
   selector: 'planning-poker-root',
@@ -18,12 +19,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private destroySubject$: Subject<null> = new Subject<null>();
 
-  constructor(private socket: Socket,
+  constructor(private appService: AppService,
               private router: Router) {
   }
 
   public ngOnInit(): void {
-    this.socket.connect();
+    this.appService.connectSocket();
 
     this.router.events
       .pipe(
@@ -33,8 +34,7 @@ export class AppComponent implements OnInit, OnDestroy {
       )
       .subscribe(([previous, current]: [RouterEvent, RouterEvent]) => {
         if (previous.url !== '/' && current.url === '/') {
-          this.socket.disconnect();
-          this.socket.connect();
+          this.appService.reconnectSocket();
         }
       });
   }

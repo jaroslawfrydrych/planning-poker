@@ -8,7 +8,7 @@ import {
   UsersResponseDto
 } from '@planning-poker/api-interfaces';
 import { BehaviorSubject, interval, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { delay, map, startWith, tap } from 'rxjs/operators';
 import { PokerService } from '../services/poker.service';
 
 @Injectable({
@@ -18,10 +18,20 @@ export class HostService {
 
   public gameState$: Observable<GameStates>;
   private gameStateSubject$: BehaviorSubject<GameStates>;
+  private hostRoomSubject$: BehaviorSubject<string>;
 
   constructor(private pokerService: PokerService) {
     this.gameStateSubject$ = new BehaviorSubject<GameStates>(GameStates.IN_PROGRESS);
     this.gameState$ = this.gameStateSubject$.asObservable();
+    this.hostRoomSubject$ = new BehaviorSubject<string>(null);
+  }
+
+  public get hostRoom(): string {
+    return this.hostRoomSubject$.getValue();
+  }
+
+  public set hostRoom(value: string) {
+    this.hostRoomSubject$.next(value);
   }
 
   public getUsers(): Observable<Client[]> {
@@ -40,12 +50,16 @@ export class HostService {
   public currentTime(): Observable<Date> {
     return interval(1000)
       .pipe(
+        startWith(<Date>null),
         map(() => new Date())
       );
   }
 
   public createRoom(): Observable<RoomInfoInterface> {
-    return this.pokerService.createRoom();
+    return this.pokerService.createRoom()
+      .pipe(
+        tap((roomInfo: RoomInfoInterface) => this.hostRoom = roomInfo.id)
+      );
   }
 
   public getGameState(): Observable<GameStateBroadcastDto> {

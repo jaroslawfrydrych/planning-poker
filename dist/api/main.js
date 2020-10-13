@@ -100,30 +100,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(tslib__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _nestjs_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 /* harmony import */ var _nestjs_common__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @planning-poker/api-interfaces */ "./libs/api-interfaces/src/index.ts");
-/* harmony import */ var _app_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./app.service */ "./apps/api/src/app/app.service.ts");
-var _a, _b;
-
-
 
 
 let AppController = class AppController {
-    constructor(appService) {
-        this.appService = appService;
-    }
-    getData() {
-        return this.appService.getData();
-    }
 };
-Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
-    Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Get"])('hello'),
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:type", Function),
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", []),
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:returntype", typeof (_a = typeof _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["Message"] !== "undefined" && _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["Message"]) === "function" ? _a : Object)
-], AppController.prototype, "getData", null);
 AppController = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
-    Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Controller"])(),
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [typeof (_b = typeof _app_service__WEBPACK_IMPORTED_MODULE_3__["AppService"] !== "undefined" && _app_service__WEBPACK_IMPORTED_MODULE_3__["AppService"]) === "function" ? _b : Object])
+    Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Controller"])()
 ], AppController);
 
 
@@ -145,9 +127,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _nestjs_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 /* harmony import */ var _nestjs_common__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _app_controller__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./app.controller */ "./apps/api/src/app/app.controller.ts");
-/* harmony import */ var _app_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./app.service */ "./apps/api/src/app/app.service.ts");
-/* harmony import */ var _poker_poker_module__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./poker/poker.module */ "./apps/api/src/app/poker/poker.module.ts");
-
+/* harmony import */ var _poker_poker_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./poker/poker.module */ "./apps/api/src/app/poker/poker.module.ts");
 
 
 
@@ -156,40 +136,10 @@ let AppModule = class AppModule {
 };
 AppModule = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
     Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Module"])({
-        imports: [_poker_poker_module__WEBPACK_IMPORTED_MODULE_4__["PokerModule"]],
-        controllers: [_app_controller__WEBPACK_IMPORTED_MODULE_2__["AppController"]],
-        providers: [_app_service__WEBPACK_IMPORTED_MODULE_3__["AppService"]],
+        imports: [_poker_poker_module__WEBPACK_IMPORTED_MODULE_3__["PokerModule"]],
+        controllers: [_app_controller__WEBPACK_IMPORTED_MODULE_2__["AppController"]]
     })
 ], AppModule);
-
-
-
-/***/ }),
-
-/***/ "./apps/api/src/app/app.service.ts":
-/*!*****************************************!*\
-  !*** ./apps/api/src/app/app.service.ts ***!
-  \*****************************************/
-/*! exports provided: AppService */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppService", function() { return AppService; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "tslib");
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(tslib__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _nestjs_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
-/* harmony import */ var _nestjs_common__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__);
-
-
-let AppService = class AppService {
-    getData() {
-        return { message: 'Welcome to api!' };
-    }
-};
-AppService = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
-    Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Injectable"])()
-], AppService);
 
 
 
@@ -676,39 +626,37 @@ bootstrap();
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _lib_api_interfaces__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./lib/api-interfaces */ "./libs/api-interfaces/src/lib/api-interfaces.ts");
-/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_vote_interface__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./lib/model/vote.interface */ "./libs/api-interfaces/src/lib/model/vote.interface.ts");
-/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_state_interface__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./lib/model/state.interface */ "./libs/api-interfaces/src/lib/model/state.interface.ts");
-/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_room_info_interface__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./lib/model/room-info.interface */ "./libs/api-interfaces/src/lib/model/room-info.interface.ts");
-/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_client_interface__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./lib/model/client.interface */ "./libs/api-interfaces/src/lib/model/client.interface.ts");
-/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_create_room_dto_interface__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./lib/model/create-room-dto.interface */ "./libs/api-interfaces/src/lib/model/create-room-dto.interface.ts");
-/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_game_state_dto_interface__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./lib/model/game-state-dto.interface */ "./libs/api-interfaces/src/lib/model/game-state-dto.interface.ts");
-/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_game_state_broadcast_dto_interface__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./lib/model/game-state-broadcast-dto.interface */ "./libs/api-interfaces/src/lib/model/game-state-broadcast-dto.interface.ts");
-/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_join_room_code_request_dto_interface__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./lib/model/join-room-code-request-dto.interface */ "./libs/api-interfaces/src/lib/model/join-room-code-request-dto.interface.ts");
-/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_join_room_code_response_dto_interface__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./lib/model/join-room-code-response-dto.interface */ "./libs/api-interfaces/src/lib/model/join-room-code-response-dto.interface.ts");
-/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_join_room_name_request_dto_interface__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./lib/model/join-room-name-request-dto.interface */ "./libs/api-interfaces/src/lib/model/join-room-name-request-dto.interface.ts");
-/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_join_request_dto_interface__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./lib/model/join-request-dto.interface */ "./libs/api-interfaces/src/lib/model/join-request-dto.interface.ts");
-/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_users_response_dto_interface__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./lib/model/users-response-dto.interface */ "./libs/api-interfaces/src/lib/model/users-response-dto.interface.ts");
-/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_voted_interface__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./lib/model/voted.interface */ "./libs/api-interfaces/src/lib/model/voted.interface.ts");
-/* empty/unused harmony star reexport *//* harmony import */ var _lib_enum_cards_enum__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./lib/enum/cards.enum */ "./libs/api-interfaces/src/lib/enum/cards.enum.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Cards", function() { return _lib_enum_cards_enum__WEBPACK_IMPORTED_MODULE_14__["Cards"]; });
+/* harmony import */ var _lib_model_vote_interface__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./lib/model/vote.interface */ "./libs/api-interfaces/src/lib/model/vote.interface.ts");
+/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_state_interface__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./lib/model/state.interface */ "./libs/api-interfaces/src/lib/model/state.interface.ts");
+/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_room_info_interface__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./lib/model/room-info.interface */ "./libs/api-interfaces/src/lib/model/room-info.interface.ts");
+/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_client_interface__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./lib/model/client.interface */ "./libs/api-interfaces/src/lib/model/client.interface.ts");
+/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_create_room_dto_interface__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./lib/model/create-room-dto.interface */ "./libs/api-interfaces/src/lib/model/create-room-dto.interface.ts");
+/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_game_state_dto_interface__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./lib/model/game-state-dto.interface */ "./libs/api-interfaces/src/lib/model/game-state-dto.interface.ts");
+/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_game_state_broadcast_dto_interface__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./lib/model/game-state-broadcast-dto.interface */ "./libs/api-interfaces/src/lib/model/game-state-broadcast-dto.interface.ts");
+/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_join_room_code_request_dto_interface__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./lib/model/join-room-code-request-dto.interface */ "./libs/api-interfaces/src/lib/model/join-room-code-request-dto.interface.ts");
+/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_join_room_code_response_dto_interface__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./lib/model/join-room-code-response-dto.interface */ "./libs/api-interfaces/src/lib/model/join-room-code-response-dto.interface.ts");
+/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_join_room_name_request_dto_interface__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./lib/model/join-room-name-request-dto.interface */ "./libs/api-interfaces/src/lib/model/join-room-name-request-dto.interface.ts");
+/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_join_request_dto_interface__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./lib/model/join-request-dto.interface */ "./libs/api-interfaces/src/lib/model/join-request-dto.interface.ts");
+/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_users_response_dto_interface__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./lib/model/users-response-dto.interface */ "./libs/api-interfaces/src/lib/model/users-response-dto.interface.ts");
+/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_voted_interface__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./lib/model/voted.interface */ "./libs/api-interfaces/src/lib/model/voted.interface.ts");
+/* empty/unused harmony star reexport *//* harmony import */ var _lib_enum_cards_enum__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./lib/enum/cards.enum */ "./libs/api-interfaces/src/lib/enum/cards.enum.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Cards", function() { return _lib_enum_cards_enum__WEBPACK_IMPORTED_MODULE_13__["Cards"]; });
 
-/* harmony import */ var _lib_enum_game_states_enum__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./lib/enum/game-states.enum */ "./libs/api-interfaces/src/lib/enum/game-states.enum.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "GameStates", function() { return _lib_enum_game_states_enum__WEBPACK_IMPORTED_MODULE_15__["GameStates"]; });
+/* harmony import */ var _lib_enum_game_states_enum__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./lib/enum/game-states.enum */ "./libs/api-interfaces/src/lib/enum/game-states.enum.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "GameStates", function() { return _lib_enum_game_states_enum__WEBPACK_IMPORTED_MODULE_14__["GameStates"]; });
 
-/* harmony import */ var _lib_enum_socket_events__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./lib/enum/socket.events */ "./libs/api-interfaces/src/lib/enum/socket.events.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SocketEvents", function() { return _lib_enum_socket_events__WEBPACK_IMPORTED_MODULE_16__["SocketEvents"]; });
+/* harmony import */ var _lib_enum_socket_events__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./lib/enum/socket.events */ "./libs/api-interfaces/src/lib/enum/socket.events.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SocketEvents", function() { return _lib_enum_socket_events__WEBPACK_IMPORTED_MODULE_15__["SocketEvents"]; });
 
-/* harmony import */ var _lib_enum_user_statuses_enum__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./lib/enum/user-statuses.enum */ "./libs/api-interfaces/src/lib/enum/user-statuses.enum.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserStatuses", function() { return _lib_enum_user_statuses_enum__WEBPACK_IMPORTED_MODULE_17__["UserStatuses"]; });
+/* harmony import */ var _lib_enum_user_statuses_enum__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./lib/enum/user-statuses.enum */ "./libs/api-interfaces/src/lib/enum/user-statuses.enum.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserStatuses", function() { return _lib_enum_user_statuses_enum__WEBPACK_IMPORTED_MODULE_16__["UserStatuses"]; });
 
-/* harmony import */ var _lib_enum_client_type_enum__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./lib/enum/client-type.enum */ "./libs/api-interfaces/src/lib/enum/client-type.enum.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ClientType", function() { return _lib_enum_client_type_enum__WEBPACK_IMPORTED_MODULE_18__["ClientType"]; });
+/* harmony import */ var _lib_enum_client_type_enum__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./lib/enum/client-type.enum */ "./libs/api-interfaces/src/lib/enum/client-type.enum.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ClientType", function() { return _lib_enum_client_type_enum__WEBPACK_IMPORTED_MODULE_17__["ClientType"]; });
 
 /**
  * Model
  */
-
 
 
 
@@ -729,20 +677,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-/***/ }),
-
-/***/ "./libs/api-interfaces/src/lib/api-interfaces.ts":
-/*!*******************************************************!*\
-  !*** ./libs/api-interfaces/src/lib/api-interfaces.ts ***!
-  \*******************************************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
 
 
 

@@ -1,0 +1,31 @@
+@import "@styles/shared";
+@import "@styles/animation/rotate";
+
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+p {
+  color: $colorSecondary;
+  text-transform: uppercase;
+  font: {
+    size: em(18);
+    weight: 700;
+  }
+}
+
+.loop-loader {
+  ::ng-deep {
+    .material-icons {
+      font-size: em(50);
+      animation: {
+        name: rotate;
+        duration: 1s;
+        iteration-count: infinite;
+      };
+    }
+  }
+}

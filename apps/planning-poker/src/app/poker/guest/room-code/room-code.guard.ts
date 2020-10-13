@@ -12,7 +12,7 @@ export class RoomCodeGuard implements CanActivate {
   }
 
   canActivate(): boolean {
-    const valid: boolean = !this.guestService.roomId;
+    const valid: boolean = !this.guestService.guestRoom;
 
     if (!valid) {
       this.router.navigateByUrl('/');

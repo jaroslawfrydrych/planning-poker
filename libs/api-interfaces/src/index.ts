@@ -1,7 +1,6 @@
 /**
  * Model
  */
-export * from './lib/api-interfaces';
 export * from './lib/model/vote.interface';
 export * from './lib/model/state.interface';
 export * from './lib/model/room-info.interface';

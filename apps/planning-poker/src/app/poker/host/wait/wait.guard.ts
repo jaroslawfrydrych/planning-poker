@@ -1,23 +1,23 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { GuestService } from '../guest.service';
+import { HostService } from '../host.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class GameGuard implements CanActivate {
+export class WaitGuard implements CanActivate {
 
-  constructor(private readonly guestService: GuestService,
+  constructor(private hostService: HostService,
               private router: Router) {
   }
 
   canActivate(): boolean {
-    const valid: boolean = !!this.guestService.guestRoom;
+    const hasHostRoom: boolean = !!this.hostService.hostRoom;
 
-    if (!valid) {
+    if (hasHostRoom) {
       this.router.navigateByUrl('/');
     }
 
-    return valid;
+    return !hasHostRoom;
   }
 }

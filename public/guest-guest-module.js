@@ -32,10 +32,6 @@ __webpack_require__.r(__webpack_exports__);
 
 const routes = [
     {
-        path: '',
-        redirectTo: 'room-code'
-    },
-    {
         path: 'room-code',
         component: _room_code_room_code_component__WEBPACK_IMPORTED_MODULE_5__["RoomCodeComponent"],
         canActivate: [
@@ -67,7 +63,11 @@ const routes = [
         data: {
             animation: 'GameComponent'
         }
-    }
+    },
+    {
+        path: '**',
+        redirectTo: 'room-code'
+    },
 ];
 class GuestRoutingModule {
 }
@@ -110,7 +110,7 @@ class GameGuard {
         this.router = router;
     }
     canActivate() {
-        const valid = !!this.guestService.roomId;
+        const valid = !!this.guestService.guestRoom;
         if (!valid) {
             this.router.navigateByUrl('/');
         }
@@ -246,7 +246,7 @@ class YourNameGuard {
         this.router = router;
     }
     canActivate() {
-        const valid = !!this.guestService.roomId;
+        const valid = !!this.guestService.guestRoom;
         if (!valid) {
             this.router.navigateByUrl('/');
         }
@@ -290,7 +290,7 @@ class RoomCodeGuard {
         this.router = router;
     }
     canActivate() {
-        const valid = !this.guestService.roomId;
+        const valid = !this.guestService.guestRoom;
         if (!valid) {
             this.router.navigateByUrl('/');
         }
@@ -416,7 +416,7 @@ class GameComponent {
     }
     handleRoomRemove() {
         this.router.navigateByUrl('/');
-        this.guestService.roomId = null;
+        this.guestService.guestRoom = null;
     }
 }
 GameComponent.ɵfac = function GameComponent_Factory(t) { return new (t || GameComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_guest_service__WEBPACK_IMPORTED_MODULE_6__["GuestService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](ngx_google_analytics__WEBPACK_IMPORTED_MODULE_3__["GoogleAnalyticsService"])); };

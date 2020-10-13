@@ -10,10 +10,6 @@ import { YourNameGuard } from './your-name/your-name.guard';
 
 const routes: Routes = [
   {
-    path: '',
-    redirectTo: 'room-code'
-  },
-  {
     path: 'room-code',
     component: RoomCodeComponent,
     canActivate: [
@@ -45,7 +41,11 @@ const routes: Routes = [
     data: {
       animation: 'GameComponent'
     }
-  }
+  },
+  {
+    path: '**',
+    redirectTo: 'room-code'
+  },
 ];
 
 @NgModule({

@@ -7,11 +7,14 @@ enum Direction {
 
 export const routerAnimations =
   trigger('routeAnimations', [
-    transition('LandingComponent => BoardComponent', slideTo(Direction.LEFT)),
+    transition('LandingComponent => WaitComponent', slideTo(Direction.LEFT)),
+    transition('WaitComponent => BoardComponent', slideTo(Direction.LEFT)),
     transition('LandingComponent => RoomCodeComponent', slideTo(Direction.LEFT)),
     transition('RoomCodeComponent => YourNameComponent', slideTo(Direction.LEFT)),
     transition('YourNameComponent => GameComponent', slideTo(Direction.LEFT)),
+    transition('BoardComponent => WaitComponent', slideTo(Direction.RIGHT)),
     transition('BoardComponent => LandingComponent', slideTo(Direction.RIGHT)),
+    transition('WaitComponent => LandingComponent', slideTo(Direction.RIGHT)),
     transition('RoomCodeComponent => LandingComponent', slideTo(Direction.RIGHT)),
     transition('YourNameComponent => RoomCodeComponent', slideTo(Direction.RIGHT)),
     transition('GameComponent => YourNameComponent', slideTo(Direction.RIGHT)),

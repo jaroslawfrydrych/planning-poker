@@ -9,7 +9,16 @@ export class AppService {
   constructor(private readonly socket: Socket) {
   }
 
-  public connectToSocket(){
+  public connectSocket(): void {
     this.socket.connect();
+  }
+
+  public disconnectSocket(): void {
+    this.socket.connect();
+  }
+
+  public reconnectSocket(): void {
+    this.disconnectSocket();
+    this.connectSocket();
   }
 }

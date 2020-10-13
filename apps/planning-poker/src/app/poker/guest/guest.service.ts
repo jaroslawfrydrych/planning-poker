@@ -6,7 +6,7 @@ import {
   JoinRoomCodeResponseDto,
   RoomInfoInterface
 } from '@planning-poker/api-interfaces';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { delay, tap } from 'rxjs/operators';
 import { PokerService } from '../services/poker.service';
 
@@ -15,9 +15,18 @@ import { PokerService } from '../services/poker.service';
 })
 export class GuestService {
 
-  public roomId: string;
+  private guestRoomSubject$: BehaviorSubject<string>;
 
   constructor(private pokerService: PokerService) {
+    this.guestRoomSubject$ = new BehaviorSubject<string>(null);
+  }
+
+  public get guestRoom(): string {
+    return this.guestRoomSubject$.getValue();
+  }
+
+  public set guestRoom(value: string) {
+    this.guestRoomSubject$.next(value);
   }
 
   public checkCode(code: string): Observable<JoinRoomCodeResponseDto> {
@@ -26,7 +35,7 @@ export class GuestService {
         delay(500),
         tap((response: JoinRoomCodeResponseDto) => {
           if (response.valid) {
-            this.roomId = code;
+            this.guestRoom = code;
           }
         })
       );
@@ -35,7 +44,7 @@ export class GuestService {
   public sendCard(card: Cards): void {
     this.pokerService.sendVote({
       card,
-      room: this.roomId
+      room: this.guestRoom
     });
   }
 
@@ -44,11 +53,11 @@ export class GuestService {
   }
 
   public joinRoom(name: string): void {
-    this.pokerService.joinRoom(this.roomId, ClientType.VOTER, name);
+    this.pokerService.joinRoom(this.guestRoom, ClientType.VOTER, name);
   }
 
   public getRoomInfo(): Observable<RoomInfoInterface> {
-    return this.pokerService.getRoomInfo(this.roomId);
+    return this.pokerService.getRoomInfo(this.guestRoom);
   }
 
   public onRoomRemove(): Observable<null> {

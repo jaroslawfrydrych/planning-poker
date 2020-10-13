@@ -90,6 +90,6 @@ export class GameComponent implements OnInit, OnDestroy {
 
   private handleRoomRemove(): void {
     this.router.navigateByUrl('/');
-    this.guestService.roomId = null;
+    this.guestService.guestRoom = null;
   }
 }
