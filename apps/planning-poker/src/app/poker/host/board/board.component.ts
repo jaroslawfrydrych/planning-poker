@@ -37,6 +37,8 @@ export class BoardComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
+    this.$gaService.pageView('/host/board');
+
     const resolverData: RoomInfoInterface = this.activatedRoute.snapshot.data.data;
     this.roomId = resolverData.id;
     this.hostService.joinRoom(this.roomId);
