@@ -30,6 +30,12 @@
     color: $colorPrimary;
   }
 
+  &.planning-poker-button-color-accent {
+    background: transparent;
+    color: $colorBackgroundPrimary;
+    border-color: $colorBackgroundPrimary;
+  }
+
   &.planning-poker-button-color-transparent {
     background: transparent;
     color: $colorPrimary;

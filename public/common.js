@@ -35,6 +35,12 @@ class HostService {
     set hostRoom(value) {
         this.hostRoomSubject$.next(value);
     }
+    get gameState() {
+        return this.gameStateSubject$.getValue();
+    }
+    set gameState(value) {
+        this.gameStateSubject$.next(value);
+    }
     getUsers() {
         return this.pokerService.getUsers()
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])((response) => {
@@ -49,8 +55,7 @@ class HostService {
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["startWith"])(null), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(() => new Date()));
     }
     createRoom() {
-        return this.pokerService.createRoom()
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])((roomInfo) => this.hostRoom = roomInfo.id));
+        return this.pokerService.createRoom();
     }
     getGameState() {
         return this.pokerService.receiveGameState();

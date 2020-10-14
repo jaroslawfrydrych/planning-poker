@@ -13,7 +13,7 @@
   </ng-container>
 </div>
 
-<footer>
+<footer class="board-footer">
   <button planningPokerButton
           class="toggle-game-state"
           [buttonColor]="buttonColors.SECONDARY"
@@ -23,3 +23,22 @@
     <ng-container *ngSwitchDefault>Finish Voting</ng-container>
   </button>
 </footer>
+
+<!--<div class="modal-container">
+  <div class="modal-overlay"></div>
+  <div class="modal-content">
+    <p>
+      Are you sure to end this session?
+    </p>
+    <footer class="modal-footer">
+      <button planningPokerButton
+              [buttonColor]="buttonColors.ACCENT">
+        YES
+      </button>
+      <button planningPokerButton
+              [buttonColor]="buttonColors.ACCENT">
+        NO
+      </button>
+    </footer>
+  </div>
+</div>-->

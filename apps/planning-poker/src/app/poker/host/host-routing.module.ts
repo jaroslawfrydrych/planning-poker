@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { BoardComponent } from './board/board.component';
-import { BoardResolver } from './board/board.resolver';
+import { BoardGuard } from './board/board.guard';
 import { WaitComponent } from './wait/wait.component';
 import { WaitGuard } from './wait/wait.guard';
 
@@ -19,9 +19,9 @@ const routes: Routes = [
   {
     path: 'board',
     component: BoardComponent,
-    resolve: {
-      data: BoardResolver
-    },
+    canActivate: [
+      // BoardGuard
+    ],
     data: {
       animation: 'BoardComponent'
     }

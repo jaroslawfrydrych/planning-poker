@@ -34,6 +34,14 @@ export class HostService {
     this.hostRoomSubject$.next(value);
   }
 
+  public get gameState(): GameStates {
+    return this.gameStateSubject$.getValue();
+  }
+
+  public set gameState(value: GameStates) {
+    this.gameStateSubject$.next(value);
+  }
+
   public getUsers(): Observable<Client[]> {
     return this.pokerService.getUsers()
       .pipe(
@@ -56,10 +64,7 @@ export class HostService {
   }
 
   public createRoom(): Observable<RoomInfoInterface> {
-    return this.pokerService.createRoom()
-      .pipe(
-        tap((roomInfo: RoomInfoInterface) => this.hostRoom = roomInfo.id)
-      );
+    return this.pokerService.createRoom();
   }
 
   public getGameState(): Observable<GameStateBroadcastDto> {

@@ -1936,6 +1936,7 @@ var ButtonColor;
 (function (ButtonColor) {
     ButtonColor["PRIMARY"] = "primary";
     ButtonColor["SECONDARY"] = "secondary";
+    ButtonColor["ACCENT"] = "accent";
     ButtonColor["TRANSPARENT"] = "transparent";
 })(ButtonColor || (ButtonColor = {}));
 
