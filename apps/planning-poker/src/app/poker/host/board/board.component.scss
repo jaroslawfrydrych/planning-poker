@@ -24,7 +24,6 @@ header {
 }
 
 .cards {
-  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: row;
@@ -32,6 +31,12 @@ header {
   justify-content: flex-start;
   align-content: flex-start;
   align-items: flex-start;
+  overflow: auto;
+  padding: 0 em(30);
+  margin: {
+    left: negative(em(30));
+    right: negative(em(30));
+  };
 
   planning-poker-card {
     margin: em(50) 1% 1% 1%;
