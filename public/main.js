@@ -964,7 +964,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const config = { url: '/', options: {} };
+const config = {
+    url: '/', options: {
+        autoConnect: true,
+        reconnect: true,
+        reconnection: true,
+        reconnectionDelay: 500,
+        reconnectionAttempts: 10,
+        pingTimeout: 10000,
+        pingInterval: 30000
+    }
+};
 class AppModule {
 }
 AppModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineNgModule"]({ type: AppModule, bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_8__["AppComponent"]] });

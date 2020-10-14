@@ -29,7 +29,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   public buttonColors = ButtonColor;
   public reviewCardsSubject$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public currentTime$: Observable<Date>;
-  private onDestroySubject: Subject<null> = new Subject<null>();
+  private destroySubject$: Subject<null> = new Subject<null>();
 
   constructor(private hostService: HostService,
               private activatedRoute: ActivatedRoute,
@@ -59,7 +59,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.onDestroySubject.next(null);
+    this.destroySubject$.next(null);
   }
 
   public toggleGameState(): void {

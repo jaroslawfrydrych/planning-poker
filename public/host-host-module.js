@@ -328,7 +328,7 @@ class BoardComponent {
         this.gameStates = _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["GameStates"];
         this.buttonColors = _shared_button_button_color_enum__WEBPACK_IMPORTED_MODULE_3__["ButtonColor"];
         this.reviewCardsSubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_5__["BehaviorSubject"](false);
-        this.onDestroySubject = new rxjs__WEBPACK_IMPORTED_MODULE_5__["Subject"]();
+        this.destroySubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_5__["Subject"]();
     }
     ngOnInit() {
         this.$gaService.pageView('/host/board');
@@ -344,7 +344,7 @@ class BoardComponent {
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["map"])((data) => data.state), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["tap"])((gameState) => this.handleGameStateChange(gameState)));
     }
     ngOnDestroy() {
-        this.onDestroySubject.next(null);
+        this.destroySubject$.next(null);
     }
     toggleGameState() {
         this.hostService.toggleGameState(this.roomId);

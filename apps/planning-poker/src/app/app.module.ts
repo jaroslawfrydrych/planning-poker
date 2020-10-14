@@ -9,7 +9,17 @@ import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { AppComponent } from './app.component';
 import { PokerModule } from "./poker/poker.module";
 
-const config: SocketIoConfig = {url: '/', options: {}};
+const config: SocketIoConfig = {
+  url: '/', options: {
+    autoConnect: true,
+    reconnect: true,
+    reconnection: true,
+    reconnectionDelay: 500,
+    reconnectionAttempts: 10,
+    pingTimeout: 10000,
+    pingInterval: 30000
+  }
+};
 
 @NgModule({
   declarations: [

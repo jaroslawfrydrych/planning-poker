@@ -269,6 +269,7 @@ let PokerGateway = class PokerGateway {
         }
         const clientInRoom = room.getClientFromRoom(clientId);
         if (clientInRoom.type === _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["ClientType"].HOST) {
+            console.log('remove room', clientData.room);
             this.pokerService.removeRoom(clientData.room);
             this.server.to(roomId).emit(_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["SocketEvents"].ROOM_REMOVED);
         }
@@ -431,6 +432,9 @@ let PokerService = class PokerService {
     }
     toggleRoomGameState(roomId) {
         const room = this.rooms.get(roomId);
+        if (!room) {
+            return;
+        }
         room.state = this.toggleGameState(room.state);
         this.rooms.set(roomId, room);
         return room.state;

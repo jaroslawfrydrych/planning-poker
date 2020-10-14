@@ -49,6 +49,7 @@ export class PokerGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const clientInRoom: Client = room.getClientFromRoom(clientId);
 
     if (clientInRoom.type === ClientType.HOST) {
+      console.log('remove room', clientData.room);
       this.pokerService.removeRoom(clientData.room);
       this.server.to(roomId).emit(SocketEvents.ROOM_REMOVED);
     } else if (room) {

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Client, ClientType, GameStates, UserStatuses } from '@planning-poker/api-interfaces';
+import { Client, ClientType, GameStates, SocketEvents, UserStatuses } from '@planning-poker/api-interfaces';
 import { Room } from './room';
 
 @Injectable()
@@ -22,6 +22,11 @@ export class PokerService {
 
   public toggleRoomGameState(roomId: string): GameStates {
     const room: Room = this.rooms.get(roomId);
+
+    if (!room) {
+      return;
+    }
+
     room.state = this.toggleGameState(room.state);
     this.rooms.set(roomId, room);
     return room.state;
@@ -78,7 +83,7 @@ export class PokerService {
       client.card = null;
       client.status = UserStatuses.WAITING;
       room.updateClientInRoom(client);
-    })
+    });
   }
 
   public getRoomById(id: string): Room {
