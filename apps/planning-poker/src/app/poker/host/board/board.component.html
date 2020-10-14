@@ -24,7 +24,8 @@
   </button>
 </footer>
 
-<!--<div class="modal-container">
+<div class="modal-container"
+     *ngIf="leaveModalVisibility$ | async">
   <div class="modal-overlay"></div>
   <div class="modal-content">
     <p>
@@ -32,13 +33,15 @@
     </p>
     <footer class="modal-footer">
       <button planningPokerButton
-              [buttonColor]="buttonColors.ACCENT">
+              [buttonColor]="buttonColors.ACCENT"
+              (click)="leaveModalAction(true)">
         YES
       </button>
       <button planningPokerButton
-              [buttonColor]="buttonColors.ACCENT">
+              [buttonColor]="buttonColors.ACCENT"
+              (click)="leaveModalAction(false)">
         NO
       </button>
     </footer>
   </div>
-</div>-->
+</div>

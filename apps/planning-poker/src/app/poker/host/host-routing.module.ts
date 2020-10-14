@@ -20,7 +20,10 @@ const routes: Routes = [
     path: 'board',
     component: BoardComponent,
     canActivate: [
-      // BoardGuard
+      BoardGuard
+    ],
+    canDeactivate: [
+      BoardGuard
     ],
     data: {
       animation: 'BoardComponent'

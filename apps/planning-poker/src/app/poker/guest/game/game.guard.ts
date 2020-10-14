@@ -11,7 +11,7 @@ export class GameGuard implements CanActivate {
               private router: Router) {
   }
 
-  canActivate(): boolean {
+  public canActivate(): boolean {
     const valid: boolean = !!this.guestService.guestRoom;
 
     if (!valid) {

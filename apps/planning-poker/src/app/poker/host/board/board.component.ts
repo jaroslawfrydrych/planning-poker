@@ -1,18 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import {
-  Client,
-  ClientType,
-  GameStateBroadcastDto,
-  GameStates,
-  RoomInfoInterface,
-  UserStatuses
-} from '@planning-poker/api-interfaces';
+import { Client, ClientType, GameStateBroadcastDto, GameStates, UserStatuses } from '@planning-poker/api-interfaces';
 import { ButtonColor } from '@shared/button/button-color.enum';
 import { GoogleAnalyticsService } from 'ngx-google-analytics';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { HostService } from '../host.service';
+import { BoardGuard } from './board.guard';
 
 @Component({
   selector: 'planning-poker-board',
@@ -29,11 +23,17 @@ export class BoardComponent implements OnInit, OnDestroy {
   public buttonColors = ButtonColor;
   public reviewCardsSubject$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public currentTime$: Observable<Date>;
-  private destroySubject$: Subject<null> = new Subject<null>();
+  public leaveModalVisibility$: Observable<boolean>;
+  private destroySubject$: Subject<null>;
+  private leaveModalVisibilitySubject$: BehaviorSubject<boolean>;
 
   constructor(private hostService: HostService,
               private activatedRoute: ActivatedRoute,
-              private $gaService: GoogleAnalyticsService) {
+              private $gaService: GoogleAnalyticsService,
+              private boardGuard: BoardGuard) {
+    this.destroySubject$ = new Subject<null>();
+    this.leaveModalVisibilitySubject$ = new BehaviorSubject<boolean>(false);
+    this.leaveModalVisibility$ = this.leaveModalVisibilitySubject$.asObservable();
   }
 
   public ngOnInit(): void {
@@ -61,9 +61,35 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.destroySubject$.next(null);
   }
 
+  public get leaveModalVisibility(): boolean {
+    return this.leaveModalVisibilitySubject$.getValue();
+  }
+
+  public set leaveModalVisibility(value: boolean) {
+    this.leaveModalVisibilitySubject$.next(value);
+  }
+
   public toggleGameState(): void {
     this.hostService.toggleGameState(this.roomId);
     this.$gaService.event('toggle_game_state', 'host', 'Toggle game state');
+  }
+
+  public showLeaveModal(): void {
+    this.leaveModalVisibility = true;
+  }
+
+  public closeLeaveModal(): void {
+    this.leaveModalVisibility = false;
+  }
+
+  public leaveModalAction(result: boolean): void {
+    if (result) {
+      this.boardGuard.discard();
+    } else {
+      this.boardGuard.keep();
+    }
+
+    this.closeLeaveModal();
   }
 
   private handleGameStateChange(gameState: GameStates): void {
