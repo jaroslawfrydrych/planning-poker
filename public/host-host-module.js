@@ -359,12 +359,12 @@ class BoardComponent {
         this.currentTime$ = this.hostService.currentTime();
         this.gameState$ = this.hostService.getGameState()
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["map"])((data) => data.state), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["tap"])((gameState) => this.handleGameStateChange(gameState)));
-        window.onbeforeunload = () => {
-            return 'Your room will be removed. Are you sure?';
-        };
     }
     ngOnDestroy() {
         this.destroySubject$.next(null);
+    }
+    beforeUnloadHandler(event) {
+        return false;
     }
     get leaveModalVisibility() {
         return this.leaveModalVisibilitySubject$.getValue();
@@ -377,7 +377,6 @@ class BoardComponent {
         this.$gaService.event('toggle_game_state', 'host', 'Toggle game state');
     }
     getRoomLink() {
-        console.log(this.roomLink);
         this.roomLinkInput.nativeElement.select();
         this.roomLinkInput.nativeElement.setSelectionRange(0, 99999);
         document.execCommand("copy");
@@ -415,6 +414,8 @@ BoardComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineCom
     } if (rf & 2) {
         var _t;
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵloadQuery"]()) && (ctx.roomLinkInput = _t.first);
+    } }, hostBindings: function BoardComponent_HostBindings(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("beforeunload", function BoardComponent_beforeunload_HostBindingHandler() { return ctx.beforeUnloadHandler(); }, false, _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵresolveWindow"]);
     } }, decls: 29, vars: 25, consts: [[1, "cards"], [4, "ngFor", "ngForOf"], [1, "sidebar"], [1, "sidebar-header"], [1, "room-link-input", 3, "value"], ["roomLinkInput", ""], [1, "clock"], [1, "sidebar-footer"], ["planningPokerButton", "", 1, "toggle-game-state", 3, "buttonColor", "ngSwitch", "click"], [4, "ngSwitchCase"], [4, "ngSwitchDefault"], ["planningPokerButton", "", 3, "buttonColor", "ngSwitch", "click"], ["planningPokerButton", "", 3, "buttonColor", "click"], ["class", "modal-container", 4, "ngIf"], [3, "boardCard", "review", "card", "label", "playerReady"], [1, "modal-container"], [1, "modal-overlay"], [1, "modal-content"], [1, "modal-footer"]], template: function BoardComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](1, BoardComponent_ng_container_1_Template, 3, 7, "ng-container", 1);
@@ -490,6 +491,9 @@ BoardComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineCom
     }], function () { return [{ type: _host_service__WEBPACK_IMPORTED_MODULE_7__["HostService"] }, { type: _angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"] }, { type: ngx_google_analytics__WEBPACK_IMPORTED_MODULE_4__["GoogleAnalyticsService"] }, { type: _board_guard__WEBPACK_IMPORTED_MODULE_8__["BoardGuard"] }, { type: _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"] }]; }, { roomLinkInput: [{
             type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"],
             args: ['roomLinkInput']
+        }], beforeUnloadHandler: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostListener"],
+            args: ['window:beforeunload']
         }] }); })();
 
 
