@@ -1,7 +1,8 @@
-<header>
+<!--<header>
   <h1>ROOM ID: {{roomId}}</h1>
   <span class="clock">{{currentTime$ | async | date:'HH:mm'}}</span>
-</header>
+</header>-->
+
 
 <div class="cards">
   <ng-container *ngFor="let user of users$ | async">
@@ -13,16 +14,21 @@
   </ng-container>
 </div>
 
-<footer class="board-footer">
-  <button planningPokerButton
-          class="toggle-game-state"
-          [buttonColor]="buttonColors.SECONDARY"
-          [ngSwitch]="gameState$ | async"
-          (click)="toggleGameState()">
-    <ng-container *ngSwitchCase="gameStates.REVIEW">New voting</ng-container>
-    <ng-container *ngSwitchDefault>Finish Voting</ng-container>
-  </button>
-</footer>
+<div class="sidebar">
+  <header class="sidebar-header">
+    <h1>ROOM ID: {{roomId}}</h1>
+  </header>
+  <footer class="sidebar-footer">
+    <button planningPokerButton
+            class="toggle-game-state"
+            [buttonColor]="buttonColors.SECONDARY"
+            [ngSwitch]="gameState$ | async"
+            (click)="toggleGameState()">
+      <ng-container *ngSwitchCase="gameStates.REVIEW">New voting</ng-container>
+      <ng-container *ngSwitchDefault>Finish Voting</ng-container>
+    </button>
+  </footer>
+</div>
 
 <div class="modal-container"
      *ngIf="leaveModalVisibility$ | async">

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { JoinRoomCodeResponseDto } from '@planning-poker/api-interfaces';
 import { CodeComponent } from '@shared/form/code/code.component';
 import { GoogleAnalyticsService } from 'ngx-google-analytics';
@@ -19,6 +19,7 @@ export class RoomCodeComponent implements OnInit, OnDestroy {
   public loading$: Observable<boolean>;
   public success$: Observable<boolean>;
   public error$: Observable<boolean>;
+  public queryRoomCode: string = null;
   private loadingSubject$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private successSubject$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private errorSubject$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -26,7 +27,8 @@ export class RoomCodeComponent implements OnInit, OnDestroy {
 
   constructor(private router: Router,
               private guestService: GuestService,
-              private $gaService: GoogleAnalyticsService) {
+              private $gaService: GoogleAnalyticsService,
+              private activatedRoute: ActivatedRoute) {
     this.loading$ = this.loadingSubject$.asObservable();
     this.success$ = this.successSubject$.asObservable();
     this.error$ = this.errorSubject$.asObservable();
@@ -34,6 +36,12 @@ export class RoomCodeComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.$gaService.pageView('/room-code');
+
+    const queryPrams: any = this.activatedRoute.snapshot.queryParams;
+
+    if (queryPrams.code) {
+      this.queryRoomCode = queryPrams.code;
+    }
   }
 
   public ngOnDestroy(): void {

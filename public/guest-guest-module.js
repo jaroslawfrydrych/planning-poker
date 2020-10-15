@@ -582,10 +582,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class RoomCodeComponent {
-    constructor(router, guestService, $gaService) {
+    constructor(router, guestService, $gaService, activatedRoute) {
         this.router = router;
         this.guestService = guestService;
         this.$gaService = $gaService;
+        this.activatedRoute = activatedRoute;
+        this.queryRoomCode = null;
         this.loadingSubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_4__["BehaviorSubject"](false);
         this.successSubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_4__["BehaviorSubject"](false);
         this.errorSubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_4__["BehaviorSubject"](false);
@@ -596,6 +598,10 @@ class RoomCodeComponent {
     }
     ngOnInit() {
         this.$gaService.pageView('/room-code');
+        const queryPrams = this.activatedRoute.snapshot.queryParams;
+        if (queryPrams.code) {
+            this.queryRoomCode = queryPrams.code;
+        }
     }
     ngOnDestroy() {
         this.destroySubject$.next(null);
@@ -627,13 +633,13 @@ class RoomCodeComponent {
         });
     }
 }
-RoomCodeComponent.ɵfac = function RoomCodeComponent_Factory(t) { return new (t || RoomCodeComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_guest_service__WEBPACK_IMPORTED_MODULE_6__["GuestService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](ngx_google_analytics__WEBPACK_IMPORTED_MODULE_3__["GoogleAnalyticsService"])); };
+RoomCodeComponent.ɵfac = function RoomCodeComponent_Factory(t) { return new (t || RoomCodeComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_guest_service__WEBPACK_IMPORTED_MODULE_6__["GuestService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](ngx_google_analytics__WEBPACK_IMPORTED_MODULE_3__["GoogleAnalyticsService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"])); };
 RoomCodeComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: RoomCodeComponent, selectors: [["planning-poker-room-code"]], viewQuery: function RoomCodeComponent_Query(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵviewQuery"](_shared_form_code_code_component__WEBPACK_IMPORTED_MODULE_2__["CodeComponent"], true);
     } if (rf & 2) {
         var _t;
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵloadQuery"]()) && (ctx.codeComponent = _t.first);
-    } }, decls: 6, vars: 4, consts: [[3, "codeLength", "isLoading$", "isSuccess$", "isError$", "codeSubmit"]], template: function RoomCodeComponent_Template(rf, ctx) { if (rf & 1) {
+    } }, decls: 6, vars: 5, consts: [[3, "codeLength", "value", "isLoading$", "isSuccess$", "isError$", "codeSubmit"]], template: function RoomCodeComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "planning-poker-layout");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "planning-poker-header");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "h1");
@@ -648,7 +654,7 @@ RoomCodeComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefine
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     } if (rf & 2) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](5);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("codeLength", 5)("isLoading$", ctx.loading$)("isSuccess$", ctx.success$)("isError$", ctx.error$);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("codeLength", 5)("value", ctx.queryRoomCode)("isLoading$", ctx.loading$)("isSuccess$", ctx.success$)("isError$", ctx.error$);
     } }, directives: [_shared_layout_layout_layout_component__WEBPACK_IMPORTED_MODULE_7__["LayoutComponent"], _shared_layout_header_header_component__WEBPACK_IMPORTED_MODULE_8__["HeaderComponent"], _shared_layout_content_content_component__WEBPACK_IMPORTED_MODULE_9__["ContentComponent"], _shared_form_code_code_component__WEBPACK_IMPORTED_MODULE_2__["CodeComponent"]], styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJhcHBzL3BsYW5uaW5nLXBva2VyL3NyYy9hcHAvcG9rZXIvZ3Vlc3Qvcm9vbS1jb2RlL3Jvb20tY29kZS5jb21wb25lbnQuc2NzcyJ9 */"], changeDetection: 0 });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](RoomCodeComponent, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
@@ -658,7 +664,7 @@ RoomCodeComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefine
                 styleUrls: ['./room-code.component.scss'],
                 changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectionStrategy"].OnPush
             }]
-    }], function () { return [{ type: _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"] }, { type: _guest_service__WEBPACK_IMPORTED_MODULE_6__["GuestService"] }, { type: ngx_google_analytics__WEBPACK_IMPORTED_MODULE_3__["GoogleAnalyticsService"] }]; }, { codeComponent: [{
+    }], function () { return [{ type: _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"] }, { type: _guest_service__WEBPACK_IMPORTED_MODULE_6__["GuestService"] }, { type: ngx_google_analytics__WEBPACK_IMPORTED_MODULE_3__["GoogleAnalyticsService"] }, { type: _angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"] }]; }, { codeComponent: [{
             type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"],
             args: [_shared_form_code_code_component__WEBPACK_IMPORTED_MODULE_2__["CodeComponent"]]
         }] }); })();

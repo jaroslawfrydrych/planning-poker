@@ -1,11 +1,15 @@
 @import "@styles/shared";
 
 :host {
-  padding: em(30) em(30) em(102);
-  display: flex;
+  padding: em(30) em(30);
   width: 100%;
-  flex-direction: column;
   height: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-content: stretch;
+  align-items: flex-start;
 }
 
 header {
@@ -24,6 +28,9 @@ header {
 }
 
 .cards {
+  order: 0;
+  flex: 1 1 auto;
+  align-self: auto;
   height: 100%;
   display: flex;
   flex-direction: row;
@@ -42,6 +49,33 @@ header {
     margin: em(50) 1% 1% 1%;
   }
 }
+
+.sidebar {
+  order: 0;
+  flex: 0 1 auto;
+  align-self: auto;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-content: stretch;
+  align-items: flex-start;
+  height: 100%;
+  padding-top: em(30);
+
+  .sidebar-header {
+    order: 0;
+    flex: 1 1 auto;
+    align-self: auto;
+  }
+
+  .sidebar-footer {
+    order: 0;
+    flex: 0 1 auto;
+    align-self: flex-start;
+  }
+}
+
 .board-footer {
   position: absolute;
   right: 0;

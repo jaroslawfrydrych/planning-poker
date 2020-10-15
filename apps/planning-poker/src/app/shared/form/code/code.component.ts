@@ -29,6 +29,7 @@ export class CodeComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() public isSuccess$: Observable<boolean>;
   @Input() public isError$: Observable<boolean>;
   @Input() public codeLength = 6;
+  @Input() public value: string;
   @Output() public codeSubmit: EventEmitter<string> = new EventEmitter<string>();
   @ViewChildren('inputElement') public inputElements: QueryList<ElementRef>;
   @ViewChild('submitButton', {read: ViewContainerRef}) public submitButton: ViewContainerRef;
@@ -63,6 +64,14 @@ export class CodeComponent implements OnInit, AfterViewInit, OnDestroy {
         takeUntil(this.destroySubject$)
       )
       .subscribe((value: boolean) => this.handleLoading(value));
+
+    if(this.value) {
+      const valueIntoArray: string[] = this.value.split('');
+      valueIntoArray.forEach((value: string, index: number) => {
+        this.codeFormArray.controls[index].setValue(value);
+        this.submit();
+      })
+    }
   }
 
   public ngAfterViewInit(): void {

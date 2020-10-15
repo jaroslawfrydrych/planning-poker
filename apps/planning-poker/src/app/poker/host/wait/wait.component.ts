@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { RoomInfoInterface } from '@planning-poker/api-interfaces';
 import { GoogleAnalyticsService } from 'ngx-google-analytics';
-import { of, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { delay, takeUntil } from 'rxjs/operators';
 import { HostService } from '../host.service';
 

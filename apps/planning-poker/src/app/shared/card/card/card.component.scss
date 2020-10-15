@@ -14,8 +14,8 @@ $boardCardSizeMultiply: 1.22;
   perspective: 800px;
 
   &.board-card-host {
-    width: $boardCardSizeMultiply * 10%;
-    padding-bottom: $boardCardSizeMultiply * 12.6347305389221557%;
+    width: $cardSizeMultiply * 10%;
+    padding-bottom: $cardSizeMultiply * 12.6347305389221557%;
   }
 }
 
