@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Client, ClientType, GameStateBroadcastDto, GameStates, UserStatuses } from '@planning-poker/api-interfaces';
 import { ButtonColor } from '@shared/button/button-color.enum';
@@ -63,14 +63,16 @@ export class BoardComponent implements OnInit, OnDestroy {
         map((data: GameStateBroadcastDto) => data.state),
         tap((gameState: GameStates) => this.handleGameStateChange(gameState))
       );
-
-    window.onbeforeunload = () => {
-      return 'Your room will be removed. Are you sure?';
-    };
   }
 
   public ngOnDestroy(): void {
     this.destroySubject$.next(null);
+  }
+
+  @HostListener('window:beforeunload')
+  beforeUnloadHandler(event) {
+    return false;
+
   }
 
   public get leaveModalVisibility(): boolean {
@@ -87,7 +89,6 @@ export class BoardComponent implements OnInit, OnDestroy {
   }
 
   public getRoomLink(): void {
-    console.log(this.roomLink);
     this.roomLinkInput.nativeElement.select();
     this.roomLinkInput.nativeElement.setSelectionRange(0, 99999);
     document.execCommand("copy");
