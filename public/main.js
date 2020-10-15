@@ -1946,6 +1946,7 @@ var ButtonColor;
     ButtonColor["PRIMARY"] = "primary";
     ButtonColor["SECONDARY"] = "secondary";
     ButtonColor["ACCENT"] = "accent";
+    ButtonColor["INACTIVE"] = "inactive";
     ButtonColor["TRANSPARENT"] = "transparent";
 })(ButtonColor || (ButtonColor = {}));
 

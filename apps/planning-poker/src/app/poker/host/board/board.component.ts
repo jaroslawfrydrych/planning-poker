@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Client, ClientType, GameStateBroadcastDto, GameStates, UserStatuses } from '@planning-poker/api-interfaces';
 import { ButtonColor } from '@shared/button/button-color.enum';
 import { GoogleAnalyticsService } from 'ngx-google-analytics';
@@ -15,6 +15,7 @@ import { BoardGuard } from './board.guard';
 })
 export class BoardComponent implements OnInit, OnDestroy {
 
+  @ViewChild('roomLinkInput') public roomLinkInput: ElementRef;
   public roomId: string;
   public users$: Observable<Client[]>;
   public userStatues = UserStatuses;
@@ -24,22 +25,29 @@ export class BoardComponent implements OnInit, OnDestroy {
   public reviewCardsSubject$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public currentTime$: Observable<Date>;
   public leaveModalVisibility$: Observable<boolean>;
+  public roomLink: string;
+  public linkCopied$: Observable<boolean>;
   private destroySubject$: Subject<null>;
   private leaveModalVisibilitySubject$: BehaviorSubject<boolean>;
+  private linkCopiedSubject$: BehaviorSubject<boolean>;
 
   constructor(private hostService: HostService,
               private activatedRoute: ActivatedRoute,
               private $gaService: GoogleAnalyticsService,
-              private boardGuard: BoardGuard) {
+              private boardGuard: BoardGuard,
+              private router: Router) {
     this.destroySubject$ = new Subject<null>();
     this.leaveModalVisibilitySubject$ = new BehaviorSubject<boolean>(false);
     this.leaveModalVisibility$ = this.leaveModalVisibilitySubject$.asObservable();
+    this.linkCopiedSubject$ = new BehaviorSubject<boolean>(false);
+    this.linkCopied$ = this.linkCopiedSubject$.asObservable();
   }
 
   public ngOnInit(): void {
     this.$gaService.pageView('/host/board');
 
     this.roomId = this.hostService.hostRoom;
+    this.roomLink = window.location.origin + '/guest/room-code?code=' + this.roomId;
     this.hostService.joinRoom(this.roomId);
 
     this.users$ = this.hostService.getUsers()
@@ -55,6 +63,10 @@ export class BoardComponent implements OnInit, OnDestroy {
         map((data: GameStateBroadcastDto) => data.state),
         tap((gameState: GameStates) => this.handleGameStateChange(gameState))
       );
+
+    window.onbeforeunload = () => {
+      return 'Your room will be removed. Are you sure?';
+    };
   }
 
   public ngOnDestroy(): void {
@@ -72,6 +84,23 @@ export class BoardComponent implements OnInit, OnDestroy {
   public toggleGameState(): void {
     this.hostService.toggleGameState(this.roomId);
     this.$gaService.event('toggle_game_state', 'host', 'Toggle game state');
+  }
+
+  public getRoomLink(): void {
+    console.log(this.roomLink);
+    this.roomLinkInput.nativeElement.select();
+    this.roomLinkInput.nativeElement.setSelectionRange(0, 99999);
+    document.execCommand("copy");
+    this.roomLinkInput.nativeElement.blur();
+    this.linkCopiedSubject$.next(true);
+
+    setTimeout(() => {
+      this.linkCopiedSubject$.next(false);
+    }, 2000);
+  }
+
+  public closeRoom() {
+    this.router.navigateByUrl('/');
   }
 
   public showLeaveModal(): void {

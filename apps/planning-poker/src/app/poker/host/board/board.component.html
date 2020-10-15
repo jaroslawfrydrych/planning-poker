@@ -16,16 +16,37 @@
 
 <div class="sidebar">
   <header class="sidebar-header">
-    <h1>ROOM ID: {{roomId}}</h1>
+    <h1>ROOM ID:</h1>
+    <h2>{{roomId}}</h2>
+
+    <input #roomLinkInput
+           class="room-link-input"
+           [value]="roomLink">
+
+    <div class="clock">{{currentTime$ | async | date:'HH:mm'}}</div>
   </header>
   <footer class="sidebar-footer">
     <button planningPokerButton
             class="toggle-game-state"
-            [buttonColor]="buttonColors.SECONDARY"
+            [buttonColor]="buttonColors.PRIMARY"
             [ngSwitch]="gameState$ | async"
             (click)="toggleGameState()">
       <ng-container *ngSwitchCase="gameStates.REVIEW">New voting</ng-container>
       <ng-container *ngSwitchDefault>Finish Voting</ng-container>
+    </button>
+
+    <button planningPokerButton
+            [buttonColor]="buttonColors.SECONDARY"
+            (click)="getRoomLink()"
+            [ngSwitch]="linkCopied$ | async">
+      <ng-container *ngSwitchDefault>Get room link</ng-container>
+      <ng-container *ngSwitchCase="true">Link copied</ng-container>
+    </button>
+
+    <button planningPokerButton
+            [buttonColor]="buttonColors.INACTIVE"
+            (click)="closeRoom()">
+      <ng-container>Close room</ng-container>
     </button>
   </footer>
 </div>

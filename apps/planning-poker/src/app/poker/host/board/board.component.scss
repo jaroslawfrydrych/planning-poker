@@ -1,7 +1,7 @@
 @import "@styles/shared";
 
 :host {
-  padding: em(30) em(30);
+  padding: 0 em(20);
   width: 100%;
   height: 100%;
   display: flex;
@@ -12,19 +12,8 @@
   align-items: flex-start;
 }
 
-header {
-  padding: 0 0 em(10);
-  margin: 0 1%;
-  display: flex;
-
-  .clock {
-    margin-left: auto;
-    color: $colorSecondary;
-    font: {
-      size: em($h1FontSize);
-      weight: 700;
-    }
-  }
+.room-link-input {
+  opacity: 0;
 }
 
 .cards {
@@ -32,6 +21,7 @@ header {
   flex: 1 1 auto;
   align-self: auto;
   height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -39,11 +29,7 @@ header {
   align-content: flex-start;
   align-items: flex-start;
   overflow: auto;
-  padding: 0 em(30);
-  margin: {
-    left: negative(em(30));
-    right: negative(em(30));
-  };
+  padding-right: em(15);
 
   planning-poker-card {
     margin: em(50) 1% 1% 1%;
@@ -52,7 +38,7 @@ header {
 
 .sidebar {
   order: 0;
-  flex: 0 1 auto;
+  flex: 0 0 27%;
   align-self: auto;
   display: flex;
   flex-direction: column;
@@ -61,33 +47,50 @@ header {
   align-content: stretch;
   align-items: flex-start;
   height: 100%;
-  padding-top: em(30);
+  padding: {
+    top: em(45);
+    left: em(15);
+  }
 
   .sidebar-header {
     order: 0;
     flex: 1 1 auto;
     align-self: auto;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    h1 {
+      font-size: em($h1SecondFontSize);
+    }
+
+    h2 {
+      font-size: em($h1FontSize + 4);
+    }
+
+    .clock {
+      margin: {
+        top: auto;
+        left: auto;
+      }
+      color: $colorSecondary;
+      font: {
+        size: em($h1SecondFontSize);
+        weight: 700;
+      }
+    }
   }
 
   .sidebar-footer {
     order: 0;
     flex: 0 1 auto;
     align-self: flex-start;
-  }
-}
+    width: 100%;
 
-.board-footer {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  width: 100%;
-  padding: em(15) em(30);
-  background: $colorBackgroundPrimary;
-
-  button {
-    margin: 0 1%;
+    button {
+      margin: em(30) 0;
+      width: 100%;
+    }
   }
 }
 
