@@ -673,6 +673,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _shared_form_form_module__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @shared/form/form.module */ "kcqd");
 /* harmony import */ var _shared_icon_icon_module__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @shared/icon/icon.module */ "RoQU");
 /* harmony import */ var _layout_layout_module__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./layout/layout.module */ "pV/B");
+/* harmony import */ var _shared_text_fixed_width_text_fixed_width_module__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @shared/text-fixed-width/text-fixed-width.module */ "R4Ev");
+
 
 
 
@@ -683,10 +685,11 @@ __webpack_require__.r(__webpack_exports__);
 
 const MODULES = [
     _shared_button_button_module__WEBPACK_IMPORTED_MODULE_2__["ButtonModule"],
-    _layout_layout_module__WEBPACK_IMPORTED_MODULE_6__["LayoutModule"],
+    _shared_card_card_module__WEBPACK_IMPORTED_MODULE_3__["CardModule"],
     _shared_form_form_module__WEBPACK_IMPORTED_MODULE_4__["FormModule"],
+    _layout_layout_module__WEBPACK_IMPORTED_MODULE_6__["LayoutModule"],
     _shared_icon_icon_module__WEBPACK_IMPORTED_MODULE_5__["IconModule"],
-    _shared_card_card_module__WEBPACK_IMPORTED_MODULE_3__["CardModule"]
+    _shared_text_fixed_width_text_fixed_width_module__WEBPACK_IMPORTED_MODULE_7__["TextFixedWidthModule"]
 ];
 class SharedModule {
 }
@@ -695,19 +698,22 @@ SharedModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjec
             _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
             ...MODULES
         ], _shared_button_button_module__WEBPACK_IMPORTED_MODULE_2__["ButtonModule"],
-        _layout_layout_module__WEBPACK_IMPORTED_MODULE_6__["LayoutModule"],
+        _shared_card_card_module__WEBPACK_IMPORTED_MODULE_3__["CardModule"],
         _shared_form_form_module__WEBPACK_IMPORTED_MODULE_4__["FormModule"],
+        _layout_layout_module__WEBPACK_IMPORTED_MODULE_6__["LayoutModule"],
         _shared_icon_icon_module__WEBPACK_IMPORTED_MODULE_5__["IconModule"],
-        _shared_card_card_module__WEBPACK_IMPORTED_MODULE_3__["CardModule"]] });
+        _shared_text_fixed_width_text_fixed_width_module__WEBPACK_IMPORTED_MODULE_7__["TextFixedWidthModule"]] });
 (function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵsetNgModuleScope"](SharedModule, { imports: [_angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"], _shared_button_button_module__WEBPACK_IMPORTED_MODULE_2__["ButtonModule"],
-        _layout_layout_module__WEBPACK_IMPORTED_MODULE_6__["LayoutModule"],
+        _shared_card_card_module__WEBPACK_IMPORTED_MODULE_3__["CardModule"],
         _shared_form_form_module__WEBPACK_IMPORTED_MODULE_4__["FormModule"],
-        _shared_icon_icon_module__WEBPACK_IMPORTED_MODULE_5__["IconModule"],
-        _shared_card_card_module__WEBPACK_IMPORTED_MODULE_3__["CardModule"]], exports: [_shared_button_button_module__WEBPACK_IMPORTED_MODULE_2__["ButtonModule"],
         _layout_layout_module__WEBPACK_IMPORTED_MODULE_6__["LayoutModule"],
-        _shared_form_form_module__WEBPACK_IMPORTED_MODULE_4__["FormModule"],
         _shared_icon_icon_module__WEBPACK_IMPORTED_MODULE_5__["IconModule"],
-        _shared_card_card_module__WEBPACK_IMPORTED_MODULE_3__["CardModule"]] }); })();
+        _shared_text_fixed_width_text_fixed_width_module__WEBPACK_IMPORTED_MODULE_7__["TextFixedWidthModule"]], exports: [_shared_button_button_module__WEBPACK_IMPORTED_MODULE_2__["ButtonModule"],
+        _shared_card_card_module__WEBPACK_IMPORTED_MODULE_3__["CardModule"],
+        _shared_form_form_module__WEBPACK_IMPORTED_MODULE_4__["FormModule"],
+        _layout_layout_module__WEBPACK_IMPORTED_MODULE_6__["LayoutModule"],
+        _shared_icon_icon_module__WEBPACK_IMPORTED_MODULE_5__["IconModule"],
+        _shared_text_fixed_width_text_fixed_width_module__WEBPACK_IMPORTED_MODULE_7__["TextFixedWidthModule"]] }); })();
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵsetClassMetadata"](SharedModule, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"],
         args: [{
@@ -718,6 +724,58 @@ SharedModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjec
                 ],
                 exports: [
                     ...MODULES
+                ]
+            }]
+    }], null, null); })();
+
+
+/***/ }),
+
+/***/ "R4Ev":
+/*!********************************************************************!*\
+  !*** ./src/app/shared/text-fixed-width/text-fixed-width.module.ts ***!
+  \********************************************************************/
+/*! exports provided: TextFixedWidthModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TextFixedWidthModule", function() { return TextFixedWidthModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "EM62");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common */ "2kYt");
+/* harmony import */ var _text_fixed_width_directive__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./text-fixed-width.directive */ "eM/n");
+/* harmony import */ var _text_fixed_width_text_fixed_width_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./text-fixed-width/text-fixed-width.component */ "zpDr");
+
+
+
+
+
+const COMPONENTS = [
+    _text_fixed_width_text_fixed_width_component__WEBPACK_IMPORTED_MODULE_3__["TextFixedWidthComponent"]
+];
+const DIRECTIVES = [
+    _text_fixed_width_directive__WEBPACK_IMPORTED_MODULE_2__["TextFixedWidthDirective"]
+];
+class TextFixedWidthModule {
+}
+TextFixedWidthModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineNgModule"]({ type: TextFixedWidthModule });
+TextFixedWidthModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjector"]({ factory: function TextFixedWidthModule_Factory(t) { return new (t || TextFixedWidthModule)(); }, imports: [[
+            _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"]
+        ]] });
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](TextFixedWidthModule, { declarations: [_text_fixed_width_directive__WEBPACK_IMPORTED_MODULE_2__["TextFixedWidthDirective"], _text_fixed_width_text_fixed_width_component__WEBPACK_IMPORTED_MODULE_3__["TextFixedWidthComponent"]], imports: [_angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"]], exports: [_text_fixed_width_directive__WEBPACK_IMPORTED_MODULE_2__["TextFixedWidthDirective"], _text_fixed_width_text_fixed_width_component__WEBPACK_IMPORTED_MODULE_3__["TextFixedWidthComponent"]] }); })();
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](TextFixedWidthModule, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"],
+        args: [{
+                declarations: [
+                    ...DIRECTIVES,
+                    ...COMPONENTS
+                ],
+                imports: [
+                    _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"]
+                ],
+                exports: [
+                    ...DIRECTIVES,
+                    ...COMPONENTS
                 ]
             }]
     }], null, null); })();
@@ -1162,6 +1220,57 @@ FormContainerComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵd
     }], function () { return [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"] }]; }, { planingPokerButton: [{
             type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ContentChild"],
             args: [_shared_button_button_directive__WEBPACK_IMPORTED_MODULE_2__["ButtonDirective"]]
+        }] }); })();
+
+
+/***/ }),
+
+/***/ "eM/n":
+/*!***********************************************************************!*\
+  !*** ./src/app/shared/text-fixed-width/text-fixed-width.directive.ts ***!
+  \***********************************************************************/
+/*! exports provided: TextFixedWidthDirective */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TextFixedWidthDirective", function() { return TextFixedWidthDirective; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "EM62");
+
+
+class TextFixedWidthDirective {
+    constructor(elementRef, renderer) {
+        this.elementRef = elementRef;
+        this.renderer = renderer;
+    }
+    ngOnInit() {
+        this.htmlElement = this.elementRef.nativeElement;
+        this.renderer.addClass(this.htmlElement, 'text-fixed-width');
+    }
+    ngAfterViewInit() {
+        this.elementTextArray = this.htmlElement.innerText.split('');
+        this.htmlElement.innerHTML = '';
+        this.elementTextArray.forEach((value) => {
+            const partElement = this.renderer.createElement('span');
+            partElement.className = 'text-fixed-width-part-element';
+            partElement.innerText = value;
+            this.renderer.appendChild(this.htmlElement, partElement);
+        });
+    }
+    set change(value) {
+    }
+    generateHtmlSpan() {
+    }
+}
+TextFixedWidthDirective.ɵfac = function TextFixedWidthDirective_Factory(t) { return new (t || TextFixedWidthDirective)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_0__["Renderer2"])); };
+TextFixedWidthDirective.ɵdir = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineDirective"]({ type: TextFixedWidthDirective, selectors: [["", "planningPokerTextFixedWidth", ""]], inputs: { change: "change" } });
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](TextFixedWidthDirective, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"],
+        args: [{
+                selector: '[planningPokerTextFixedWidth]'
+            }]
+    }], function () { return [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Renderer2"] }]; }, { change: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"]
         }] }); })();
 
 
@@ -2013,6 +2122,69 @@ webpackEmptyAsyncContext.keys = function() { return []; };
 webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
 module.exports = webpackEmptyAsyncContext;
 webpackEmptyAsyncContext.id = "zn8P";
+
+/***/ }),
+
+/***/ "zpDr":
+/*!****************************************************************************************!*\
+  !*** ./src/app/shared/text-fixed-width/text-fixed-width/text-fixed-width.component.ts ***!
+  \****************************************************************************************/
+/*! exports provided: TextFixedWidthComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TextFixedWidthComponent", function() { return TextFixedWidthComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "EM62");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs */ "+kfY");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common */ "2kYt");
+
+
+
+
+function TextFixedWidthComponent_span_0_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "span", 1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+} if (rf & 2) {
+    const value_r1 = ctx.$implicit;
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", value_r1, "\n");
+} }
+class TextFixedWidthComponent {
+    constructor() {
+        this.textFixedWidthElementClass = true;
+        this.valueSubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_1__["BehaviorSubject"]([]);
+        this.value$ = this.valueSubject$.asObservable();
+    }
+    set value(value) {
+        this.valueSubject$.next(value.split(''));
+    }
+}
+TextFixedWidthComponent.ɵfac = function TextFixedWidthComponent_Factory(t) { return new (t || TextFixedWidthComponent)(); };
+TextFixedWidthComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: TextFixedWidthComponent, selectors: [["planning-poker-text-fixed-width"]], hostVars: 2, hostBindings: function TextFixedWidthComponent_HostBindings(rf, ctx) { if (rf & 2) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵclassProp"]("text-fixed-width", ctx.textFixedWidthElementClass);
+    } }, inputs: { value: "value" }, decls: 2, vars: 3, consts: [["class", "text-fixed-width-part-element", 4, "ngFor", "ngForOf"], [1, "text-fixed-width-part-element"]], template: function TextFixedWidthComponent_Template(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](0, TextFixedWidthComponent_span_0_Template, 2, 1, "span", 0);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpipe"](1, "async");
+    } if (rf & 2) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpipeBind1"](1, 1, ctx.value$));
+    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["NgForOf"]], pipes: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["AsyncPipe"]], styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJhcHBzL3BsYW5uaW5nLXBva2VyL3NyYy9hcHAvc2hhcmVkL3RleHQtZml4ZWQtd2lkdGgvdGV4dC1maXhlZC13aWR0aC90ZXh0LWZpeGVkLXdpZHRoLmNvbXBvbmVudC5zY3NzIn0= */"], changeDetection: 0 });
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](TextFixedWidthComponent, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
+        args: [{
+                selector: 'planning-poker-text-fixed-width',
+                templateUrl: './text-fixed-width.component.html',
+                styleUrls: ['./text-fixed-width.component.scss'],
+                changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectionStrategy"].OnPush
+            }]
+    }], null, { textFixedWidthElementClass: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"],
+            args: ['class.text-fixed-width']
+        }], value: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"]
+        }] }); })();
+
 
 /***/ })
 

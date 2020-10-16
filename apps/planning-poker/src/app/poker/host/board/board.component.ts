@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Client, ClientType, GameStateBroadcastDto, GameStates, UserStatuses } from '@planning-poker/api-interfaces';
@@ -58,6 +59,7 @@ export class BoardComponent implements OnInit, OnDestroy {
       );
 
     this.currentTime$ = this.hostService.currentTime();
+
     this.gameState$ = this.hostService.getGameState()
       .pipe(
         map((data: GameStateBroadcastDto) => data.state),

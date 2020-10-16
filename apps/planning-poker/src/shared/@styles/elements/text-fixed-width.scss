@@ -1,0 +1,10 @@
+@import "@styles/shared";
+
+.text-fixed-width {
+  display: flex;
+
+  .text-fixed-width-part-element {
+    width: em(13);
+    text-align: center;
+  }
+}

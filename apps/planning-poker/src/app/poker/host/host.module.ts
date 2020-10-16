@@ -6,7 +6,10 @@ import { HostRoutingModule } from './host-routing.module';
 import { WaitComponent } from './wait/wait.component';
 
 @NgModule({
-  declarations: [BoardComponent, WaitComponent],
+  declarations: [
+    BoardComponent,
+    WaitComponent
+  ],
   imports: [
     CommonModule,
     HostRoutingModule,

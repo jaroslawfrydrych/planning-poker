@@ -5,13 +5,15 @@ import { CardModule } from '@shared/card/card.module';
 import { FormModule } from '@shared/form/form.module';
 import { IconModule } from '@shared/icon/icon.module';
 import { LayoutModule } from "./layout/layout.module";
+import { TextFixedWidthModule } from '@shared/text-fixed-width/text-fixed-width.module';
 
 const MODULES: Type<any>[] = [
   ButtonModule,
-  LayoutModule,
+  CardModule,
   FormModule,
+  LayoutModule,
   IconModule,
-  CardModule
+  TextFixedWidthModule
 ];
 
 @NgModule({

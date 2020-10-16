@@ -1,9 +1,3 @@
-<!--<header>
-  <h1>ROOM ID: {{roomId}}</h1>
-  <span class="clock">{{currentTime$ | async | date:'HH:mm'}}</span>
-</header>-->
-
-
 <div class="cards">
   <ng-container *ngFor="let user of users$ | async">
     <planning-poker-card [boardCard]="true"
@@ -17,13 +11,15 @@
 <div class="sidebar">
   <header class="sidebar-header">
     <h1>ROOM ID:</h1>
-    <h2>{{roomId}}</h2>
+    <h2 planningPokerTextFixedWidth>{{roomId}}</h2>
 
     <input #roomLinkInput
            class="room-link-input"
            [value]="roomLink">
 
-    <div class="clock">{{currentTime$ | async | date:'HH:mm'}}</div>
+    <planning-poker-text-fixed-width class="clock"
+                                     [value]="currentTime$ | async | date:'HH:mm'">
+    </planning-poker-text-fixed-width>
   </header>
   <footer class="sidebar-footer">
     <button planningPokerButton

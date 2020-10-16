@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterEvent, RouterOutlet } from '@angular/router';
-import { Socket } from 'ngx-socket-io';
 import { Subject } from 'rxjs';
 import { filter, pairwise, takeUntil } from 'rxjs/operators';
 import { routerAnimations } from './app.animations';
