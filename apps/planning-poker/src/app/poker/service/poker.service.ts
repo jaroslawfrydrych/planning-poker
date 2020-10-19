@@ -42,7 +42,7 @@ export class PokerService {
     this.socket.emit(SocketEvents.STATE, roomId);
   }
 
-  public receiveGameState(): Observable<GameStates> {
+  public getGameState(): Observable<GameStates> {
     return this.socket.fromEvent(SocketEvents.STATE)
       .pipe(
         map((response: GameStateBroadcastDto) => response.state)

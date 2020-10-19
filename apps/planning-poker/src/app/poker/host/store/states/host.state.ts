@@ -1,32 +1,26 @@
 import { Injectable } from '@angular/core';
-import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Action, Actions, ofAction, Selector, State, StateContext } from '@ngxs/store';
 
-import { GameStates, Player, RoomInfo } from '@planning-poker/api-interfaces';
+import { GameStates, Player, PlayerType, RoomInfo } from '@planning-poker/api-interfaces';
+import { Observable } from 'rxjs';
+import { takeUntil, tap } from 'rxjs/operators';
 
 import { PokerService } from '../../../service/poker.service';
 import { HostActions } from '../actions/host.actions';
 import { HostModel } from '../models/host.model';
+import CloseRoom = HostActions.CloseRoom;
 import CreateRoom = HostActions.CreateRoom;
-import SetGameState = HostActions.SetGameState;
+import GetGameState = HostActions.GetGameState;
+import GetUsers = HostActions.GetPlayers;
+import JoinRoom = HostActions.JoinRoom;
 import ToggleGameState = HostActions.ToggleGameState;
-import SetGameUsers = HostActions.SetGameUsers;
-
-interface SetGameStateModel {
-  gameState: GameStates
-}
-
-interface SetGameUsersModel {
-  users: Player[]
-}
 
 @State<HostModel>({
   name: 'host',
   defaults: {
     room: null,
     gameState: GameStates.IN_PROGRESS,
-    users: []
+    players: []
   }
 })
 @Injectable()
@@ -43,11 +37,12 @@ export class HostState {
   }
 
   @Selector<string>()
-  public static users(state: HostModel): Player[] {
-    return state.users;
+  public static players(state: HostModel): Player[] {
+    return state.players;
   }
 
-  constructor(private pokerService: PokerService) {
+  constructor(private pokerService: PokerService,
+              private actions$: Actions) {
   }
 
   @Action(CreateRoom)
@@ -73,23 +68,40 @@ export class HostState {
     this.pokerService.toggleGameState(state.room);
   }
 
-  @Action(SetGameState)
-  public setGameState(context: StateContext<HostModel>, {gameState}: SetGameStateModel): void {
+  @Action(JoinRoom)
+  public joinRoom(context: StateContext<HostModel>): void {
     const state: HostModel = context.getState();
 
-    context.setState({
-      ...state,
-      gameState
-    });
+    this.pokerService.joinRoom(state.room, PlayerType.HOST);
   }
 
-  @Action(SetGameUsers)
-  public setGameUsers(context: StateContext<HostModel>, {users}: SetGameUsersModel): void {
-    const state: HostModel = context.getState();
+  @Action(GetUsers)
+  public getUsers(context: StateContext<HostModel>): void {
+    this.pokerService.getUsers()
+      .pipe(
+        takeUntil(this.actions$.pipe(ofAction(CloseRoom)))
+      )
+      .subscribe((players: Player[]) => {
+        context.patchState({
+          players
+        });
+      });
+  }
 
-    context.setState({
-      ...state,
-      users
-    })
+  @Action(GetGameState)
+  public getGameState(context: StateContext<HostModel>): void {
+    this.pokerService.getGameState()
+      .pipe(
+        takeUntil(this.actions$.pipe(ofAction(CloseRoom)))
+      )
+      .subscribe((gameState: GameStates) => {
+        context.patchState({
+          gameState
+        });
+      });
+  }
+
+  @Action(CloseRoom)
+  public closeRoom(): void {
   }
 }

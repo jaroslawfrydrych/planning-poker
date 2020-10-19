@@ -45,7 +45,7 @@ export class GuestService {
   }
 
   public getGameState(): Observable<GameStates> {
-    return this.pokerService.receiveGameState();
+    return this.pokerService.getGameState();
   }
 
   public joinRoom(name: string): void {

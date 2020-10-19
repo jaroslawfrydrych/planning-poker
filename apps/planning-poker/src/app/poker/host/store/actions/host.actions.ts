@@ -1,5 +1,3 @@
-import { GameStates, Player } from '@planning-poker/api-interfaces';
-
 export namespace HostActions {
 
   export class CreateRoom {
@@ -10,21 +8,19 @@ export namespace HostActions {
     static readonly type = '[HostActions] Toggle Game State';
   }
 
-  export class FetchVotes {
-    static readonly type = '[HostActions] Fetch Votes';
+  export class JoinRoom {
+    static readonly type = '[HostActions] Join room';
   }
 
-  export class SetGameState {
-    static readonly type = '[HostActions] Set game state';
-
-    constructor(public gameState: GameStates) {
-    }
+  export class GetPlayers {
+    static readonly type = '[HostActions] Get players';
   }
 
-  export class SetGameUsers {
-    static readonly type = '[HostActions] Set game users';
+  export class GetGameState {
+    static readonly type = '[HostActions] Get game state';
+  }
 
-    constructor(public users: Player[]) {
-    }
+  export class CloseRoom {
+    static readonly type = '[HostActions] Close room';
   }
 }
