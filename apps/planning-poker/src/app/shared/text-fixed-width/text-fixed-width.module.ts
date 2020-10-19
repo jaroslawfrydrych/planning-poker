@@ -1,5 +1,6 @@
-import { NgModule, Type } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule, Type } from '@angular/core';
+
 import { TextFixedWidthDirective } from './text-fixed-width.directive';
 import { TextFixedWidthComponent } from './text-fixed-width/text-fixed-width.component';
 

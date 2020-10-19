@@ -6,13 +6,13 @@ import {
   WebSocketServer
 } from '@nestjs/websockets';
 import {
-  Client,
-  ClientType,
+  Player,
+  PlayerType,
   GameStateBroadcastDto,
   GameStates,
   JoinRequestDto,
   SocketEvents,
-  UsersResponseDto,
+  PlayersResponseDto,
   UserStatuses,
   Vote
 } from '@planning-poker/api-interfaces';
@@ -38,7 +38,7 @@ export class PokerGateway implements OnGatewayConnection, OnGatewayDisconnect {
   public handleDisconnect(client: Socket): void {
     console.log('on disconnect', client.id);
     const clientId: string = client.id;
-    const clientData: Client = this.pokerService.getClientById(clientId);
+    const clientData: Player = this.pokerService.getClientById(clientId);
     const roomId: string = clientData.room;
     const room: Room = this.pokerService.getRoomById(roomId);
 
@@ -46,9 +46,9 @@ export class PokerGateway implements OnGatewayConnection, OnGatewayDisconnect {
       return;
     }
 
-    const clientInRoom: Client = room.getClientFromRoom(clientId);
+    const clientInRoom: Player = room.getClientFromRoom(clientId);
 
-    if (clientInRoom.type === ClientType.HOST) {
+    if (clientInRoom.type === PlayerType.HOST) {
       console.log('remove room', clientData.room);
       this.pokerService.removeRoom(clientData.room);
       this.server.to(roomId).emit(SocketEvents.ROOM_REMOVED);
@@ -69,7 +69,7 @@ export class PokerGateway implements OnGatewayConnection, OnGatewayDisconnect {
       return;
     }
 
-    const clientData: Client = room.getClientFromRoom(client.id);
+    const clientData: Player = room.getClientFromRoom(client.id);
     clientData.card = message.card;
     clientData.status = UserStatuses.VOTED;
     room.updateClientInRoom(clientData);
@@ -113,11 +113,11 @@ export class PokerGateway implements OnGatewayConnection, OnGatewayDisconnect {
       return;
     }
 
-    const clients: Client[] = Array.from(room.clients.values())
-      .sort((clientA: Client, clientB: Client) => clientB.date - clientA.date);
+    const clients: Player[] = Array.from(room.clients.values())
+      .sort((clientA: Player, clientB: Player) => clientB.date - clientA.date);
 
-    const clientsResponse: UsersResponseDto = {
-      clients
+    const clientsResponse: PlayersResponseDto = {
+      players: clients
     };
 
     this.server.to(roomId).emit(SocketEvents.USERS, clientsResponse);

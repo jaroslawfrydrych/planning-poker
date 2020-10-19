@@ -1,13 +1,19 @@
-import { DatePipe } from '@angular/common';
 import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Client, ClientType, GameStateBroadcastDto, GameStates, UserStatuses } from '@planning-poker/api-interfaces';
-import { ButtonColor } from '@shared/button/button-color.enum';
+import { Select, Store } from '@ngxs/store';
 import { GoogleAnalyticsService } from 'ngx-google-analytics';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
+
+import { GameStates, Player, UserStatuses } from '@planning-poker/api-interfaces';
+import { ButtonColor } from '@shared/button/button-color.enum';
+import { EnvironmentService } from '@shared/services/environment.service';
+
 import { HostService } from '../host.service';
+import { HostActions } from '../store/actions/host.actions';
+import { HostState } from '../store/states/host.state';
 import { BoardGuard } from './board.guard';
+import ToggleGameState = HostActions.ToggleGameState;
 
 @Component({
   selector: 'planning-poker-board',
@@ -17,16 +23,14 @@ import { BoardGuard } from './board.guard';
 export class BoardComponent implements OnInit, OnDestroy {
 
   @ViewChild('roomLinkInput') public roomLinkInput: ElementRef;
-  public roomId: string;
-  public users$: Observable<Client[]>;
+  @Select(HostState.gameState) public gameState$: Observable<GameStates>;
+  @Select(HostState.roomNumber) public roomNumber$: Observable<string>;
+  @Select(HostState.users) public users$: Observable<Player[]>;
   public userStatues = UserStatuses;
-  public gameState$: Observable<GameStates>;
   public gameStates = GameStates;
   public buttonColors = ButtonColor;
-  public reviewCardsSubject$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public currentTime$: Observable<Date>;
   public leaveModalVisibility$: Observable<boolean>;
-  public roomLink: string;
   public linkCopied$: Observable<boolean>;
   private destroySubject$: Subject<null>;
   private leaveModalVisibilitySubject$: BehaviorSubject<boolean>;
@@ -36,7 +40,9 @@ export class BoardComponent implements OnInit, OnDestroy {
               private activatedRoute: ActivatedRoute,
               private $gaService: GoogleAnalyticsService,
               private boardGuard: BoardGuard,
-              private router: Router) {
+              private router: Router,
+              private environmentService: EnvironmentService,
+              private store: Store) {
     this.destroySubject$ = new Subject<null>();
     this.leaveModalVisibilitySubject$ = new BehaviorSubject<boolean>(false);
     this.leaveModalVisibility$ = this.leaveModalVisibilitySubject$.asObservable();
@@ -46,54 +52,47 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.$gaService.pageView('/host/board');
+    this.hostService.listenToSocketEvents();
 
-    this.roomId = this.hostService.hostRoom;
-    this.roomLink = window.location.origin + '/guest/room-code?code=' + this.roomId;
-    this.hostService.joinRoom(this.roomId);
-
-    this.users$ = this.hostService.getUsers()
-      .pipe(
-        map((users: Client[]) => {
-          return users.filter((user: Client) => user.type === ClientType.VOTER);
-        })
-      );
+    this.hostService.joinSocketRoom();
 
     this.currentTime$ = this.hostService.currentTime();
-
-    this.gameState$ = this.hostService.getGameState()
-      .pipe(
-        map((data: GameStateBroadcastDto) => data.state),
-        tap((gameState: GameStates) => this.handleGameStateChange(gameState))
-      );
   }
 
   public ngOnDestroy(): void {
     this.destroySubject$.next(null);
+    this.hostService.closeSocketEvents();
   }
 
   @HostListener('window:beforeunload')
-  beforeUnloadHandler(event) {
-    return false;
-
-  }
-
-  public get leaveModalVisibility(): boolean {
-    return this.leaveModalVisibilitySubject$.getValue();
+  public beforeUnloadHandler(event) {
+    if (this.environmentService.production) {
+      return false;
+    }
   }
 
   public set leaveModalVisibility(value: boolean) {
     this.leaveModalVisibilitySubject$.next(value);
   }
 
+  public get roomLink$(): Observable<string> {
+    return this.roomNumber$
+      .pipe(
+        map((roomNumber: string) => {
+          return window.location.origin + '/guest/room-code?code=' + roomNumber;
+        })
+      );
+  }
+
   public toggleGameState(): void {
-    this.hostService.toggleGameState(this.roomId);
     this.$gaService.event('toggle_game_state', 'host', 'Toggle game state');
+    this.store.dispatch(new ToggleGameState());
   }
 
   public getRoomLink(): void {
     this.roomLinkInput.nativeElement.select();
     this.roomLinkInput.nativeElement.setSelectionRange(0, 99999);
-    document.execCommand("copy");
+    document.execCommand('copy');
     this.roomLinkInput.nativeElement.blur();
     this.linkCopiedSubject$.next(true);
 
@@ -122,9 +121,5 @@ export class BoardComponent implements OnInit, OnDestroy {
     }
 
     this.closeLeaveModal();
-  }
-
-  private handleGameStateChange(gameState: GameStates): void {
-    this.reviewCardsSubject$.next(gameState === GameStates.REVIEW);
   }
 }

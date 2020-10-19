@@ -1,14 +1,10 @@
 import { Injectable } from '@angular/core';
-import {
-  Cards,
-  ClientType,
-  GameStateBroadcastDto,
-  JoinRoomCodeResponseDto,
-  RoomInfoInterface
-} from '@planning-poker/api-interfaces';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { delay, tap } from 'rxjs/operators';
-import { PokerService } from '../services/poker.service';
+
+import { Cards, GameStates, JoinRoomCodeResponseDto, PlayerType, RoomInfo } from '@planning-poker/api-interfaces';
+
+import { PokerService } from '../service/poker.service';
 
 @Injectable({
   providedIn: 'root'
@@ -48,15 +44,15 @@ export class GuestService {
     });
   }
 
-  public getGameState(): Observable<GameStateBroadcastDto> {
+  public getGameState(): Observable<GameStates> {
     return this.pokerService.receiveGameState();
   }
 
   public joinRoom(name: string): void {
-    this.pokerService.joinRoom(this.guestRoom, ClientType.VOTER, name);
+    this.pokerService.joinRoom(this.guestRoom, PlayerType.VOTER, name);
   }
 
-  public getRoomInfo(): Observable<RoomInfoInterface> {
+  public getRoomInfo(): Observable<RoomInfo> {
     return this.pokerService.getRoomInfo(this.guestRoom);
   }
 

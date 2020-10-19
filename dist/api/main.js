@@ -171,14 +171,15 @@ let PokerController = class PokerController {
         this.pokerService = pokerService;
     }
     createRoom(request) {
+        // todo create secure http only cookie here with client id
         const room = this.pokerService.createRoom();
         room.addClientToRoom({
             id: request.clientId,
-            type: _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["ClientType"].HOST
+            type: _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["PlayerType"].HOST
         });
         return {
             id: room.id,
-            state: room.state
+            gameState: room.state
         };
     }
     joinRoomCode(request) {
@@ -190,8 +191,11 @@ let PokerController = class PokerController {
         const room = this.pokerService.getRoomById(request.id);
         return {
             id: room.id,
-            state: room.state
+            gameState: room.state
         };
+    }
+    roomVotes() {
+        // todo get room client votes
     }
 };
 Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
@@ -199,7 +203,7 @@ Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__param"])(0, Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Body"])()),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:type", Function),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [typeof (_a = typeof _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["CreateRoomDto"] !== "undefined" && _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["CreateRoomDto"]) === "function" ? _a : Object]),
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:returntype", typeof (_b = typeof _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["RoomInfoInterface"] !== "undefined" && _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["RoomInfoInterface"]) === "function" ? _b : Object)
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:returntype", typeof (_b = typeof _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["RoomInfo"] !== "undefined" && _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["RoomInfo"]) === "function" ? _b : Object)
 ], PokerController.prototype, "createRoom", null);
 Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
     Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Post"])('join-room-code'),
@@ -213,8 +217,14 @@ Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__param"])(0, Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Body"])()),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:type", Function),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [typeof (_e = typeof _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["JoinRoomCodeRequestDto"] !== "undefined" && _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["JoinRoomCodeRequestDto"]) === "function" ? _e : Object]),
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:returntype", typeof (_f = typeof _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["RoomInfoInterface"] !== "undefined" && _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["RoomInfoInterface"]) === "function" ? _f : Object)
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:returntype", typeof (_f = typeof _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["RoomInfo"] !== "undefined" && _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["RoomInfo"]) === "function" ? _f : Object)
 ], PokerController.prototype, "roomInfo", null);
+Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+    Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Get"])('room-votes'),
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:type", Function),
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", []),
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:returntype", void 0)
+], PokerController.prototype, "roomVotes", null);
 PokerController = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
     Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Controller"])(),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [typeof (_g = typeof _poker_service__WEBPACK_IMPORTED_MODULE_3__["PokerService"] !== "undefined" && _poker_service__WEBPACK_IMPORTED_MODULE_3__["PokerService"]) === "function" ? _g : Object])
@@ -268,7 +278,7 @@ let PokerGateway = class PokerGateway {
             return;
         }
         const clientInRoom = room.getClientFromRoom(clientId);
-        if (clientInRoom.type === _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["ClientType"].HOST) {
+        if (clientInRoom.type === _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["PlayerType"].HOST) {
             console.log('remove room', clientData.room);
             this.pokerService.removeRoom(clientData.room);
             this.server.to(roomId).emit(_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["SocketEvents"].ROOM_REMOVED);
@@ -321,7 +331,7 @@ let PokerGateway = class PokerGateway {
         const clients = Array.from(room.clients.values())
             .sort((clientA, clientB) => clientB.date - clientA.date);
         const clientsResponse = {
-            clients
+            players: clients
         };
         this.server.to(roomId).emit(_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["SocketEvents"].USERS, clientsResponse);
     }
@@ -464,7 +474,7 @@ let PokerService = class PokerService {
         this.clients.delete(id);
     }
     isClientHost(id) {
-        return this.clients.get(id).type === _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["ClientType"].HOST;
+        return this.clients.get(id).type === _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["PlayerType"].HOST;
     }
     getClientById(id) {
         return this.clients.get(id);
@@ -625,14 +635,14 @@ bootstrap();
 /*!******************************************!*\
   !*** ./libs/api-interfaces/src/index.ts ***!
   \******************************************/
-/*! exports provided: Cards, GameStates, SocketEvents, UserStatuses, ClientType */
+/*! exports provided: Cards, GameStates, SocketEvents, UserStatuses, PlayerType */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lib_model_vote_interface__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./lib/model/vote.interface */ "./libs/api-interfaces/src/lib/model/vote.interface.ts");
 /* empty/unused harmony star reexport *//* harmony import */ var _lib_model_state_interface__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./lib/model/state.interface */ "./libs/api-interfaces/src/lib/model/state.interface.ts");
-/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_room_info_interface__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./lib/model/room-info.interface */ "./libs/api-interfaces/src/lib/model/room-info.interface.ts");
+/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_room_info__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./lib/model/room.info */ "./libs/api-interfaces/src/lib/model/room.info.ts");
 /* empty/unused harmony star reexport *//* harmony import */ var _lib_model_client_interface__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./lib/model/client.interface */ "./libs/api-interfaces/src/lib/model/client.interface.ts");
 /* empty/unused harmony star reexport *//* harmony import */ var _lib_model_create_room_dto_interface__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./lib/model/create-room-dto.interface */ "./libs/api-interfaces/src/lib/model/create-room-dto.interface.ts");
 /* empty/unused harmony star reexport *//* harmony import */ var _lib_model_game_state_dto_interface__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./lib/model/game-state-dto.interface */ "./libs/api-interfaces/src/lib/model/game-state-dto.interface.ts");
@@ -656,7 +666,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserStatuses", function() { return _lib_enum_user_statuses_enum__WEBPACK_IMPORTED_MODULE_16__["UserStatuses"]; });
 
 /* harmony import */ var _lib_enum_client_type_enum__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./lib/enum/client-type.enum */ "./libs/api-interfaces/src/lib/enum/client-type.enum.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ClientType", function() { return _lib_enum_client_type_enum__WEBPACK_IMPORTED_MODULE_17__["ClientType"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PlayerType", function() { return _lib_enum_client_type_enum__WEBPACK_IMPORTED_MODULE_17__["PlayerType"]; });
 
 /**
  * Model
@@ -721,17 +731,17 @@ var Cards;
 /*!**************************************************************!*\
   !*** ./libs/api-interfaces/src/lib/enum/client-type.enum.ts ***!
   \**************************************************************/
-/*! exports provided: ClientType */
+/*! exports provided: PlayerType */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ClientType", function() { return ClientType; });
-var ClientType;
-(function (ClientType) {
-    ClientType["VOTER"] = "VOTER";
-    ClientType["HOST"] = "HOST";
-})(ClientType || (ClientType = {}));
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PlayerType", function() { return PlayerType; });
+var PlayerType;
+(function (PlayerType) {
+    PlayerType["VOTER"] = "VOTER";
+    PlayerType["HOST"] = "HOST";
+})(PlayerType || (PlayerType = {}));
 
 
 /***/ }),
@@ -909,10 +919,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./libs/api-interfaces/src/lib/model/room-info.interface.ts":
-/*!******************************************************************!*\
-  !*** ./libs/api-interfaces/src/lib/model/room-info.interface.ts ***!
-  \******************************************************************/
+/***/ "./libs/api-interfaces/src/lib/model/room.info.ts":
+/*!********************************************************!*\
+  !*** ./libs/api-interfaces/src/lib/model/room.info.ts ***!
+  \********************************************************/
 /*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 

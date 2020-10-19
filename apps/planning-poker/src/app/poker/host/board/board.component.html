@@ -1,7 +1,7 @@
 <div class="cards">
   <ng-container *ngFor="let user of users$ | async">
     <planning-poker-card [boardCard]="true"
-                         [review]="reviewCardsSubject$ | async"
+                         [gameState]="gameState$ | async"
                          [card]="user.card"
                          [label]="user.name"
                          [playerReady]="user.status === userStatues.VOTED"></planning-poker-card>
@@ -11,11 +11,10 @@
 <div class="sidebar">
   <header class="sidebar-header">
     <h1>ROOM ID:</h1>
-    <h2 planningPokerTextFixedWidth>{{roomId}}</h2>
-
+    <h2 planningPokerTextFixedWidth>{{roomNumber$ | async}}</h2>
     <input #roomLinkInput
            class="room-link-input"
-           [value]="roomLink">
+           [value]="roomLink$ | async">
 
     <planning-poker-text-fixed-width class="clock"
                                      [value]="currentTime$ | async | date:'HH:mm'">

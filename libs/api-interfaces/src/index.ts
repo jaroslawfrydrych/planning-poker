@@ -3,7 +3,7 @@
  */
 export * from './lib/model/vote.interface';
 export * from './lib/model/state.interface';
-export * from './lib/model/room-info.interface';
+export * from './lib/model/room.info';
 export * from './lib/model/client.interface';
 export * from './lib/model/create-room-dto.interface';
 export * from './lib/model/game-state-dto.interface';

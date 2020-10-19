@@ -1,10 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { JoinRoomCodeResponseDto } from '@planning-poker/api-interfaces';
-import { CodeComponent } from '@shared/form/code/code.component';
 import { GoogleAnalyticsService } from 'ngx-google-analytics';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { delay, finalize, takeUntil, tap } from 'rxjs/operators';
+
+import { JoinRoomCodeResponseDto } from '@planning-poker/api-interfaces';
+import { CodeComponent } from '@shared/form/code/code.component';
+
 import { GuestService } from '../guest.service';
 
 @Component({
@@ -35,7 +37,7 @@ export class RoomCodeComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.$gaService.pageView('/room-code');
+    this.$gaService.pageView('/guest/room-code');
 
     const queryPrams: any = this.activatedRoute.snapshot.queryParams;
 

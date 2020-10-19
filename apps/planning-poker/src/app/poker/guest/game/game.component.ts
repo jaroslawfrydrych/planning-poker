@@ -1,9 +1,11 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Cards, GameStateBroadcastDto, GameStates, RoomInfoInterface } from '@planning-poker/api-interfaces';
 import { GoogleAnalyticsService } from 'ngx-google-analytics';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { Cards, GameStates, RoomInfo } from '@planning-poker/api-interfaces';
+
 import { GuestService } from '../guest.service';
 
 @Component({
@@ -43,16 +45,16 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.$gaService.pageView('/game');
+    this.$gaService.pageView('/guest/game');
 
-    const roomInfo: RoomInfoInterface = this.activatedRoute.snapshot.data.data;
-    this.inReview = roomInfo.state === GameStates.REVIEW;
+    const roomInfo: RoomInfo = this.activatedRoute.snapshot.data.data;
+    this.inReview = roomInfo.gameState === GameStates.REVIEW;
 
     this.guestService.getGameState()
       .pipe(
         takeUntil(this.destroySubject$)
       )
-      .subscribe((gameState: GameStateBroadcastDto) => this.handleGameState(gameState));
+      .subscribe((gameState: GameStates) => this.handleGameState(gameState));
 
     this.guestService.onRoomRemove()
       .pipe(
@@ -79,10 +81,10 @@ export class GameComponent implements OnInit, OnDestroy {
     this.selectedCard = card;
   }
 
-  private handleGameState(gameState: GameStateBroadcastDto): void {
-    this.inReview = gameState.state === GameStates.REVIEW;
+  private handleGameState(gameState: GameStates): void {
+    this.inReview = gameState === GameStates.REVIEW;
 
-    if (gameState.state === GameStates.IN_PROGRESS) {
+    if (gameState === GameStates.IN_PROGRESS) {
       this.selectedCardValueSubject$.next(null);
       this.changeDetectorRef.detectChanges();
     }

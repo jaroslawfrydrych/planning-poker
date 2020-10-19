@@ -1,5 +1,6 @@
-import { NgModule, Type } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule, Type } from '@angular/core';
+
 import { IconComponent } from './icon/icon.component';
 
 const COMPONENTS: Type<any>[] = [

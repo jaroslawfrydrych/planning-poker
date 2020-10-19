@@ -1,8 +1,9 @@
-import { NgModule, Type } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LayoutComponent } from './layout/layout.component';
-import { HeaderComponent } from './header/header.component';
+import { NgModule, Type } from '@angular/core';
+
 import { ContentComponent } from './content/content.component';
+import { HeaderComponent } from './header/header.component';
+import { LayoutComponent } from './layout/layout.component';
 
 const COMPONENTS: Type<any>[] = [
   LayoutComponent,

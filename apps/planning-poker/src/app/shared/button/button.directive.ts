@@ -1,7 +1,8 @@
 import { Directive, ElementRef, Input, OnDestroy, OnInit, Renderer2 } from '@angular/core';
-import { ButtonColor } from '@shared/button/button-color.enum';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { ButtonColor } from '@shared/button/button-color.enum';
 
 @Directive({
   selector: '[planningPokerButton]'

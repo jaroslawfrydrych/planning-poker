@@ -1,10 +1,10 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import {
-  ClientType,
+  PlayerType,
   CreateRoomDto,
   JoinRoomCodeRequestDto,
   JoinRoomCodeResponseDto,
-  RoomInfoInterface
+  RoomInfo
 } from '@planning-poker/api-interfaces';
 import { PokerService } from './poker.service';
 import { Room } from './room';
@@ -16,17 +16,19 @@ export class PokerController {
   }
 
   @Post('create-room')
-  public createRoom(@Body() request: CreateRoomDto): RoomInfoInterface {
+  public createRoom(@Body() request: CreateRoomDto): RoomInfo {
+    // todo create secure http only cookie here with client id
+
     const room: Room = this.pokerService.createRoom();
 
     room.addClientToRoom({
       id: request.clientId,
-      type: ClientType.HOST
+      type: PlayerType.HOST
     });
 
     return {
       id: room.id,
-      state: room.state
+      gameState: room.state
     };
   }
 
@@ -38,12 +40,17 @@ export class PokerController {
   }
 
   @Post('room-info')
-  public roomInfo(@Body() request: JoinRoomCodeRequestDto): RoomInfoInterface {
+  public roomInfo(@Body() request: JoinRoomCodeRequestDto): RoomInfo {
     const room: Room = this.pokerService.getRoomById(request.id);
 
     return {
       id: room.id,
-      state: room.state
-    }
+      gameState: room.state
+    };
+  }
+
+  @Get('room-votes')
+  public roomVotes() {
+    // todo get room client votes
   }
 }

@@ -1,10 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { RoomInfoInterface } from '@planning-poker/api-interfaces';
+import { Store } from '@ngxs/store';
 import { GoogleAnalyticsService } from 'ngx-google-analytics';
 import { Subject } from 'rxjs';
 import { delay, takeUntil } from 'rxjs/operators';
-import { HostService } from '../host.service';
+
+import { HostActions } from '../store/actions/host.actions';
+import CreateRoom = HostActions.CreateRoom;
 
 @Component({
   selector: 'planning-poker-wait',
@@ -16,23 +18,19 @@ export class WaitComponent implements OnInit, OnDestroy {
   private destroySubject: Subject<null> = new Subject<null>();
 
   constructor(private router: Router,
-              private $gaService: GoogleAnalyticsService,
-              private hostService: HostService) {
+              private store: Store,
+              private $gaService: GoogleAnalyticsService) {
   }
 
   public ngOnInit(): void {
     this.$gaService.pageView('/host/board');
 
-    this.hostService.createRoom()
+    this.store.dispatch(new CreateRoom())
       .pipe(
         delay(1500),
         takeUntil(this.destroySubject)
       )
-      .subscribe((roomInfo: RoomInfoInterface) => {
-        this.hostService.hostRoom = roomInfo.id;
-        this.hostService.gameState = roomInfo.state;
-        this.router.navigateByUrl('/host/board');
-      });
+      .subscribe(() => this.router.navigateByUrl('/host/board'));
   }
 
   public ngOnDestroy(): void {

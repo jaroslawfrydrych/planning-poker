@@ -1,6 +1,6 @@
 import { GameStates } from '@planning-poker/api-interfaces';
 
-export interface RoomInfoInterface {
+export interface RoomInfo {
   id: string;
-  state: GameStates
+  gameState: GameStates
 }

@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { Client, ClientType, GameStates, SocketEvents, UserStatuses } from '@planning-poker/api-interfaces';
+import { Player, PlayerType, GameStates, UserStatuses } from '@planning-poker/api-interfaces';
 import { Room } from './room';
 
 @Injectable()
 export class PokerService {
-  public clients: Map<string, Client> = new Map<string, Client>();
+  public clients: Map<string, Player> = new Map<string, Player>();
   public rooms: Map<string, Room> = new Map<string, Room>();
 
   constructor() {
@@ -50,12 +50,12 @@ export class PokerService {
     this.rooms.delete(id);
   }
 
-  public addClient(client: Client) {
+  public addClient(client: Player) {
     this.clients.set(client.id, client);
   }
 
   public setClientARoom(clientId: string, roomId: string) {
-    const client: Client = this.clients.get(clientId);
+    const client: Player = this.clients.get(clientId);
     client.room = roomId;
     this.clients.set(clientId, client);
   }
@@ -65,10 +65,10 @@ export class PokerService {
   }
 
   public isClientHost(id: string): boolean {
-    return this.clients.get(id).type === ClientType.HOST;
+    return this.clients.get(id).type === PlayerType.HOST;
   }
 
-  public getClientById(id: string): Client {
+  public getClientById(id: string): Player {
     return this.clients.get(id);
   }
 
@@ -79,7 +79,7 @@ export class PokerService {
   public resetVotingForRoom(roomId: string): void {
     const room: Room = this.getRoomById(roomId);
 
-    room.clients.forEach((client: Client) => {
+    room.clients.forEach((client: Player) => {
       client.card = null;
       client.status = UserStatuses.WAITING;
       room.updateClientInRoom(client);

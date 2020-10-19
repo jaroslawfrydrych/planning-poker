@@ -1,7 +1,8 @@
 import { Component, EventEmitter, HostBinding, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { Cards } from '@planning-poker/api-interfaces';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { Cards, GameStates } from '@planning-poker/api-interfaces';
 
 @Component({
   selector: 'planning-poker-card',
@@ -17,7 +18,7 @@ export class CardComponent implements OnInit, OnDestroy {
   @Output() public cardClick: EventEmitter<null> = new EventEmitter<null>();
   @Input() public playerReady = false;
   @Input() public label: string;
-  @Input() public review: boolean;
+  @Input() public gameState: GameStates;
   public cards = Cards;
   public isCardSelected = false;
   private destroySubject$: Subject<null> = new Subject<null>();
@@ -36,6 +37,10 @@ export class CardComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy() {
     this.destroySubject$.next(null);
+  }
+
+  public get isInReviewState(): boolean {
+    return this.gameState === GameStates.REVIEW;
   }
 
   public onCardClick(): void {

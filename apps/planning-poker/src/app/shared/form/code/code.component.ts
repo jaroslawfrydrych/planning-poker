@@ -49,7 +49,7 @@ export class CodeComponent implements OnInit, AfterViewInit, OnDestroy {
         Validators.min(0),
         Validators.max(9),
         Validators.maxLength(1),
-        Validators.pattern("^[0-9]*$")
+        Validators.pattern('^[0-9]*$')
       ]));
     }
 

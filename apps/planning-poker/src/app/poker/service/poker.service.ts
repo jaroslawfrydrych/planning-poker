@@ -1,21 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Socket } from 'ngx-socket-io';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 import {
-  ClientType,
   GameStateBroadcastDto,
   GameStates,
   JoinRequestDto,
   JoinRoomCodeRequestDto,
   JoinRoomCodeResponseDto,
-  RoomInfoInterface,
+  Player,
+  PlayersResponseDto,
+  PlayerType,
+  RoomInfo,
   SocketEvents,
-  State,
-  UsersResponseDto,
-  Vote,
-  Voted
+  Vote
 } from '@planning-poker/api-interfaces';
-import { Socket } from 'ngx-socket-io';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -26,9 +27,9 @@ export class PokerService {
               private httpClient: HttpClient) {
   }
 
-  public createRoom(): Observable<RoomInfoInterface> {
+  public createRoom(): Observable<RoomInfo> {
     return this.httpClient
-      .post<RoomInfoInterface>('/api/create-room', {
+      .post<RoomInfo>('/api/create-room', {
         clientId: this.socket.ioSocket.id
       });
   }
@@ -37,31 +38,28 @@ export class PokerService {
     this.socket.emit(SocketEvents.VOTE, vote);
   }
 
-  public changeGameState(state: GameStates): void {
-    const stateMessage: State = {
-      state
-    };
-
-    this.socket.emit(SocketEvents.STATE, stateMessage);
-  }
-
   public toggleGameState(roomId: string): void {
     this.socket.emit(SocketEvents.STATE, roomId);
   }
 
-  public receiveVote(): Observable<Voted> {
-    return this.socket.fromEvent(SocketEvents.VOTED);
+  public receiveGameState(): Observable<GameStates> {
+    return this.socket.fromEvent(SocketEvents.STATE)
+      .pipe(
+        map((response: GameStateBroadcastDto) => response.state)
+      );
   }
 
-  public receiveGameState(): Observable<GameStateBroadcastDto> {
-    return this.socket.fromEvent(SocketEvents.STATE);
+  public getUsers(): Observable<Player[]> {
+    return this.socket.fromEvent(SocketEvents.USERS)
+      .pipe(
+        map((response: PlayersResponseDto) => response.players),
+        map((users: Player[]) => {
+          return users.filter((user: Player) => user.type === PlayerType.VOTER);
+        })
+      );
   }
 
-  public getUsers(): Observable<UsersResponseDto> {
-    return this.socket.fromEvent(SocketEvents.USERS);
-  }
-
-  public joinRoom(room: string, type: ClientType, name?: string): void {
+  public joinRoom(room: string, type: PlayerType, name?: string): void {
     const request: JoinRequestDto = {
       name,
       room,
@@ -78,12 +76,12 @@ export class PokerService {
     return this.httpClient.post<JoinRoomCodeResponseDto>('/api/join-room-code', request);
   }
 
-  public getRoomInfo(code: string): Observable<RoomInfoInterface> {
+  public getRoomInfo(code: string): Observable<RoomInfo> {
     const request: JoinRoomCodeRequestDto = {
       id: code
     };
 
-    return this.httpClient.post<RoomInfoInterface>('/api/room-info', request);
+    return this.httpClient.post<RoomInfo>('/api/room-info', request);
   }
 
   public onRoomRemove(): Observable<null> {

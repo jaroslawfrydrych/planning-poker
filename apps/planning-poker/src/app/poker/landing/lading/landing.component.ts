@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngxs/store';
 import { GoogleAnalyticsService } from 'ngx-google-analytics';
-import { Socket } from 'ngx-socket-io';
+
 import { GuestService } from '../../guest/guest.service';
-import { HostService } from '../../host/host.service';
+import { HostState } from '../../host/store/states/host.state';
 
 @Component({
   selector: 'planning-poker-landing',
@@ -14,16 +15,14 @@ import { HostService } from '../../host/host.service';
 export class LandingComponent implements OnInit {
 
   constructor(private router: Router,
-              private socket: Socket,
+              private store: Store,
               private guestService: GuestService,
-              private hostService: HostService,
               private $gaService: GoogleAnalyticsService) {
   }
 
   ngOnInit() {
     this.$gaService.pageView('/');
-    this.guestService.guestRoom = null;
-    this.hostService.hostRoom = null;
+    this.store.reset(HostState);
   }
 
   public goToGuestPath(): void {
