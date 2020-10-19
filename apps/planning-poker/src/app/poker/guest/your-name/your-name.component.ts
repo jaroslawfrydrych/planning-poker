@@ -19,6 +19,7 @@ import GuestNameInit = GuestActions.GuestNameInit;
 export class YourNameComponent implements OnInit {
 
   public formGroup: FormGroup;
+  private userNameLocalStorageItemKey = 'user-name';
 
   constructor(private formBuilder: FormBuilder,
               private router: Router,
@@ -28,8 +29,10 @@ export class YourNameComponent implements OnInit {
   public ngOnInit(): void {
     this.store.dispatch(new GuestNameInit());
 
+    const name: string = localStorage.getItem(this.userNameLocalStorageItemKey);
+
     this.formGroup = this.formBuilder.group({
-      name: this.formBuilder.control(null, [Validators.required])
+      name: this.formBuilder.control(name || null, [Validators.required])
     });
   }
 
@@ -39,6 +42,8 @@ export class YourNameComponent implements OnInit {
 
   public submit(): void {
     if (this.formGroup.valid) {
+      localStorage.setItem(this.userNameLocalStorageItemKey, this.nameFormControl.value);
+
       this.store.dispatch(new JoinRoom(this.nameFormControl.value))
         .pipe(
           untilDestroyed(this)

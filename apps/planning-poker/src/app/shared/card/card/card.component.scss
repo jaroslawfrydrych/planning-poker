@@ -54,6 +54,10 @@ $boardCardSizeMultiply: 1.22;
     transition: opacity 300ms ease, transform 250ms linear;
     transition-delay: 250ms;
 
+    &.is-selected {
+      transform: scale(1);
+    }
+
     &.card-faded {
       opacity: .1;
       transition-delay: 400ms;

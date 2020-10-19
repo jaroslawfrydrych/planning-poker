@@ -20,7 +20,7 @@ export class CardComponent {
   public cards = Cards;
 
   public get isCardSelected(): boolean {
-    return this.selectedCard === null ? null : this.selectedCard === this.card;
+    return this.selectedCard === null || this.selectedCard === undefined ? null : this.selectedCard === this.card;
   }
 
   public get isInReviewState(): boolean {
