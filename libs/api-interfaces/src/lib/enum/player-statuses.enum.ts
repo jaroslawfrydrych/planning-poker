@@ -1,4 +1,4 @@
-export enum UserStatuses {
+export enum PlayerStatuses {
   WAITING = 'WAITING',
   VOTED = 'VOTED'
 }

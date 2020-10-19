@@ -1,6 +1,6 @@
 export enum SocketEvents {
   VOTE = 'VOTE',
-  USERS = 'USERS',
+  PLAYERS = 'PLAYERS',
   STATE = 'STATE',
   JOIN = 'JOIN',
   ROOM_REMOVED = 'ROOM_REMOVED',

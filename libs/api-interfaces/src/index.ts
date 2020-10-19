@@ -21,5 +21,5 @@ export * from './lib/model/voted.interface';
 export * from './lib/enum/cards.enum';
 export * from './lib/enum/game-states.enum';
 export * from './lib/enum/socket.events';
-export * from './lib/enum/user-statuses.enum';
-export * from './lib/enum/client-type.enum';
+export * from './lib/enum/player-statuses.enum';
+export * from './lib/enum/player-type.enum';

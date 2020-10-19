@@ -1,11 +1,13 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
+
 import {
-  PlayerType,
   CreateRoomDto,
   JoinRoomCodeRequestDto,
   JoinRoomCodeResponseDto,
+  PlayerType,
   RoomInfo
 } from '@planning-poker/api-interfaces';
+
 import { PokerService } from './poker.service';
 import { Room } from './room';
 
@@ -21,7 +23,7 @@ export class PokerController {
 
     const room: Room = this.pokerService.createRoom();
 
-    room.addClientToRoom({
+    room.addPlayerToRoom({
       id: request.clientId,
       type: PlayerType.HOST
     });

@@ -5,7 +5,7 @@ import { GoogleAnalyticsService } from 'ngx-google-analytics';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { GameStates, Player, UserStatuses } from '@planning-poker/api-interfaces';
+import { GameStates, Player, PlayerStatuses } from '@planning-poker/api-interfaces';
 import { ButtonColor } from '@shared/button/button-color.enum';
 import { EnvironmentService } from '@shared/services/environment.service';
 
@@ -26,7 +26,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   @Select(HostState.gameState) public gameState$: Observable<GameStates>;
   @Select(HostState.roomNumber) public roomNumber$: Observable<string>;
   @Select(HostState.users) public users$: Observable<Player[]>;
-  public userStatues = UserStatuses;
+  public userStatues = PlayerStatuses;
   public gameStates = GameStates;
   public buttonColors = ButtonColor;
   public currentTime$: Observable<Date>;

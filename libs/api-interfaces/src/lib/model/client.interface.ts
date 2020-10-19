@@ -1,5 +1,4 @@
-import { Cards, UserStatuses } from '../..';
-import { PlayerType } from '../enum/client-type.enum';
+import { Cards, PlayerStatuses, PlayerType } from '../..';
 
 export interface Player {
   id: string;
@@ -8,5 +7,5 @@ export interface Player {
   name?: string;
   date?: number;
   card?: Cards;
-  status?: UserStatuses;
+  status?: PlayerStatuses;
 }

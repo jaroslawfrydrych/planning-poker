@@ -50,7 +50,7 @@ export class PokerService {
   }
 
   public getUsers(): Observable<Player[]> {
-    return this.socket.fromEvent(SocketEvents.USERS)
+    return this.socket.fromEvent(SocketEvents.PLAYERS)
       .pipe(
         map((response: PlayersResponseDto) => response.players),
         map((users: Player[]) => {
