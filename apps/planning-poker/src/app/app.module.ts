@@ -42,8 +42,12 @@ const config: SocketIoConfig = {
     SocketIoModule.forRoot(config),
     NgxGoogleAnalyticsModule.forRoot('UA-180323084-1'),
     NgxsModule.forRoot(),
-    NgxsReduxDevtoolsPluginModule.forRoot(),
-    NgxsLoggerPluginModule.forRoot()
+    NgxsReduxDevtoolsPluginModule.forRoot({
+      disabled: !!environment.production
+    }),
+    NgxsLoggerPluginModule.forRoot({
+      disabled: !!environment.production
+    })
   ],
   providers: [
     {
