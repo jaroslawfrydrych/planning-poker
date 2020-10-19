@@ -90,6 +90,7 @@ export class PokerGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     if (state === GameStates.IN_PROGRESS) {
       this.pokerService.resetVotingForRoom(roomNumber);
+      this.emitUsersChangeToRoom(roomNumber);
     }
   }
 

@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
 
-import { untilDestroyed } from '@shared/decorators/take-until-destroy.decorator';
+import { TakeUntilDestroy, untilDestroyed } from '@shared/decorators/take-until-destroy.decorator';
 
 import { GuestActions } from '../store/actions/guest.actions';
 import JoinRoom = GuestActions.JoinRoom;
@@ -15,6 +15,7 @@ import GuestNameInit = GuestActions.GuestNameInit;
   styleUrls: ['./your-name.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
+@TakeUntilDestroy()
 export class YourNameComponent implements OnInit {
 
   public formGroup: FormGroup;

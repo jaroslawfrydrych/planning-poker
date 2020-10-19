@@ -734,6 +734,7 @@ let PokerGateway = class PokerGateway {
         this.server.to(roomNumber).emit(_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_3__[/* SocketEvents */ "i"].STATE, broadcastMessage);
         if (state === _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_3__[/* GameStates */ "b"].IN_PROGRESS) {
             this.pokerService.resetVotingForRoom(roomNumber);
+            this.emitUsersChangeToRoom(roomNumber);
         }
     }
     onJoin(client, message) {
