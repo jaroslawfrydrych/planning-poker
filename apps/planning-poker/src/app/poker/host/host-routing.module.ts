@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
 import { BoardComponent } from './board/board.component';
 import { BoardGuard } from './board/board.guard';
 import { WaitComponent } from './wait/wait.component';

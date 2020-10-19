@@ -1,14 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { Client, ClientType, GameStates, SocketEvents, UserStatuses } from '@planning-poker/api-interfaces';
+
+import { GameStates, Player, PlayerStatuses, PlayerType } from '@planning-poker/api-interfaces';
+
 import { Room } from './room';
 
 @Injectable()
 export class PokerService {
-  public clients: Map<string, Client> = new Map<string, Client>();
+  public players: Map<string, Player> = new Map<string, Player>();
   public rooms: Map<string, Room> = new Map<string, Room>();
-
-  constructor() {
-  }
 
   public toggleGameState(currentState: GameStates): GameStates {
     switch (currentState) {
@@ -20,15 +19,19 @@ export class PokerService {
     }
   }
 
-  public toggleRoomGameState(roomId: string): GameStates {
-    const room: Room = this.rooms.get(roomId);
+  public toggleRoomGameState(roomNumber: string): void {
+    const room: Room = this.rooms.get(roomNumber);
 
     if (!room) {
       return;
     }
 
     room.state = this.toggleGameState(room.state);
-    this.rooms.set(roomId, room);
+    this.rooms.set(roomNumber, room);
+  }
+
+  public getRoomGameState(roomNumber: string): GameStates {
+    const room: Room = this.rooms.get(roomNumber);
     return room.state;
   }
 
@@ -50,26 +53,22 @@ export class PokerService {
     this.rooms.delete(id);
   }
 
-  public addClient(client: Client) {
-    this.clients.set(client.id, client);
+  public addPlayer(player: Player) {
+    this.players.set(player.id, player);
   }
 
-  public setClientARoom(clientId: string, roomId: string) {
-    const client: Client = this.clients.get(clientId);
-    client.room = roomId;
-    this.clients.set(clientId, client);
+  public setPlayerRoom(playerId: string, roomId: string) {
+    const player: Player = this.players.get(playerId);
+    player.room = roomId;
+    this.players.set(playerId, player);
   }
 
-  public removeClient(id: string) {
-    this.clients.delete(id);
+  public removePlayer(id: string) {
+    this.players.delete(id);
   }
 
-  public isClientHost(id: string): boolean {
-    return this.clients.get(id).type === ClientType.HOST;
-  }
-
-  public getClientById(id: string): Client {
-    return this.clients.get(id);
+  public getPlayerById(id: string): Player {
+    return this.players.get(id);
   }
 
   public checkIsRoomExists(id: string): boolean {
@@ -79,10 +78,10 @@ export class PokerService {
   public resetVotingForRoom(roomId: string): void {
     const room: Room = this.getRoomById(roomId);
 
-    room.clients.forEach((client: Client) => {
-      client.card = null;
-      client.status = UserStatuses.WAITING;
-      room.updateClientInRoom(client);
+    room.players.forEach((player: Player) => {
+      player.card = null;
+      player.status = PlayerStatuses.WAITING;
+      room.updatePlayerInRoom(player);
     });
   }
 

@@ -1,43 +1,50 @@
-import { DatePipe } from '@angular/common';
-import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Client, ClientType, GameStateBroadcastDto, GameStates, UserStatuses } from '@planning-poker/api-interfaces';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Select, Store } from '@ngxs/store';
+import { BehaviorSubject, interval, Observable } from 'rxjs';
+import { debounceTime, filter, map, startWith } from 'rxjs/operators';
+
+import { GameStates, Player, PlayerStatuses } from '@planning-poker/api-interfaces';
 import { ButtonColor } from '@shared/button/button-color.enum';
-import { GoogleAnalyticsService } from 'ngx-google-analytics';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
-import { HostService } from '../host.service';
+import { TakeUntilDestroy, untilDestroyed } from '@shared/decorators/take-until-destroy.decorator';
+import { CopyToClipboardService } from '@shared/services/copy-to-clipboard/copy-to-clipboard.service';
+import { EnvironmentService } from '@shared/services/environment/environment.service';
+
+import { HostActions } from '../store/actions/host.actions';
+import { HostState } from '../store/states/host.state';
 import { BoardGuard } from './board.guard';
+import CloseRoom = HostActions.CloseRoom;
+import GetGameState = HostActions.GetGameState;
+import GetUsers = HostActions.GetPlayers;
+import ToggleGameState = HostActions.ToggleGameState;
+import HostBoardInit = HostActions.HostBoardInit;
+import CopyRoomLink = HostActions.CopyRoomLink;
 
 @Component({
   selector: 'planning-poker-board',
   templateUrl: './board.component.html',
   styleUrls: ['./board.component.scss']
 })
+@TakeUntilDestroy()
 export class BoardComponent implements OnInit, OnDestroy {
 
-  @ViewChild('roomLinkInput') public roomLinkInput: ElementRef;
-  public roomId: string;
-  public users$: Observable<Client[]>;
-  public userStatues = UserStatuses;
-  public gameState$: Observable<GameStates>;
-  public gameStates = GameStates;
-  public buttonColors = ButtonColor;
-  public reviewCardsSubject$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public currentTime$: Observable<Date>;
   public leaveModalVisibility$: Observable<boolean>;
-  public roomLink: string;
   public linkCopied$: Observable<boolean>;
-  private destroySubject$: Subject<null>;
+  @Select(HostState.gameState) public readonly gameState$: Observable<GameStates>;
+  @Select(HostState.roomNumber) public readonly roomNumber$: Observable<string>;
+  @Select(HostState.players) public readonly players$: Observable<Player[]>;
+  public readonly gameStates = GameStates;
+  public readonly userStatues = PlayerStatuses;
+  public readonly buttonColors = ButtonColor;
   private leaveModalVisibilitySubject$: BehaviorSubject<boolean>;
   private linkCopiedSubject$: BehaviorSubject<boolean>;
 
-  constructor(private hostService: HostService,
-              private activatedRoute: ActivatedRoute,
-              private $gaService: GoogleAnalyticsService,
-              private boardGuard: BoardGuard,
-              private router: Router) {
-    this.destroySubject$ = new Subject<null>();
+  constructor(private boardGuard: BoardGuard,
+              private router: Router,
+              private environmentService: EnvironmentService,
+              private copyToClipboardService: CopyToClipboardService,
+              private store: Store) {
     this.leaveModalVisibilitySubject$ = new BehaviorSubject<boolean>(false);
     this.leaveModalVisibility$ = this.leaveModalVisibilitySubject$.asObservable();
     this.linkCopiedSubject$ = new BehaviorSubject<boolean>(false);
@@ -45,65 +52,46 @@ export class BoardComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.$gaService.pageView('/host/board');
-
-    this.roomId = this.hostService.hostRoom;
-    this.roomLink = window.location.origin + '/guest/room-code?code=' + this.roomId;
-    this.hostService.joinRoom(this.roomId);
-
-    this.users$ = this.hostService.getUsers()
-      .pipe(
-        map((users: Client[]) => {
-          return users.filter((user: Client) => user.type === ClientType.VOTER);
-        })
-      );
-
-    this.currentTime$ = this.hostService.currentTime();
-
-    this.gameState$ = this.hostService.getGameState()
-      .pipe(
-        map((data: GameStateBroadcastDto) => data.state),
-        tap((gameState: GameStates) => this.handleGameStateChange(gameState))
-      );
+    this.dispatchOnInitActions();
+    this.store.dispatch(new HostBoardInit());
+    this.currentTime$ = this.getCurrentTime$();
   }
 
   public ngOnDestroy(): void {
-    this.destroySubject$.next(null);
+    this.dispatchOnDestroyActions();
   }
 
-  @HostListener('window:beforeunload')
-  beforeUnloadHandler(event) {
-    return false;
-
+  public toggleGameState(): void {
+    this.store.dispatch(new ToggleGameState());
   }
 
-  public get leaveModalVisibility(): boolean {
-    return this.leaveModalVisibilitySubject$.getValue();
+  public closeRoom() {
+    this.router.navigateByUrl('/');
   }
 
   public set leaveModalVisibility(value: boolean) {
     this.leaveModalVisibilitySubject$.next(value);
   }
 
-  public toggleGameState(): void {
-    this.hostService.toggleGameState(this.roomId);
-    this.$gaService.event('toggle_game_state', 'host', 'Toggle game state');
+  public get roomLink(): string {
+    const roomNumber: string = this.store.selectSnapshot(HostState.roomNumber);
+    return window.location.origin + '/guest/room-code?code=' + roomNumber;
   }
 
-  public getRoomLink(): void {
-    this.roomLinkInput.nativeElement.select();
-    this.roomLinkInput.nativeElement.setSelectionRange(0, 99999);
-    document.execCommand("copy");
-    this.roomLinkInput.nativeElement.blur();
+  public copyToClipboardRoomLink(): void {
+    this.store.dispatch(new CopyRoomLink());
+    this.copyToClipboardService.copyText(this.roomLink);
     this.linkCopiedSubject$.next(true);
 
-    setTimeout(() => {
-      this.linkCopiedSubject$.next(false);
-    }, 2000);
-  }
-
-  public closeRoom() {
-    this.router.navigateByUrl('/');
+    this.linkCopied$
+      .pipe(
+        debounceTime(2000),
+        filter((value: boolean) => value),
+        untilDestroyed(this)
+      )
+      .subscribe(() => {
+        this.linkCopiedSubject$.next(false);
+      });
   }
 
   public showLeaveModal(): void {
@@ -124,7 +112,29 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.closeLeaveModal();
   }
 
-  private handleGameStateChange(gameState: GameStates): void {
-    this.reviewCardsSubject$.next(gameState === GameStates.REVIEW);
+  @HostListener('window:beforeunload')
+  public beforeUnloadHandler() {
+    if (this.environmentService.production) {
+      return false;
+    }
+  }
+
+  private dispatchOnInitActions(): void {
+    this.store.dispatch([
+      new GetUsers(),
+      new GetGameState()
+    ]);
+  }
+
+  private dispatchOnDestroyActions(): void {
+    this.store.dispatch(new CloseRoom());
+  }
+
+  private getCurrentTime$(): Observable<Date> {
+    return interval(1000)
+      .pipe(
+        startWith(<Date>null),
+        map(() => new Date())
+      );
   }
 }

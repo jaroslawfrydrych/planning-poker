@@ -1,12 +1,11 @@
-import { Cards, UserStatuses } from '../..';
-import { ClientType } from '../enum/client-type.enum';
+import { Cards, PlayerStatuses, PlayerType } from '../..';
 
-export interface Client {
+export interface Player {
   id: string;
-  type?: ClientType;
+  type?: PlayerType;
   room?: string;
   name?: string;
   date?: number;
   card?: Cards;
-  status?: UserStatuses;
+  status?: PlayerStatuses;
 }

@@ -1,21 +1,17 @@
 <div class="cards">
-  <ng-container *ngFor="let user of users$ | async">
+  <ng-container *ngFor="let player of players$ | async">
     <planning-poker-card [boardCard]="true"
-                         [review]="reviewCardsSubject$ | async"
-                         [card]="user.card"
-                         [label]="user.name"
-                         [playerReady]="user.status === userStatues.VOTED"></planning-poker-card>
+                         [gameState]="gameState$ | async"
+                         [card]="player.card"
+                         [label]="player.name"
+                         [playerReady]="player.status === userStatues.VOTED"></planning-poker-card>
   </ng-container>
 </div>
 
 <div class="sidebar">
   <header class="sidebar-header">
     <h1>ROOM ID:</h1>
-    <h2 planningPokerTextFixedWidth>{{roomId}}</h2>
-
-    <input #roomLinkInput
-           class="room-link-input"
-           [value]="roomLink">
+    <h2 planningPokerTextFixedWidth>{{roomNumber$ | async}}</h2>
 
     <planning-poker-text-fixed-width class="clock"
                                      [value]="currentTime$ | async | date:'HH:mm'">
@@ -33,7 +29,7 @@
 
     <button planningPokerButton
             [buttonColor]="buttonColors.SECONDARY"
-            (click)="getRoomLink()"
+            (click)="copyToClipboardRoomLink()"
             [ngSwitch]="linkCopied$ | async">
       <ng-container *ngSwitchDefault>Get room link</ng-container>
       <ng-container *ngSwitchCase="true">Link copied</ng-container>

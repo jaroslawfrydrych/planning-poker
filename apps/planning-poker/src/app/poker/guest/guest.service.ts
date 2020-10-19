@@ -1,14 +1,10 @@
 import { Injectable } from '@angular/core';
-import {
-  Cards,
-  ClientType,
-  GameStateBroadcastDto,
-  JoinRoomCodeResponseDto,
-  RoomInfoInterface
-} from '@planning-poker/api-interfaces';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { delay, tap } from 'rxjs/operators';
-import { PokerService } from '../services/poker.service';
+import { delay } from 'rxjs/operators';
+
+import { Cards, GameStates, JoinRoomCodeResponseDto, PlayerType, RoomInfo } from '@planning-poker/api-interfaces';
+
+import { PokerService } from '../service/poker.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,38 +25,52 @@ export class GuestService {
     this.guestRoomSubject$.next(value);
   }
 
-  public checkCode(code: string): Observable<JoinRoomCodeResponseDto> {
-    return this.pokerService.checkRoomCode(code)
+  public get availableCards(): Cards[] {
+    return [
+      Cards.ZERO,
+      Cards.HALF,
+      Cards.ONE,
+      Cards.TWO,
+      Cards.THREE,
+      Cards.FIVE,
+      Cards.EIGHT,
+      Cards.THIRTEEN,
+      Cards.TWENTY,
+      Cards.FORTY,
+      Cards.HUNDRED,
+      Cards.QUESTION_MARK,
+      Cards.COFFEE,
+      Cards.INFINITE
+    ];
+  }
+
+  public validateRoomNumber(roomNumber: string): Observable<JoinRoomCodeResponseDto> {
+    return this.pokerService.validateRoomCode(roomNumber)
       .pipe(
-        delay(500),
-        tap((response: JoinRoomCodeResponseDto) => {
-          if (response.valid) {
-            this.guestRoom = code;
-          }
-        })
+        delay(500)
       );
   }
 
-  public sendCard(card: Cards): void {
-    this.pokerService.sendVote({
+  public chooseCard(card: Cards, roomNumber: string): void {
+    this.pokerService.chooseCard({
       card,
-      room: this.guestRoom
+      roomNumber
     });
   }
 
-  public getGameState(): Observable<GameStateBroadcastDto> {
-    return this.pokerService.receiveGameState();
+  public getGameState(): Observable<GameStates> {
+    return this.pokerService.getGameState();
   }
 
-  public joinRoom(name: string): void {
-    this.pokerService.joinRoom(this.guestRoom, ClientType.VOTER, name);
+  public joinRoom(name: string, roomNumber: string): void {
+    this.pokerService.joinRoom(roomNumber, PlayerType.VOTER, name);
   }
 
-  public getRoomInfo(): Observable<RoomInfoInterface> {
-    return this.pokerService.getRoomInfo(this.guestRoom);
+  public getRoomInfo(roomNumber: string): Observable<RoomInfo> {
+    return this.pokerService.getRoomInfo(roomNumber);
   }
 
-  public onRoomRemove(): Observable<null> {
-    return this.pokerService.onRoomRemove();
+  public roomRemove(): Observable<null> {
+    return this.pokerService.roomRemove();
   }
 }

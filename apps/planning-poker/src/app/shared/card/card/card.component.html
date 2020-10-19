@@ -2,7 +2,7 @@
      *ngIf="boardCard && label">{{label}}</div>
 
 <div class="card reverse board-card"
-     [class.review]="review && playerReady"
+     [class.review]="isInReviewState && playerReady"
      *ngIf="boardCard">
   <div class="header">
     Planing Poker
@@ -22,11 +22,11 @@
 </div>
 
 <button class="card"
-        [class.review]="review && playerReady"
+        [class.review]="isInReviewState && playerReady"
         [class.board-card]="boardCard"
         [class.is-not-selected]="isCardSelected === false"
         [class.is-selected]="isCardSelected === true"
-        [class.card-faded]="boardCard && review && !playerReady"
+        [class.card-faded]="boardCard && isInReviewState && !playerReady"
         (click)="onCardClick()">
   <div class="header">
     Planing Poker
@@ -44,13 +44,13 @@
       </ng-container>
     </ng-container>
 
-    <ng-contianer *ngIf="boardCard && !review && !playerReady">
+    <ng-contianer *ngIf="boardCard && !isInReviewState && !playerReady">
       <planning-poker-icon>hourglass_empty</planning-poker-icon>
     </ng-contianer>
     <ng-contianer *ngIf="boardCard && playerReady">
       <planning-poker-icon>check</planning-poker-icon>
     </ng-contianer>
-    <ng-container *ngIf="boardCard && review && !playerReady">
+    <ng-container *ngIf="boardCard && isInReviewState && !playerReady">
       <planning-poker-icon>close</planning-poker-icon>
     </ng-container>
   </div>

@@ -5,18 +5,20 @@ import {
   WebSocketGateway,
   WebSocketServer
 } from '@nestjs/websockets';
+import { Server, Socket } from 'socket.io';
+
 import {
-  Client,
-  ClientType,
   GameStateBroadcastDto,
   GameStates,
   JoinRequestDto,
+  Player,
+  PlayersResponseDto,
+  PlayerStatuses,
+  PlayerType,
   SocketEvents,
-  UsersResponseDto,
-  UserStatuses,
   Vote
 } from '@planning-poker/api-interfaces';
-import { Server, Socket } from 'socket.io';
+
 import { PokerService } from './poker.service';
 import { Room } from './room';
 
@@ -30,7 +32,7 @@ export class PokerGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   public handleConnection(client: Socket): void {
     console.log('on connect', client.id);
-    this.pokerService.addClient({
+    this.pokerService.addPlayer({
       id: client.id
     });
   }
@@ -38,88 +40,89 @@ export class PokerGateway implements OnGatewayConnection, OnGatewayDisconnect {
   public handleDisconnect(client: Socket): void {
     console.log('on disconnect', client.id);
     const clientId: string = client.id;
-    const clientData: Client = this.pokerService.getClientById(clientId);
-    const roomId: string = clientData.room;
+    const playerData: Player = this.pokerService.getPlayerById(clientId);
+    const roomId: string = playerData.room;
     const room: Room = this.pokerService.getRoomById(roomId);
 
     if (!room) {
       return;
     }
 
-    const clientInRoom: Client = room.getClientFromRoom(clientId);
+    const clientInRoom: Player = room.getPlayerFromRoom(clientId);
 
-    if (clientInRoom.type === ClientType.HOST) {
-      console.log('remove room', clientData.room);
-      this.pokerService.removeRoom(clientData.room);
+    if (clientInRoom.type === PlayerType.HOST) {
+      console.log('remove room', playerData.room);
+      this.pokerService.removeRoom(playerData.room);
       this.server.to(roomId).emit(SocketEvents.ROOM_REMOVED);
     } else if (room) {
-      room.removeClientFromFrom(client.id);
+      room.removePlayerFromFrom(client.id);
     }
 
-    this.pokerService.removeClient(client.id);
+    this.pokerService.removePlayer(client.id);
 
-    this.emitUsersChangeToRoom(clientData.room);
+    this.emitUsersChangeToRoom(playerData.room);
   }
 
   @SubscribeMessage(SocketEvents.VOTE)
   public onVote(client: Socket, message: Vote): void {
-    const room: Room = this.pokerService.getRoomById(message.room);
+    const room: Room = this.pokerService.getRoomById(message.roomNumber);
 
-    if (!room) {
+    if (!room || room.state === GameStates.REVIEW) {
       return;
     }
 
-    const clientData: Client = room.getClientFromRoom(client.id);
-    clientData.card = message.card;
-    clientData.status = UserStatuses.VOTED;
-    room.updateClientInRoom(clientData);
-    this.emitUsersChangeToRoom(message.room);
+    const playerData: Player = room.getPlayerFromRoom(client.id);
+    playerData.card = message.card;
+    playerData.status = PlayerStatuses.VOTED;
+    room.updatePlayerInRoom(playerData);
+    this.emitUsersChangeToRoom(message.roomNumber);
   }
 
   @SubscribeMessage(SocketEvents.STATE)
-  public onState(client: Socket, roomId: string): void {
-    const state: GameStates = this.pokerService.toggleRoomGameState(roomId);
+  public onState(client: Socket, roomNumber: string): void {
+    this.pokerService.toggleRoomGameState(roomNumber);
+    const state: GameStates = this.pokerService.getRoomGameState(roomNumber);
     const broadcastMessage: GameStateBroadcastDto = {
       state
     };
 
-    this.server.to(roomId).emit(SocketEvents.STATE, broadcastMessage);
+    this.server.to(roomNumber).emit(SocketEvents.STATE, broadcastMessage);
 
     if (state === GameStates.IN_PROGRESS) {
-      this.pokerService.resetVotingForRoom(roomId);
-      this.emitUsersChangeToRoom(roomId);
+      this.pokerService.resetVotingForRoom(roomNumber);
     }
   }
 
   @SubscribeMessage(SocketEvents.JOIN)
   public onJoin(client: Socket, message: JoinRequestDto): void {
-    const roomId: string = message.room;
-    const room: Room = this.pokerService.getRoomById(roomId);
-    room.addClientToRoom({
+    const roomNumber: string = message.room;
+    const room: Room = this.pokerService.getRoomById(roomNumber);
+    room.addPlayerToRoom({
       id: client.id,
       name: message.name,
       type: message.type
     });
 
-    client.join(roomId);
-    this.pokerService.setClientARoom(client.id, roomId);
-    this.emitUsersChangeToRoom(roomId);
+    client.join(roomNumber);
+    this.pokerService.setPlayerRoom(client.id, roomNumber);
+    this.emitUsersChangeToRoom(roomNumber);
   }
 
-  public emitUsersChangeToRoom(roomId: string): void {
-    const room: Room = this.pokerService.getRoomById(roomId);
+  public emitUsersChangeToRoom(roomNumber: string): void {
+    const room: Room = this.pokerService.getRoomById(roomNumber);
 
     if (!room) {
       return;
     }
 
-    const clients: Client[] = Array.from(room.clients.values())
-      .sort((clientA: Client, clientB: Client) => clientB.date - clientA.date);
+    const players: Player[] = Array.from(room.players.values())
+      .sort((firstPlayer: Player, secondPlayer: Player) => secondPlayer.date - firstPlayer.date)
+      .filter((player: Player) => player.type === PlayerType.VOTER);
 
-    const clientsResponse: UsersResponseDto = {
-      clients
+    const playersResponse: PlayersResponseDto = {
+      players
     };
 
-    this.server.to(roomId).emit(SocketEvents.USERS, clientsResponse);
+    this.server.to(roomNumber).emit(SocketEvents.PLAYERS, playersResponse);
   }
 }

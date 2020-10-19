@@ -1,10 +1,12 @@
-import { Client, GameStates } from '@planning-poker/api-interfaces';
 import { BehaviorSubject } from 'rxjs';
+
+import { GameStates, Player } from '@planning-poker/api-interfaces';
 
 export class Room {
 
   public id: string;
-  public clients: Map<string, Client> = new Map();
+  public host: Player;
+  public players: Map<string, Player> = new Map();
   private stateSubject$: BehaviorSubject<GameStates> = new BehaviorSubject<GameStates>(GameStates.IN_PROGRESS);
 
   constructor() {
@@ -23,20 +25,24 @@ export class Room {
     this.id = this.generateId();
   }
 
-  public addClientToRoom(client: Client): void {
-    this.clients.set(client.id, client);
+  public addPlayerToRoom(player: Player): void {
+    this.players.set(player.id, player);
   }
 
-  public removeClientFromFrom(clientId: string): void {
-    this.clients.delete(clientId);
+  public setRoomHost(player: Player): void {
+    this.host = player;
   }
 
-  public updateClientInRoom(client: Client): void {
-    this.clients.set(client.id, client);
+  public removePlayerFromFrom(playerId: string): void {
+    this.players.delete(playerId);
   }
 
-  public getClientFromRoom(clientId: string): Client {
-    return this.clients.get(clientId);
+  public updatePlayerInRoom(player: Player): void {
+    this.players.set(player.id, player);
+  }
+
+  public getPlayerFromRoom(playerId: string): Player {
+    return this.players.get(playerId);
   }
 
   private generateId(): string {

@@ -1,29 +1,34 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, CanDeactivate, Router } from '@angular/router';
+import { Store } from '@ngxs/store';
 import { Observable, Subject } from 'rxjs';
-import { first, tap } from 'rxjs/operators';
-import { HostService } from '../host.service';
+import { first, map, tap } from 'rxjs/operators';
+
+import { HostBaseGuard } from '../host-base.guard';
 import { BoardComponent } from './board.component';
 
 @Injectable({
   providedIn: 'root'
 })
-export class BoardGuard implements CanActivate, CanDeactivate<BoardComponent> {
+export class BoardGuard extends HostBaseGuard implements CanActivate, CanDeactivate<BoardComponent> {
 
   private discardSubject: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private router: Router,
-              private hostService: HostService) {
+  constructor(store: Store,
+              router: Router) {
+    super(store, router);
   }
 
-  public canActivate(): boolean {
-    const hasHostRoom: boolean = !!this.hostService.hostRoom;
-
-    if (!hasHostRoom) {
-      this.router.navigateByUrl('/');
-    }
-
-    return !!this.hostService.hostRoom;
+  public canActivate(): Observable<boolean> {
+    return this.hasRoomNumber()
+      .pipe(
+        map((hasRoomNumber: boolean) => hasRoomNumber),
+        tap((allowToGo: boolean) => {
+          if (!allowToGo) {
+            this.navigateToHomePage();
+          }
+        })
+      );
   }
 
   public canDeactivate(component: BoardComponent): Observable<boolean> {

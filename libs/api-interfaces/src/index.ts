@@ -3,7 +3,7 @@
  */
 export * from './lib/model/vote.interface';
 export * from './lib/model/state.interface';
-export * from './lib/model/room-info.interface';
+export * from './lib/model/room.info';
 export * from './lib/model/client.interface';
 export * from './lib/model/create-room-dto.interface';
 export * from './lib/model/game-state-dto.interface';
@@ -21,5 +21,5 @@ export * from './lib/model/voted.interface';
 export * from './lib/enum/cards.enum';
 export * from './lib/enum/game-states.enum';
 export * from './lib/enum/socket.events';
-export * from './lib/enum/user-statuses.enum';
-export * from './lib/enum/client-type.enum';
+export * from './lib/enum/player-statuses.enum';
+export * from './lib/enum/player-type.enum';

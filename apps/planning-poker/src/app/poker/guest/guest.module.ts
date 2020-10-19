@@ -1,20 +1,30 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NgxsModule } from '@ngxs/store';
+
 import { SharedModule } from '../../shared/shared.module';
+import { GameComponent } from './game/game.component';
 import { GuestRoutingModule } from './guest-routing.module';
 import { RoomCodeComponent } from './room-code/room-code.component';
+import { GuestState } from './store/states/guest.state';
 import { YourNameComponent } from './your-name/your-name.component';
-import { GameComponent } from './game/game.component';
 
 
 @NgModule({
-  declarations: [RoomCodeComponent, YourNameComponent, GameComponent],
+  declarations: [
+    RoomCodeComponent,
+    YourNameComponent,
+    GameComponent
+  ],
   imports: [
     CommonModule,
     GuestRoutingModule,
     SharedModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxsModule.forFeature([
+      GuestState
+    ])
   ]
 })
 export class GuestModule {

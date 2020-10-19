@@ -1,95 +1,76 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Cards, GameStateBroadcastDto, GameStates, RoomInfoInterface } from '@planning-poker/api-interfaces';
-import { GoogleAnalyticsService } from 'ngx-google-analytics';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { GuestService } from '../guest.service';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Actions, ofActionSuccessful, Select, Store } from '@ngxs/store';
+import { Observable } from 'rxjs';
+
+import { Cards, GameStates } from '@planning-poker/api-interfaces';
+import { TakeUntilDestroy, untilDestroyed } from '@shared/decorators/take-until-destroy.decorator';
+import { EnvironmentService } from '@shared/services/environment/environment.service';
+
+import { GuestActions } from '../store/actions/guest.actions';
+import { GuestState } from '../store/states/guest.state';
+import ChooseCard = GuestActions.ChooseCard;
+import GuestGameInit = GuestActions.GuestGameInit;
+import GetGameState = GuestActions.GetGameState;
+import RoomRemove = GuestActions.RemoveRoom;
+import CloseRoom = GuestActions.CloseRoom;
+import GetRoomRemove = GuestActions.GetRoomRemove;
 
 @Component({
   selector: 'planning-poker-game',
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.scss']
 })
+@TakeUntilDestroy()
 export class GameComponent implements OnInit, OnDestroy {
 
-  public inReview = false;
-  public selectedCard$: Observable<Cards>;
-  public cards: Cards[] = [
-    Cards.ZERO,
-    Cards.HALF,
-    Cards.ONE,
-    Cards.TWO,
-    Cards.THREE,
-    Cards.FIVE,
-    Cards.EIGHT,
-    Cards.THIRTEEN,
-    Cards.TWENTY,
-    Cards.FORTY,
-    Cards.HUNDRED,
-    Cards.QUESTION_MARK,
-    Cards.COFFEE,
-    Cards.INFINITE
-  ];
-  private selectedCardValueSubject$: BehaviorSubject<Cards> = new BehaviorSubject<Cards>(null);
-  private destroySubject$: Subject<null> = new Subject<null>();
+  public cards: Cards[];
+  @Select(GuestState.card) public readonly card$: Observable<Cards>;
 
-  constructor(private guestService: GuestService,
-              private changeDetectorRef: ChangeDetectorRef,
-              private activatedRoute: ActivatedRoute,
-              private router: Router,
-              private $gaService: GoogleAnalyticsService) {
-    this.selectedCard$ = this.selectedCardValueSubject$.asObservable();
+  constructor(private router: Router,
+              private actions$: Actions,
+              private store: Store,
+              private environmentService: EnvironmentService) {
   }
 
   public ngOnInit(): void {
-    this.$gaService.pageView('/game');
+    this.store.dispatch([
+      new GuestGameInit(),
+      new GetGameState(),
+      new GetRoomRemove()
+    ]);
 
-    const roomInfo: RoomInfoInterface = this.activatedRoute.snapshot.data.data;
-    this.inReview = roomInfo.state === GameStates.REVIEW;
+    this.cards = this.store.selectSnapshot(GuestState.availableCards);
 
-    this.guestService.getGameState()
+    this.actions$
       .pipe(
-        takeUntil(this.destroySubject$)
+        ofActionSuccessful(RoomRemove),
+        untilDestroyed(this)
       )
-      .subscribe((gameState: GameStateBroadcastDto) => this.handleGameState(gameState));
-
-    this.guestService.onRoomRemove()
-      .pipe(
-        takeUntil(this.destroySubject$)
-      )
-      .subscribe(() => this.handleRoomRemove());
+      .subscribe(() => this.navigateToLadingPage());
   }
 
   public ngOnDestroy(): void {
-    this.destroySubject$.next(null);
-  }
-
-  public set selectedCard(value: Cards) {
-    if (this.inReview) {
-      return;
-    }
-
-    this.selectedCardValueSubject$.next(value);
-    this.guestService.sendCard(value);
+    this.store.dispatch(CloseRoom);
+    this.navigateToLadingPage();
   }
 
   public onCardClick(card: Cards): void {
-    this.$gaService.event('user_voted', 'guest', 'User voted');
-    this.selectedCard = card;
+    if (this.store.selectSnapshot(GuestState.gameState) === GameStates.REVIEW) {
+      return;
+    }
+
+    this.store.dispatch(new ChooseCard(card));
   }
 
-  private handleGameState(gameState: GameStateBroadcastDto): void {
-    this.inReview = gameState.state === GameStates.REVIEW;
-
-    if (gameState.state === GameStates.IN_PROGRESS) {
-      this.selectedCardValueSubject$.next(null);
-      this.changeDetectorRef.detectChanges();
+  @HostListener('window:beforeunload')
+  public beforeUnloadHandler() {
+    if (this.environmentService.production) {
+      return false;
     }
   }
 
-  private handleRoomRemove(): void {
+  private navigateToLadingPage(): void {
     this.router.navigateByUrl('/');
-    this.guestService.guestRoom = null;
   }
 }

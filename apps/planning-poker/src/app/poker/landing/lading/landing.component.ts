@@ -1,9 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngxs/store';
 import { GoogleAnalyticsService } from 'ngx-google-analytics';
-import { Socket } from 'ngx-socket-io';
+
+import { TakeUntilDestroy } from '@shared/decorators/take-until-destroy.decorator';
+
 import { GuestService } from '../../guest/guest.service';
-import { HostService } from '../../host/host.service';
+import { GuestState } from '../../guest/store/states/guest.state';
+import { HostState } from '../../host/store/states/host.state';
 
 @Component({
   selector: 'planning-poker-landing',
@@ -11,24 +15,26 @@ import { HostService } from '../../host/host.service';
   styleUrls: ['./landing.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
+@TakeUntilDestroy()
 export class LandingComponent implements OnInit {
 
   constructor(private router: Router,
-              private socket: Socket,
+              private store: Store,
               private guestService: GuestService,
-              private hostService: HostService,
               private $gaService: GoogleAnalyticsService) {
   }
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.$gaService.pageView('/');
-    this.guestService.guestRoom = null;
-    this.hostService.hostRoom = null;
+
+    this.store.reset([
+      GuestState,
+      HostState
+    ]);
   }
 
   public goToGuestPath(): void {
     this.router.navigateByUrl('/guest');
-
   }
 
   public goToHostPath(): void {
