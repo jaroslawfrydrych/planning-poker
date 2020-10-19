@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
-import { GameStates, Player } from '@planning-poker/api-interfaces';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { GameStates, Player, PlayerType, RoomInfo } from '@planning-poker/api-interfaces';
 
 import { PokerService } from '../service/poker.service';
 
@@ -10,34 +10,27 @@ import { PokerService } from '../service/poker.service';
 })
 export class HostService {
 
-  public gameState$: Observable<GameStates>;
-  private gameStateSubject$: BehaviorSubject<GameStates>;
-  private hostRoomSubject$: BehaviorSubject<string>;
-
   constructor(private pokerService: PokerService) {
-    this.gameStateSubject$ = new BehaviorSubject<GameStates>(GameStates.IN_PROGRESS);
-    this.gameState$ = this.gameStateSubject$.asObservable();
-    this.hostRoomSubject$ = new BehaviorSubject<string>(null);
   }
 
-  public get gameState(): GameStates {
-    return this.gameStateSubject$.getValue();
+  public createRoom(): Observable<RoomInfo> {
+    return this.pokerService.createRoom();
   }
 
-  public set gameState(value: GameStates) {
-    this.gameStateSubject$.next(value);
+  public joinRoom(roomNumber: string): void {
+    this.pokerService.joinRoom(roomNumber, PlayerType.HOST);
   }
 
   public getUsers(): Observable<Player[]> {
     return this.pokerService.getUsers();
   }
 
-  public toggleGameState(roomId: string): void {
-    this.pokerService.toggleGameState(roomId);
-  }
-
   public getGameState(): Observable<GameStates> {
     return this.pokerService.getGameState();
+  }
+
+  public toggleGameState(roomNumber: string): void {
+    return this.pokerService.toggleGameState(roomNumber);
   }
 }
 

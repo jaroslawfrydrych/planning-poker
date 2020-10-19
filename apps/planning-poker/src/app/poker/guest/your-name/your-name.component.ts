@@ -1,9 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { GoogleAnalyticsService } from 'ngx-google-analytics';
+import { Store } from '@ngxs/store';
 
-import { GuestService } from '../guest.service';
+import { untilDestroyed } from '@shared/decorators/take-until-destroy.decorator';
+
+import { GuestActions } from '../store/actions/guest.actions';
+import JoinRoom = GuestActions.JoinRoom;
+import GuestNameInit = GuestActions.GuestNameInit;
 
 @Component({
   selector: 'planning-poker-your-name',
@@ -16,13 +20,12 @@ export class YourNameComponent implements OnInit {
   public formGroup: FormGroup;
 
   constructor(private formBuilder: FormBuilder,
-              private guestService: GuestService,
               private router: Router,
-              private $gaService: GoogleAnalyticsService) {
+              private store: Store) {
   }
 
   public ngOnInit(): void {
-    this.$gaService.pageView('/guest/your-name');
+    this.store.dispatch(new GuestNameInit());
 
     this.formGroup = this.formBuilder.group({
       name: this.formBuilder.control(null, [Validators.required])
@@ -35,8 +38,11 @@ export class YourNameComponent implements OnInit {
 
   public submit(): void {
     if (this.formGroup.valid) {
-      this.guestService.joinRoom(this.nameFormControl.value);
-      this.router.navigateByUrl('/guest/game');
+      this.store.dispatch(new JoinRoom(this.nameFormControl.value))
+        .pipe(
+          untilDestroyed(this)
+        )
+        .subscribe(() => this.router.navigateByUrl('/guest/game'));
     }
   }
 }

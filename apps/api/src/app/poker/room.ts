@@ -5,6 +5,7 @@ import { GameStates, Player } from '@planning-poker/api-interfaces';
 export class Room {
 
   public id: string;
+  public host: Player;
   public players: Map<string, Player> = new Map();
   private stateSubject$: BehaviorSubject<GameStates> = new BehaviorSubject<GameStates>(GameStates.IN_PROGRESS);
 
@@ -26,6 +27,10 @@ export class Room {
 
   public addPlayerToRoom(player: Player): void {
     this.players.set(player.id, player);
+  }
+
+  public setRoomHost(player: Player): void {
+    this.host = player;
   }
 
   public removePlayerFromFrom(playerId: string): void {

@@ -1,5 +1,9 @@
 export namespace HostActions {
 
+  export class HostBoardInit {
+    static readonly type = '[HostActions] Host board initialization';
+  }
+
   export class CreateRoom {
     static readonly type = '[HostActions] Create room';
   }
@@ -18,6 +22,10 @@ export namespace HostActions {
 
   export class GetGameState {
     static readonly type = '[HostActions] Get game state';
+  }
+
+  export class CopyRoomLink {
+    static readonly type = '[HostActions] Copy room link';
   }
 
   export class CloseRoom {

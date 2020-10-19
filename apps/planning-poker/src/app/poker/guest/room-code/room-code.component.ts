@@ -1,13 +1,17 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngxs/store';
 import { GoogleAnalyticsService } from 'ngx-google-analytics';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { delay, finalize, takeUntil, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { delay, finalize, mergeMap, tap } from 'rxjs/operators';
 
-import { JoinRoomCodeResponseDto } from '@planning-poker/api-interfaces';
+import { TakeUntilDestroy, untilDestroyed } from '@shared/decorators/take-until-destroy.decorator';
 import { CodeComponent } from '@shared/form/code/code.component';
 
-import { GuestService } from '../guest.service';
+import { GuestActions } from '../store/actions/guest.actions';
+import { GuestState } from '../store/states/guest.state';
+import RoomNumberValidation = GuestActions.RoomNumberValidation;
+import GuestRoomNumberValidationInit = GuestActions.GuestRoomNumberValidationInit;
 
 @Component({
   selector: 'planning-poker-room-code',
@@ -15,7 +19,8 @@ import { GuestService } from '../guest.service';
   styleUrls: ['./room-code.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RoomCodeComponent implements OnInit, OnDestroy {
+@TakeUntilDestroy()
+export class RoomCodeComponent implements OnInit {
 
   @ViewChild(CodeComponent) public codeComponent: CodeComponent;
   public loading$: Observable<boolean>;
@@ -25,10 +30,9 @@ export class RoomCodeComponent implements OnInit, OnDestroy {
   private loadingSubject$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private successSubject$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private errorSubject$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  private destroySubject$: Subject<null> = new Subject<null>();
 
   constructor(private router: Router,
-              private guestService: GuestService,
+              private store: Store,
               private $gaService: GoogleAnalyticsService,
               private activatedRoute: ActivatedRoute) {
     this.loading$ = this.loadingSubject$.asObservable();
@@ -37,50 +41,48 @@ export class RoomCodeComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.$gaService.pageView('/guest/room-code');
-
-    const queryPrams: any = this.activatedRoute.snapshot.queryParams;
-
-    if (queryPrams.code) {
-      this.queryRoomCode = queryPrams.code;
-    }
+    this.store.dispatch(new GuestRoomNumberValidationInit());
+    this.handleQueryParams();
   }
 
-  public ngOnDestroy(): void {
-    this.destroySubject$.next(null);
-  }
-
-  public onCodeSubmit(code: string) {
+  public onRoomNumberSubmit(roomNumber: string) {
     if (this.loadingSubject$.getValue()) {
       return;
     }
 
     this.loadingSubject$.next(true);
 
-    this.guestService.checkCode(code)
+    this.store.dispatch(new RoomNumberValidation(roomNumber))
       .pipe(
-        takeUntil(this.destroySubject$),
         finalize(() => this.loadingSubject$.next(false)),
-        tap((response: JoinRoomCodeResponseDto) => {
-          this.loadingSubject$.next(false);
-
-          if (response.valid) {
+        mergeMap(() => this.store.select(GuestState.isRoomNumberValid)),
+        tap((isRoomNumberValid: boolean) => {
+          if (isRoomNumberValid) {
             this.successSubject$.next(true);
           } else {
             this.errorSubject$.next(true);
           }
         }),
         delay(1000),
-        tap(() => this.errorSubject$.next(false))
+        tap(() => this.errorSubject$.next(false)),
+        untilDestroyed(this)
       )
-      .subscribe((response: JoinRoomCodeResponseDto) => {
-        if (response.valid) {
-          this.router.navigateByUrl('/guest/your-name');
-          this.$gaService.event('code_enter_valid', 'guest', 'Enter code valid');
-        } else {
-          this.codeComponent.reset();
-          this.$gaService.event('code_enter_invalid', 'guest', 'Enter code invalid');
-        }
-      });
+      .subscribe((isRoomNumberValid: boolean) => this.handleRoomNumberValidation(isRoomNumberValid));
+  }
+
+  private handleRoomNumberValidation(isRoomNumberValid: boolean): void {
+    if (isRoomNumberValid) {
+      this.router.navigateByUrl('/guest/your-name');
+    } else {
+      this.codeComponent.reset();
+    }
+  }
+
+  private handleQueryParams() {
+    const queryPrams: any = this.activatedRoute.snapshot.queryParams;
+
+    if (queryPrams.code) {
+      this.queryRoomCode = queryPrams.code;
+    }
   }
 }

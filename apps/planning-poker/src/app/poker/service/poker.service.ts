@@ -34,12 +34,12 @@ export class PokerService {
       });
   }
 
-  public sendVote(vote: Vote): void {
+  public chooseCard(vote: Vote): void {
     this.socket.emit(SocketEvents.VOTE, vote);
   }
 
-  public toggleGameState(roomId: string): void {
-    this.socket.emit(SocketEvents.STATE, roomId);
+  public toggleGameState(roomNumber: string): void {
+    this.socket.emit(SocketEvents.STATE, roomNumber);
   }
 
   public getGameState(): Observable<GameStates> {
@@ -52,10 +52,7 @@ export class PokerService {
   public getUsers(): Observable<Player[]> {
     return this.socket.fromEvent(SocketEvents.PLAYERS)
       .pipe(
-        map((response: PlayersResponseDto) => response.players),
-        map((users: Player[]) => {
-          return users.filter((user: Player) => user.type === PlayerType.VOTER);
-        })
+        map((response: PlayersResponseDto) => response.players)
       );
   }
 
@@ -68,7 +65,7 @@ export class PokerService {
     this.socket.emit(SocketEvents.JOIN, request);
   }
 
-  public checkRoomCode(code: string): Observable<JoinRoomCodeResponseDto> {
+  public validateRoomCode(code: string): Observable<JoinRoomCodeResponseDto> {
     const request: JoinRoomCodeRequestDto = {
       id: code
     };
@@ -84,7 +81,7 @@ export class PokerService {
     return this.httpClient.post<RoomInfo>('/api/room-info', request);
   }
 
-  public onRoomRemove(): Observable<null> {
+  public roomRemove(): Observable<null> {
     return this.socket.fromEvent(SocketEvents.ROOM_REMOVED);
   }
 }

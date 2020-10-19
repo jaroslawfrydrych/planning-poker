@@ -19,15 +19,19 @@ export class PokerService {
     }
   }
 
-  public toggleRoomGameState(roomId: string): GameStates {
-    const room: Room = this.rooms.get(roomId);
+  public toggleRoomGameState(roomNumber: string): void {
+    const room: Room = this.rooms.get(roomNumber);
 
     if (!room) {
       return;
     }
 
     room.state = this.toggleGameState(room.state);
-    this.rooms.set(roomId, room);
+    this.rooms.set(roomNumber, room);
+  }
+
+  public getRoomGameState(roomNumber: string): GameStates {
+    const room: Room = this.rooms.get(roomNumber);
     return room.state;
   }
 

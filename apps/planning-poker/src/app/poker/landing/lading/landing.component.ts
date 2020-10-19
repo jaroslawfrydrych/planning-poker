@@ -3,7 +3,10 @@ import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { GoogleAnalyticsService } from 'ngx-google-analytics';
 
+import { TakeUntilDestroy } from '@shared/decorators/take-until-destroy.decorator';
+
 import { GuestService } from '../../guest/guest.service';
+import { GuestState } from '../../guest/store/states/guest.state';
 import { HostState } from '../../host/store/states/host.state';
 
 @Component({
@@ -12,6 +15,7 @@ import { HostState } from '../../host/store/states/host.state';
   styleUrls: ['./landing.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
+@TakeUntilDestroy()
 export class LandingComponent implements OnInit {
 
   constructor(private router: Router,
@@ -20,14 +24,17 @@ export class LandingComponent implements OnInit {
               private $gaService: GoogleAnalyticsService) {
   }
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.$gaService.pageView('/');
-    this.store.reset(HostState);
+
+    this.store.reset([
+      GuestState,
+      HostState
+    ]);
   }
 
   public goToGuestPath(): void {
     this.router.navigateByUrl('/guest');
-
   }
 
   public goToHostPath(): void {

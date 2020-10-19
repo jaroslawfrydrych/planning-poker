@@ -1,7 +1,6 @@
-import { GameStates, Player } from '@planning-poker/api-interfaces';
+import { Player } from '@planning-poker/api-interfaces';
+import { BaseModel } from '@store/model/base.model';
 
-export interface HostModel {
-  room: string;
-  gameState: GameStates,
-  players: Player[]
+export interface HostModel extends BaseModel {
+  players: Player[];
 }

@@ -1,6 +1,4 @@
-import { Component, EventEmitter, HostBinding, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
 
 import { Cards, GameStates } from '@planning-poker/api-interfaces';
 
@@ -9,34 +7,20 @@ import { Cards, GameStates } from '@planning-poker/api-interfaces';
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss']
 })
-export class CardComponent implements OnInit, OnDestroy {
+export class CardComponent {
 
   @Input() public card: Cards;
-  @Input() public selected$: Observable<Cards>;
-  @Input()
-  @HostBinding('class.board-card-host') public boardCard: boolean;
-  @Output() public cardClick: EventEmitter<null> = new EventEmitter<null>();
-  @Input() public playerReady = false;
+  @Input() public selectedCard: Cards;
   @Input() public label: string;
   @Input() public gameState: GameStates;
+  @Input()
+  @HostBinding('class.board-card-host') public boardCard: boolean;
+  @Input() public playerReady = false;
+  @Output() public cardClick: EventEmitter<null> = new EventEmitter<null>();
   public cards = Cards;
-  public isCardSelected = false;
-  private destroySubject$: Subject<null> = new Subject<null>();
 
-  public ngOnInit(): void {
-    if (this.selected$) {
-      this.selected$
-        .pipe(
-          takeUntil(this.destroySubject$)
-        )
-        .subscribe((selected: Cards) => {
-          this.isCardSelected = selected === null ? null : selected === this.card;
-        });
-    }
-  }
-
-  public ngOnDestroy() {
-    this.destroySubject$.next(null);
+  public get isCardSelected(): boolean {
+    return this.selectedCard === null ? null : this.selectedCard === this.card;
   }
 
   public get isInReviewState(): boolean {

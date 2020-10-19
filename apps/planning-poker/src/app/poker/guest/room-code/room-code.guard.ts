@@ -1,24 +1,31 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
+import { Store } from '@ngxs/store';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { GuestService } from '../guest.service';
+import { GuestState } from '../store/states/guest.state';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoomCodeGuard implements CanActivate {
 
-  constructor(private readonly guestService: GuestService,
+  constructor(private store: Store,
               private router: Router) {
   }
 
-  canActivate(): boolean {
-    const valid: boolean = !this.guestService.guestRoom;
+  canActivate(): Observable<boolean> {
+    return this.store.select(GuestState.hasRoomNumber)
+      .pipe(
+        map((hasRoomNumber: boolean) => {
+          if (hasRoomNumber) {
+            this.router.navigateByUrl('/');
+            return false;
+          }
 
-    if (!valid) {
-      this.router.navigateByUrl('/');
-    }
-
-    return valid;
+          return true;
+        })
+      );
   }
 }
