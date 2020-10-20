@@ -84,4 +84,8 @@ export class PokerService {
   public roomRemove(): Observable<null> {
     return this.socket.fromEvent(SocketEvents.ROOM_REMOVED);
   }
+
+  public leaveRoom(): void {
+    this.socket.emit(SocketEvents.LEAVE);
+  }
 }

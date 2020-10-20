@@ -54,7 +54,7 @@ export namespace GuestActions {
     static readonly type = '[GuestActions] Remove room';
   }
 
-  export class CloseRoom {
-    static readonly type = '[GuestActions] Close room';
+  export class LeaveRoom {
+    static readonly type = '[GuestActions] Leave room';
   }
 }

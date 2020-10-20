@@ -9,8 +9,13 @@ export class Room {
   public players: Map<string, Player> = new Map();
   private stateSubject$: BehaviorSubject<GameStates> = new BehaviorSubject<GameStates>(GameStates.IN_PROGRESS);
 
+  private static generateRandomNumber(): string {
+    const calculation: number = Math.floor(Math.random() * 90000) + 10000;
+    return calculation.toString();
+  }
+
   constructor() {
-    this.id = this.generateId();
+    this.generateRoomNumber();
   }
 
   public get state(): GameStates {
@@ -21,32 +26,32 @@ export class Room {
     this.stateSubject$.next(roomState);
   }
 
-  public regenerateId(): void {
-    this.id = this.generateId();
+  public generateRoomNumber(): void {
+    this.id = Room.generateRandomNumber();
   }
 
-  public addPlayerToRoom(player: Player): void {
+  public addPlayer(player: Player): void {
     this.players.set(player.id, player);
   }
 
-  public setRoomHost(player: Player): void {
-    this.host = player;
-  }
-
-  public removePlayerFromFrom(playerId: string): void {
-    this.players.delete(playerId);
-  }
-
-  public updatePlayerInRoom(player: Player): void {
-    this.players.set(player.id, player);
-  }
-
-  public getPlayerFromRoom(playerId: string): Player {
+  public getPlayer(playerId: string): Player {
     return this.players.get(playerId);
   }
 
-  private generateId(): string {
-    const calculation: number = Math.floor(Math.random()*90000) + 10000;
-    return calculation.toString();
+  public removePlayer(playerId: string): void {
+    this.players.delete(playerId);
+  }
+
+  public patchPlayer(playerId: string, patchData: Partial<Player>): void {
+    const player: Player = this.players.get(playerId);
+
+    this.players.set(playerId, {
+      ...player,
+      ...patchData
+    });
+  }
+
+  public hasRoomPlayer(playerId: string): boolean {
+    return this.players.has(playerId);
   }
 }

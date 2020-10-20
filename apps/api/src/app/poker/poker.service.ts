@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { GameStates, Player, PlayerStatuses, PlayerType } from '@planning-poker/api-interfaces';
+import { GameStates, Player, PlayerStatuses } from '@planning-poker/api-interfaces';
 
 import { Room } from './room';
 
@@ -40,7 +40,7 @@ export class PokerService {
 
     if (this.checkIsRoomExists(room.id)) {
       while (!this.checkIsRoomExists(room.id)) {
-        room.regenerateId();
+        room.generateRoomNumber();
       }
     }
 
@@ -67,25 +67,33 @@ export class PokerService {
     this.players.delete(id);
   }
 
-  public getPlayerById(id: string): Player {
-    return this.players.get(id);
-  }
-
   public checkIsRoomExists(id: string): boolean {
     return this.rooms.has(id);
   }
 
-  public resetVotingForRoom(roomId: string): void {
-    const room: Room = this.getRoomById(roomId);
+  public resetVotingForRoom(roomNumber: string): void {
+    const room: Room = this.getRoom(roomNumber);
 
     room.players.forEach((player: Player) => {
-      player.card = null;
-      player.status = PlayerStatuses.WAITING;
-      room.updatePlayerInRoom(player);
+      room.patchPlayer(player.id, {
+        card: null,
+        status: PlayerStatuses.WAITING
+      })
     });
   }
 
-  public getRoomById(id: string): Room {
-    return this.rooms.get(id);
+  public getRoom(roomNumber: string): Room {
+    return this.rooms.get(roomNumber);
+  }
+
+  public findPlayer(playerId: string): Player {
+    const foundRoom: Room = this.findPlayerRoom(playerId);
+    return foundRoom.getPlayer(playerId) || null;
+  }
+
+  public findPlayerRoom(playerId: string): Room {
+    const roomsArray: Room[] = Array.from(this.rooms.values());
+    const foundRoom: Room = roomsArray.find((room: Room) => room.hasRoomPlayer(playerId));
+    return foundRoom || null;
   }
 }

@@ -16,7 +16,7 @@ import RoomNumberValidation = GuestActions.RoomNumberValidation;
 import GuestRoomNumberValidationInit = GuestActions.GuestRoomNumberValidationInit;
 import GuestNameInit = GuestActions.GuestNameInit;
 import GetGameState = GuestActions.GetGameState;
-import CloseRoom = GuestActions.CloseRoom;
+import LeaveRoom = GuestActions.LeaveRoom;
 import RemoveRoom = GuestActions.RemoveRoom;
 import SetRoomInfo = GuestActions.SetRoomInfo;
 import GetRoomRemove = GuestActions.GetRoomRemove;
@@ -156,7 +156,7 @@ export class GuestState {
   public getGameState(context: StateContext<GuestModel>): void {
     this.guestService.getGameState()
       .pipe(
-        takeUntil(this.actions$.pipe(ofAction(CloseRoom, RemoveRoom)))
+        takeUntil(this.actions$.pipe(ofAction(LeaveRoom, RemoveRoom)))
       )
       .subscribe((gameState: GameStates) => {
         const state: GuestModel = context.getState();
@@ -180,7 +180,7 @@ export class GuestState {
   public getRoomRemove(context: StateContext<GuestModel>): void {
     this.guestService.roomRemove()
       .pipe(
-        takeUntil(this.actions$.pipe(ofAction(CloseRoom, RemoveRoom)))
+        takeUntil(this.actions$.pipe(ofAction(LeaveRoom, RemoveRoom)))
       )
       .subscribe(() => {
         context.dispatch(new RemoveRoom());
@@ -204,7 +204,13 @@ export class GuestState {
     });
   }
 
-  @Action([RemoveRoom, CloseRoom])
+  @Action(LeaveRoom)
+  public leaveRoom(): void {
+    this.$gaService.event('user_leave_room', 'guest', 'User leved room');
+    this.guestService.leaveRoom();
+  }
+
+  @Action([RemoveRoom, LeaveRoom])
   public resetRoom(context: StateContext<GuestModel>): void {
     context.setState({
       name: null,

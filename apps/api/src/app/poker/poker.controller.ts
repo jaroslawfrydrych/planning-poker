@@ -23,7 +23,7 @@ export class PokerController {
 
     const room: Room = this.pokerService.createRoom();
 
-    room.addPlayerToRoom({
+    room.addPlayer({
       id: request.clientId,
       type: PlayerType.HOST
     });
@@ -43,7 +43,7 @@ export class PokerController {
 
   @Post('room-info')
   public roomInfo(@Body() request: JoinRoomCodeRequestDto): RoomInfo {
-    const room: Room = this.pokerService.getRoomById(request.id);
+    const room: Room = this.pokerService.getRoom(request.id);
 
     return {
       id: room.id,

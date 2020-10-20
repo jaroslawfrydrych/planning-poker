@@ -39,43 +39,40 @@ export class PokerGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   public handleDisconnect(client: Socket): void {
     console.log('on disconnect', client.id);
-    const clientId: string = client.id;
-    const playerData: Player = this.pokerService.getPlayerById(clientId);
-    const roomId: string = playerData.room;
-    const room: Room = this.pokerService.getRoomById(roomId);
+    const room: Room = this.pokerService.findPlayerRoom(client.id);
 
     if (!room) {
       return;
     }
+    const player: Player = room.getPlayer(client.id);
 
-    const clientInRoom: Player = room.getPlayerFromRoom(clientId);
-
-    if (clientInRoom.type === PlayerType.HOST) {
-      console.log('remove room', playerData.room);
-      this.pokerService.removeRoom(playerData.room);
-      this.server.to(roomId).emit(SocketEvents.ROOM_REMOVED);
+    if (player && player.type === PlayerType.HOST) {
+      console.log('remove room', room.id);
+      this.pokerService.removeRoom(room.id);
+      this.server.to(room.id).emit(SocketEvents.ROOM_REMOVED);
     } else if (room) {
-      room.removePlayerFromFrom(client.id);
+      room.removePlayer(client.id);
     }
 
     this.pokerService.removePlayer(client.id);
 
-    this.emitUsersChangeToRoom(playerData.room);
+    this.emitUsersChangeToRoom(room.id);
   }
 
   @SubscribeMessage(SocketEvents.VOTE)
-  public onVote(client: Socket, message: Vote): void {
-    const room: Room = this.pokerService.getRoomById(message.roomNumber);
+  public onVote(client: Socket, {card, roomNumber}: Vote): void {
+    const room: Room = this.pokerService.findPlayerRoom(client.id);
 
     if (!room || room.state === GameStates.REVIEW) {
       return;
     }
 
-    const playerData: Player = room.getPlayerFromRoom(client.id);
-    playerData.card = message.card;
-    playerData.status = PlayerStatuses.VOTED;
-    room.updatePlayerInRoom(playerData);
-    this.emitUsersChangeToRoom(message.roomNumber);
+    room.patchPlayer(client.id, {
+      card,
+      status: PlayerStatuses.VOTED
+    });
+
+    this.emitUsersChangeToRoom(roomNumber);
   }
 
   @SubscribeMessage(SocketEvents.STATE)
@@ -97,20 +94,33 @@ export class PokerGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage(SocketEvents.JOIN)
   public onJoin(client: Socket, message: JoinRequestDto): void {
     const roomNumber: string = message.room;
-    const room: Room = this.pokerService.getRoomById(roomNumber);
-    room.addPlayerToRoom({
+    const room: Room = this.pokerService.getRoom(roomNumber);
+
+    room.addPlayer({
       id: client.id,
       name: message.name,
       type: message.type
     });
 
     client.join(roomNumber);
-    this.pokerService.setPlayerRoom(client.id, roomNumber);
     this.emitUsersChangeToRoom(roomNumber);
   }
 
+  @SubscribeMessage(SocketEvents.LEAVE)
+  public onLeave(client: Socket): void {
+    const room: Room = this.pokerService.findPlayerRoom(client.id);
+
+    if (!room) {
+      return;
+    }
+
+    client.leave(room.id);
+    room.removePlayer(client.id);
+    this.emitUsersChangeToRoom(room.id);
+  }
+
   public emitUsersChangeToRoom(roomNumber: string): void {
-    const room: Room = this.pokerService.getRoomById(roomNumber);
+    const room: Room = this.pokerService.getRoom(roomNumber);
 
     if (!room) {
       return;

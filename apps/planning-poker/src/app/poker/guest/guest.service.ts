@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
 import { Cards, GameStates, JoinRoomCodeResponseDto, PlayerType, RoomInfo } from '@planning-poker/api-interfaces';
@@ -11,18 +11,7 @@ import { PokerService } from '../service/poker.service';
 })
 export class GuestService {
 
-  private guestRoomSubject$: BehaviorSubject<string>;
-
   constructor(private pokerService: PokerService) {
-    this.guestRoomSubject$ = new BehaviorSubject<string>(null);
-  }
-
-  public get guestRoom(): string {
-    return this.guestRoomSubject$.getValue();
-  }
-
-  public set guestRoom(value: string) {
-    this.guestRoomSubject$.next(value);
   }
 
   public get availableCards(): Cards[] {
@@ -72,5 +61,9 @@ export class GuestService {
 
   public roomRemove(): Observable<null> {
     return this.pokerService.roomRemove();
+  }
+
+  public leaveRoom(): void {
+    this.pokerService.leaveRoom();
   }
 }

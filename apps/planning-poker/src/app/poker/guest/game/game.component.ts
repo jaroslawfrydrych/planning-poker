@@ -13,7 +13,7 @@ import ChooseCard = GuestActions.ChooseCard;
 import GuestGameInit = GuestActions.GuestGameInit;
 import GetGameState = GuestActions.GetGameState;
 import RoomRemove = GuestActions.RemoveRoom;
-import CloseRoom = GuestActions.CloseRoom;
+import CloseRoom = GuestActions.LeaveRoom;
 import GetRoomRemove = GuestActions.GetRoomRemove;
 
 @Component({
