@@ -416,6 +416,7 @@ var SocketEvents;
     SocketEvents["STATE"] = "STATE";
     SocketEvents["JOIN"] = "JOIN";
     SocketEvents["LEAVE"] = "LEAVE";
+    SocketEvents["CLOSE_ROOM"] = "CLOSE_ROOM";
     SocketEvents["ROOM_REMOVED"] = "ROOM_REMOVED";
     SocketEvents["VOTED"] = "VOTED";
 })(SocketEvents || (SocketEvents = {}));
@@ -686,7 +687,7 @@ module.exports = require("rxjs");
 /* harmony import */ var socket_io__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(socket_io__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(1);
 /* harmony import */ var _poker_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(4);
-var _a, _b, _c, _d, _e, _f, _g, _h;
+var _a, _b, _c, _d, _e, _f, _g, _h, _j;
 
 
 
@@ -711,8 +712,7 @@ let PokerGateway = class PokerGateway {
         const player = room.getPlayer(client.id);
         if (player && player.type === _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_3__[/* PlayerType */ "g"].HOST) {
             console.log('remove room', room.id);
-            this.pokerService.removeRoom(room.id);
-            this.server.to(room.id).emit(_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_3__[/* SocketEvents */ "i"].ROOM_REMOVED);
+            this.removeRoom(room.id);
         }
         else if (room) {
             room.removePlayer(client.id);
@@ -763,6 +763,9 @@ let PokerGateway = class PokerGateway {
         room.removePlayer(client.id);
         this.emitUsersChangeToRoom(room.id);
     }
+    onCloseRoom(client, roomNumber) {
+        this.removeRoom(roomNumber);
+    }
     emitUsersChangeToRoom(roomNumber) {
         const room = this.pokerService.getRoom(roomNumber);
         if (!room) {
@@ -775,6 +778,13 @@ let PokerGateway = class PokerGateway {
             players
         };
         this.server.to(roomNumber).emit(_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_3__[/* SocketEvents */ "i"].PLAYERS, playersResponse);
+    }
+    removeRoom(roomNumber) {
+        this.pokerService.removeRoom(roomNumber);
+        this.emitRoomRemoved(roomNumber);
+    }
+    emitRoomRemoved(roomNumber) {
+        this.server.to(roomNumber).emit(_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_3__[/* SocketEvents */ "i"].ROOM_REMOVED);
     }
 };
 Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
@@ -805,9 +815,15 @@ Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [typeof (_g = typeof socket_io__WEBPACK_IMPORTED_MODULE_2__["Socket"] !== "undefined" && socket_io__WEBPACK_IMPORTED_MODULE_2__["Socket"]) === "function" ? _g : Object]),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:returntype", void 0)
 ], PokerGateway.prototype, "onLeave", null);
+Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+    Object(_nestjs_websockets__WEBPACK_IMPORTED_MODULE_1__["SubscribeMessage"])(_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_3__[/* SocketEvents */ "i"].CLOSE_ROOM),
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:type", Function),
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [typeof (_h = typeof socket_io__WEBPACK_IMPORTED_MODULE_2__["Socket"] !== "undefined" && socket_io__WEBPACK_IMPORTED_MODULE_2__["Socket"]) === "function" ? _h : Object, String]),
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:returntype", void 0)
+], PokerGateway.prototype, "onCloseRoom", null);
 PokerGateway = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
     Object(_nestjs_websockets__WEBPACK_IMPORTED_MODULE_1__["WebSocketGateway"])(),
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [typeof (_h = typeof _poker_service__WEBPACK_IMPORTED_MODULE_4__[/* PokerService */ "a"] !== "undefined" && _poker_service__WEBPACK_IMPORTED_MODULE_4__[/* PokerService */ "a"]) === "function" ? _h : Object])
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [typeof (_j = typeof _poker_service__WEBPACK_IMPORTED_MODULE_4__[/* PokerService */ "a"] !== "undefined" && _poker_service__WEBPACK_IMPORTED_MODULE_4__[/* PokerService */ "a"]) === "function" ? _j : Object])
 ], PokerGateway);
 
 

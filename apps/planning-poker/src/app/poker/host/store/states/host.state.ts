@@ -119,7 +119,9 @@ export class HostState {
   }
 
   @Action(CloseRoom)
-  public closeRoom(): void {
+  public closeRoom(context: StateContext<HostModel>): void {
+    const state: HostModel = context.getState();
     this.$gaService.event('close_room', 'host', 'Close room');
+    this.hostService.closeRoom(state.roomNumber);
   }
 }

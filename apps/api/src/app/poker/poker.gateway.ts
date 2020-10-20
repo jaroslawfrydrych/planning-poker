@@ -48,8 +48,7 @@ export class PokerGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     if (player && player.type === PlayerType.HOST) {
       console.log('remove room', room.id);
-      this.pokerService.removeRoom(room.id);
-      this.server.to(room.id).emit(SocketEvents.ROOM_REMOVED);
+      this.removeRoom(room.id);
     } else if (room) {
       room.removePlayer(client.id);
     }
@@ -119,6 +118,11 @@ export class PokerGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.emitUsersChangeToRoom(room.id);
   }
 
+  @SubscribeMessage(SocketEvents.CLOSE_ROOM)
+  public onCloseRoom(client: Socket, roomNumber: string): void {
+    this.removeRoom(roomNumber);
+  }
+
   public emitUsersChangeToRoom(roomNumber: string): void {
     const room: Room = this.pokerService.getRoom(roomNumber);
 
@@ -135,5 +139,14 @@ export class PokerGateway implements OnGatewayConnection, OnGatewayDisconnect {
     };
 
     this.server.to(roomNumber).emit(SocketEvents.PLAYERS, playersResponse);
+  }
+
+  private removeRoom(roomNumber: string) {
+    this.pokerService.removeRoom(roomNumber);
+    this.emitRoomRemoved(roomNumber);
+  }
+
+  private emitRoomRemoved(roomNumber: string): void {
+    this.server.to(roomNumber).emit(SocketEvents.ROOM_REMOVED);
   }
 }

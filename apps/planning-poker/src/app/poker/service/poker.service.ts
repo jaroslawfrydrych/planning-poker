@@ -88,4 +88,8 @@ export class PokerService {
   public leaveRoom(): void {
     this.socket.emit(SocketEvents.LEAVE);
   }
+
+  public closeRoom(roomNumber: string): void {
+    this.socket.emit(SocketEvents.CLOSE_ROOM, roomNumber);
+  }
 }

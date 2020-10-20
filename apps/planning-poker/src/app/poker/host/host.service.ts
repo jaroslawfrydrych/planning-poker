@@ -32,5 +32,9 @@ export class HostService {
   public toggleGameState(roomNumber: string): void {
     return this.pokerService.toggleGameState(roomNumber);
   }
+
+  public closeRoom(roomNumber: string): void {
+    this.pokerService.closeRoom(roomNumber);
+  }
 }
 
