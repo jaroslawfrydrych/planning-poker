@@ -1,11 +1,15 @@
-<div class="cards">
-  <ng-container *ngFor="let card of cards">
-    <planning-poker-card [card]="card"
-                         [selectedCard]="card$ | async"
-                         (cardClick)="onCardClick(card)"></planning-poker-card>
-  </ng-container>
+<div class="header">
+  <h1>Room {{roomNumber$ | async}}</h1>
 </div>
 
-<div class="sidebar">
-  TODO :)
+<div class="cards">
+  <ng-container *ngFor="let card of cards">
+    <planning-poker-card-container>
+      <button (click)="onCardClick(card)"></button>
+      <planning-poker-card-item [class.card-selected]="isCardSelected(card) | async"
+                                [class.card-not-selected]="isCardNotSelected(card) | async">
+        <planning-poker-card-symbol [card]="card"></planning-poker-card-symbol>
+      </planning-poker-card-item>
+    </planning-poker-card-container>
+  </ng-container>
 </div>

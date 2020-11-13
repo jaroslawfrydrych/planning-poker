@@ -2,6 +2,7 @@ import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, ofActionSuccessful, Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { Cards, GameStates } from '@planning-poker/api-interfaces';
 import { TakeUntilDestroy, untilDestroyed } from '@shared/decorators/take-until-destroy.decorator';
@@ -9,6 +10,7 @@ import { EnvironmentService } from '@shared/services/environment/environment.ser
 
 import { GuestActions } from '../store/actions/guest.actions';
 import { GuestState } from '../store/states/guest.state';
+
 import ChooseCard = GuestActions.ChooseCard;
 import GuestGameInit = GuestActions.GuestGameInit;
 import GetGameState = GuestActions.GetGameState;
@@ -26,6 +28,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
   public cards: Cards[];
   @Select(GuestState.card) public readonly card$: Observable<Cards>;
+  @Select(GuestState.roomNumber) public readonly roomNumber$: Observable<string>;
 
   constructor(private router: Router,
               private actions$: Actions,
@@ -61,6 +64,20 @@ export class GameComponent implements OnInit, OnDestroy {
     }
 
     this.store.dispatch(new ChooseCard(card));
+  }
+
+  public isCardSelected(cardItem: Cards): Observable<boolean> {
+    return this.card$
+      .pipe(
+        map((card: Cards) => card === cardItem)
+      );
+  }
+
+  public isCardNotSelected(cardItem: Cards): Observable<boolean> {
+    return this.card$
+      .pipe(
+        map((card: Cards) => card !== null && card != cardItem)
+      );
   }
 
   @HostListener('window:beforeunload')

@@ -18,17 +18,17 @@
   align-self: auto;
   height: 100%;
   width: 100%;
+  overflow: auto;
+  padding-right: em(15);
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: flex-start;
   align-content: flex-start;
   align-items: flex-start;
-  overflow: auto;
-  padding-right: em(15);
 
-  planning-poker-card {
-    margin: em(50) 1% 1% 1%;
+  planning-poker-card-container {
+    margin-top: em(50);
   }
 }
 

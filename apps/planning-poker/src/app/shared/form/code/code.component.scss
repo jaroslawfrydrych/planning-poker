@@ -3,6 +3,7 @@
 
 :host {
   @include primaryOutline();
+  @include primaryBorderRadius();
   height: em($controlHeight);
   min-width: em($controlMinWidth);
   display: flex;

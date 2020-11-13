@@ -1,0 +1,48 @@
+@import "@styles/shared";
+
+.label {
+  position: absolute;
+  bottom: 100%;
+  text-transform: uppercase;
+  color: $colorSecondary;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0 .4em;
+  margin-bottom: .5em;
+  font: {
+    weight: 700;
+  }
+}
+
+planning-poker-card-item {
+  cursor: auto;
+  transition: opacity 300ms ease, transform 250ms linear;
+
+  &.card-front {
+    opacity: 1;
+    transform: rotateY(0deg);
+    transition-delay: 300ms;
+
+    &.in-review {
+      transform: rotateY(-90deg);
+      transition-delay: 0ms;
+      opacity: 0;
+    }
+  }
+
+  &.card-back {
+    opacity: 0;
+    transform: rotateY(90deg);
+
+    &.in-review {
+      transform: rotateY(0deg);
+      transition-delay: 300ms;
+      opacity: 1;
+
+      &.player-no-choice {
+        opacity: .4;
+      }
+    }
+  }
+}

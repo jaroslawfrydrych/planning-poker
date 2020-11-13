@@ -31,3 +31,7 @@
     color: $colorPrimary;
   }
 }
+
+@mixin primaryBorderRadius() {
+  border-radius: em(12);
+}

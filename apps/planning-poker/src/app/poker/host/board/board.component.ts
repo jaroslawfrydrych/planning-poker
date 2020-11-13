@@ -35,7 +35,6 @@ export class BoardComponent implements OnInit, OnDestroy {
   @Select(HostState.roomNumber) public readonly roomNumber$: Observable<string>;
   @Select(HostState.players) public readonly players$: Observable<Player[]>;
   public readonly gameStates = GameStates;
-  public readonly userStatues = PlayerStatuses;
   public readonly buttonColors = ButtonColor;
   private leaveModalVisibilitySubject$: BehaviorSubject<boolean>;
   private linkCopiedSubject$: BehaviorSubject<boolean>;
@@ -110,6 +109,10 @@ export class BoardComponent implements OnInit, OnDestroy {
     }
 
     this.closeLeaveModal();
+  }
+
+  public isPlayerReady(player: Player): boolean {
+    return player.status === PlayerStatuses.VOTED
   }
 
   @HostListener('window:beforeunload')
