@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { Cards, GameStates } from '@planning-poker/api-interfaces';
-import { BehaviorSubject, Observable } from 'rxjs';
 
 @Component({
   selector: 'planning-poker-card-with-label',
@@ -11,27 +12,20 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class CardWithLabelComponent {
 
+  @Input() public card: Cards;
   @Input() public label: string;
-  @Input() public gameState: GameStates;
+  @Input() public gameState$: Observable<GameStates>;
   @Input() public playerReady: boolean;
-  public card$: Observable<Cards>;
-  private cardSubject$: BehaviorSubject<Cards>;
 
   constructor() {
-    this.cardSubject$ = new BehaviorSubject<Cards>(null);
-    this.card$ = this.cardSubject$.asObservable();
   }
 
-  public get isInReviewState(): boolean {
-    return this.gameState === GameStates.REVIEW;
-  }
-
-  @Input()
-  public set card(card: Cards) {
-    this.cardSubject$.next(card);
-  }
-
-  public get card(): Cards {
-    return this.cardSubject$.getValue();
+  public get isInReviewState$(): Observable<boolean> {
+    return this.gameState$
+      .pipe(
+        map((gameState: GameStates) => {
+          return gameState === GameStates.REVIEW;
+        })
+      );
   }
 }

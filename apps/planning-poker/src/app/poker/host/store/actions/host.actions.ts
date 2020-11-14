@@ -31,4 +31,8 @@ export namespace HostActions {
   export class CloseRoom {
     static readonly type = '[HostActions] Close room';
   }
+
+  export class GetPlayerStatus {
+    static readonly type = '[HostActions] Get player status'
+  }
 }

@@ -49,7 +49,7 @@ export class PokerService {
       );
   }
 
-  public getUsers(): Observable<Player[]> {
+  public getPlayers(): Observable<Player[]> {
     return this.socket.fromEvent(SocketEvents.PLAYERS)
       .pipe(
         map((response: PlayersResponseDto) => response.players)
@@ -91,5 +91,9 @@ export class PokerService {
 
   public closeRoom(roomNumber: string): void {
     this.socket.emit(SocketEvents.CLOSE_ROOM, roomNumber);
+  }
+
+  public playerVoted(): Observable<any> {
+    return this.socket.fromEvent(SocketEvents.VOTED);
   }
 }

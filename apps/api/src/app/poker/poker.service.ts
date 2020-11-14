@@ -6,8 +6,8 @@ import { Room } from './room';
 
 @Injectable()
 export class PokerService {
-  public players: Map<string, Player> = new Map<string, Player>();
   public rooms: Map<string, Room> = new Map<string, Room>();
+  public players: Map<string, Player> = new Map<string, Player>();
 
   public toggleGameState(currentState: GameStates): GameStates {
     switch (currentState) {

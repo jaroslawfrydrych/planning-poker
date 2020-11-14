@@ -4,7 +4,7 @@ import { GoogleAnalyticsService } from 'ngx-google-analytics';
 import { Observable } from 'rxjs';
 import { mergeMap, takeUntil, tap } from 'rxjs/operators';
 
-import { GameStates, Player, RoomInfo } from '@planning-poker/api-interfaces';
+import { GameStates, Player, PlayerStatuses, RoomInfo } from '@planning-poker/api-interfaces';
 
 import { HostService } from '../../host.service';
 import { HostActions } from '../actions/host.actions';
@@ -12,11 +12,12 @@ import { HostModel } from '../models/host.model';
 import CloseRoom = HostActions.CloseRoom;
 import CreateRoom = HostActions.CreateRoom;
 import GetGameState = HostActions.GetGameState;
-import GetUsers = HostActions.GetPlayers;
+import GetPlayers = HostActions.GetPlayers;
 import JoinRoom = HostActions.JoinRoom;
 import ToggleGameState = HostActions.ToggleGameState;
 import HostBoardInit = HostActions.HostBoardInit;
 import CopyRoomLink = HostActions.CopyRoomLink;
+import GetPlayerStatus = HostActions.GetPlayerStatus;
 
 @State<HostModel>({
   name: 'host',
@@ -87,13 +88,14 @@ export class HostState {
     this.hostService.joinRoom(state.roomNumber);
   }
 
-  @Action(GetUsers)
+  @Action(GetPlayers)
   public getUsers(context: StateContext<HostModel>): void {
-    this.hostService.getUsers()
+    this.hostService.getPlayers()
       .pipe(
         takeUntil(this.actions$.pipe(ofAction(CloseRoom)))
       )
       .subscribe((players: Player[]) => {
+        console.log(players);
         context.patchState({
           players
         });
@@ -107,9 +109,28 @@ export class HostState {
         takeUntil(this.actions$.pipe(ofAction(CloseRoom)))
       )
       .subscribe((gameState: GameStates) => {
+        if (gameState === GameStates.IN_PROGRESS) {
+          this.resetPlayersVotes(context);
+        }
+
         context.patchState({
           gameState
         });
+      });
+  }
+
+  @Action(GetPlayerStatus)
+  public getPlayerStatus(context: StateContext<HostModel>): void {
+
+    this.hostService.playerVoted()
+      .pipe(
+        takeUntil(this.actions$.pipe(ofAction(CloseRoom)))
+      )
+      .subscribe((playerId: string) => {
+        const state: HostModel = context.getState();
+        const selectedPlayer: Player = state.players.find((player: Player) => player.id === playerId);
+        selectedPlayer.status = PlayerStatuses.VOTED;
+        context.setState(state);
       });
   }
 
@@ -123,5 +144,17 @@ export class HostState {
     const state: HostModel = context.getState();
     this.$gaService.event('close_room', 'host', 'Close room');
     this.hostService.closeRoom(state.roomNumber);
+  }
+
+  private resetPlayersVotes(context: StateContext<HostModel>): void {
+    const state: HostModel = context.getState();
+
+    state.players = state.players.map((player: Player) => {
+      player.status = PlayerStatuses.WAITING;
+      player.card = null;
+      return player;
+    });
+
+    context.setState(state);
   }
 }

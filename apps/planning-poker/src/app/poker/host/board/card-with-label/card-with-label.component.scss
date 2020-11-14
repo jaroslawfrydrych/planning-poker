@@ -22,7 +22,7 @@ planning-poker-card-item {
   &.card-front {
     opacity: 1;
     transform: rotateY(0deg);
-    transition-delay: 300ms;
+    transition-delay: 250ms;
 
     &.in-review {
       transform: rotateY(-90deg);
@@ -37,7 +37,7 @@ planning-poker-card-item {
 
     &.in-review {
       transform: rotateY(0deg);
-      transition-delay: 300ms;
+      transition-delay: 250ms;
       opacity: 1;
 
       &.player-no-choice {

@@ -21,8 +21,8 @@ export class HostService {
     this.pokerService.joinRoom(roomNumber, PlayerType.HOST);
   }
 
-  public getUsers(): Observable<Player[]> {
-    return this.pokerService.getUsers();
+  public getPlayers(): Observable<Player[]> {
+    return this.pokerService.getPlayers();
   }
 
   public getGameState(): Observable<GameStates> {
@@ -35,6 +35,10 @@ export class HostService {
 
   public closeRoom(roomNumber: string): void {
     this.pokerService.closeRoom(roomNumber);
+  }
+
+  public playerVoted(): Observable<any> {
+    return this.pokerService.playerVoted();
   }
 }
 

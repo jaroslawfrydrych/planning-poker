@@ -6,5 +6,6 @@ export enum SocketEvents {
   LEAVE = 'LEAVE',
   CLOSE_ROOM = 'CLOSE_ROOM',
   ROOM_REMOVED = 'ROOM_REMOVED',
-  VOTED = 'VOTED'
+  VOTED = 'VOTED',
+  RESULTS = 'RESULTS'
 }
