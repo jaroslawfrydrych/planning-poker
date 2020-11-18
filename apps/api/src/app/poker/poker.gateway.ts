@@ -5,16 +5,16 @@ import {
   WebSocketGateway,
   WebSocketServer
 } from '@nestjs/websockets';
-import { Namespace, Server, Socket } from 'socket.io';
+import { Server, Socket } from 'socket.io';
 
 import {
   GameStateBroadcastDto,
   GameStates,
   JoinRequestDto,
   Player,
-  PlayersResponseDto,
   PlayerStatuses,
   PlayerType,
+  ResultsDto,
   SocketEvents,
   Vote
 } from '@planning-poker/api-interfaces';
@@ -55,7 +55,7 @@ export class PokerGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     this.pokerService.removePlayer(client.id);
 
-    this.emitUsersChangeToRoom(room.id);
+    this.emitPlayersChangeToRoom(room.id);
   }
 
   /**
@@ -93,12 +93,12 @@ export class PokerGateway implements OnGatewayConnection, OnGatewayDisconnect {
       state
     };
 
-    this.serverTo(roomNumber).emit(SocketEvents.STATE, broadcastMessage);
+    this.serverEmitTo(roomNumber, SocketEvents.STATE, broadcastMessage);
 
     if (state === GameStates.IN_PROGRESS) {
       this.pokerService.resetVotingForRoom(roomNumber);
     } else {
-      this.emitUsersChangeToRoom(roomNumber);
+      this.emitResultsToRoom(roomNumber);
     }
   }
 
@@ -119,7 +119,7 @@ export class PokerGateway implements OnGatewayConnection, OnGatewayDisconnect {
     });
 
     client.join(roomNumber);
-    this.emitUsersChangeToRoom(roomNumber);
+    this.emitPlayersChangeToRoom(roomNumber);
   }
 
   /**
@@ -136,7 +136,7 @@ export class PokerGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     client.leave(room.id);
     room.removePlayer(client.id);
-    this.emitUsersChangeToRoom(room.id);
+    this.emitPlayersChangeToRoom(room.id);
   }
 
   /**
@@ -149,22 +149,56 @@ export class PokerGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.removeRoom(roomNumber);
   }
 
-  public emitUsersChangeToRoom(roomNumber: string): void {
+  public emitPlayersChangeToRoom(roomNumber: string): void {
     const room: Room = this.pokerService.getRoom(roomNumber);
 
     if (!room) {
       return;
     }
 
-    const playersResponse: PlayersResponseDto = {
-      players: room.players
-    };
+    const players: Player[] = room.players
+      .map((player: Player) => {
+        return {
+          id: player.id,
+          name: player.name
+        };
+      });
 
-    this.serverTo(roomNumber).emit(SocketEvents.PLAYERS, playersResponse);
+    this.serverEmitTo(roomNumber, SocketEvents.PLAYERS, {players});
   }
 
-  private serverTo(roomNumber: string): Namespace | Server {
-    return this.server.to(roomNumber);
+  @SubscribeMessage(SocketEvents.ROOM_JOINED)
+  public onRoomJoined(client: Socket): void {
+    const room: Room = this.pokerService.findPlayerRoom(client.id);
+
+    if (room.state === GameStates.REVIEW) {
+      const results: ResultsDto = this.getRoomResults(room.id);
+      this.serverEmitTo<ResultsDto>(client.id, SocketEvents.RESULTS, results);
+    }
+  }
+
+  public emitResultsToRoom(roomNumber: string): void {
+    const results: ResultsDto = this.getRoomResults(roomNumber);
+    this.serverEmitTo<ResultsDto>(roomNumber, SocketEvents.RESULTS, results);
+  }
+
+  private getRoomResults(roomNumber: string): ResultsDto {
+    const room: Room = this.pokerService.getRoom(roomNumber);
+
+    const results: ResultsDto = {};
+
+    room.players.forEach((player: Player) => {
+      results[player.id] = {
+        card: player.card,
+        name: player.name
+      };
+    });
+
+    return results;
+  }
+
+  private serverEmitTo<T>(roomNumber: string, socketEvent: SocketEvents, payload?: T): boolean {
+    return this.server.to(roomNumber).emit(socketEvent, payload);
   }
 
   private removeRoom(roomNumber: string) {
@@ -173,7 +207,7 @@ export class PokerGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   private emitRoomRemoved(roomNumber: string): void {
-    this.serverTo(roomNumber).emit(SocketEvents.ROOM_REMOVED);
+    this.serverEmitTo(roomNumber, SocketEvents.ROOM_REMOVED);
   }
 
   private emitPlayerVoted(room: Room, clientId: string): void {

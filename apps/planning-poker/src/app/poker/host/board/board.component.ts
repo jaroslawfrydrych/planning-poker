@@ -20,6 +20,7 @@ import ToggleGameState = HostActions.ToggleGameState;
 import HostBoardInit = HostActions.HostBoardInit;
 import CopyRoomLink = HostActions.CopyRoomLink;
 import GetPlayerStatus = HostActions.GetPlayerStatus;
+import GetResults = HostActions.GetResults;
 
 @Component({
   selector: 'planning-poker-board',
@@ -126,6 +127,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   private dispatchOnInitActions(): void {
     this.store.dispatch([
       new GetPlayers(),
+      new GetResults(),
       new GetGameState(),
       new GetPlayerStatus()
     ]);

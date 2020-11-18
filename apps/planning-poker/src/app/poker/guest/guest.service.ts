@@ -1,8 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { delay, tap } from 'rxjs/operators';
 
-import { Cards, GameStates, JoinRoomCodeResponseDto, PlayerType, RoomInfo } from '@planning-poker/api-interfaces';
+import {
+  Cards,
+  GameStates,
+  JoinRoomCodeResponseDto,
+  PlayerType,
+  ResultsDto,
+  RoomInfo
+} from '@planning-poker/api-interfaces';
 
 import { PokerService } from '../service/poker.service';
 
@@ -51,6 +58,10 @@ export class GuestService {
     return this.pokerService.getGameState();
   }
 
+  public getResults(): Observable<ResultsDto> {
+    return this.pokerService.getResults();
+  }
+
   public joinRoom(name: string, roomNumber: string): void {
     this.pokerService.joinRoom(roomNumber, PlayerType.VOTER, name);
   }
@@ -65,5 +76,9 @@ export class GuestService {
 
   public leaveRoom(): void {
     this.pokerService.leaveRoom();
+  }
+
+  public roomJoined(): void {
+    this.pokerService.roomJoined();
   }
 }

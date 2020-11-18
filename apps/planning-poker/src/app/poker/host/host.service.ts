@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { GameStates, Player, PlayerType, RoomInfo } from '@planning-poker/api-interfaces';
+import { GameStates, Player, PlayerType, Result, ResultsDto, RoomInfo } from '@planning-poker/api-interfaces';
 
 import { PokerService } from '../service/poker.service';
 
@@ -25,6 +25,10 @@ export class HostService {
     return this.pokerService.getPlayers();
   }
 
+  public getResults(): Observable<ResultsDto> {
+    return this.pokerService.getResults();
+  }
+
   public getGameState(): Observable<GameStates> {
     return this.pokerService.getGameState();
   }
@@ -37,7 +41,7 @@ export class HostService {
     this.pokerService.closeRoom(roomNumber);
   }
 
-  public playerVoted(): Observable<any> {
+  public playerVoted(): Observable<string> {
     return this.pokerService.playerVoted();
   }
 }

@@ -57,12 +57,6 @@ export class PokerService {
     this.players.set(player.id, player);
   }
 
-  public setPlayerRoom(playerId: string, roomId: string) {
-    const player: Player = this.players.get(playerId);
-    player.room = roomId;
-    this.players.set(playerId, player);
-  }
-
   public removePlayer(id: string) {
     this.players.delete(id);
   }
@@ -84,11 +78,6 @@ export class PokerService {
 
   public getRoom(roomNumber: string): Room {
     return this.rooms.get(roomNumber);
-  }
-
-  public findPlayer(playerId: string): Player {
-    const foundRoom: Room = this.findPlayerRoom(playerId);
-    return foundRoom.getPlayer(playerId) || null;
   }
 
   public findPlayerRoom(playerId: string): Room {

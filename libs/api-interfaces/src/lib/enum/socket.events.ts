@@ -3,6 +3,7 @@ export enum SocketEvents {
   PLAYERS = 'PLAYERS',
   STATE = 'STATE',
   JOIN = 'JOIN',
+  ROOM_JOINED = 'ROOM_JOINED',
   LEAVE = 'LEAVE',
   CLOSE_ROOM = 'CLOSE_ROOM',
   ROOM_REMOVED = 'ROOM_REMOVED',

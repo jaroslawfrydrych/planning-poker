@@ -1,0 +1,56 @@
+@import "@styles/shared";
+
+.modal-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99;
+
+  .modal-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba($colorBackgroundPrimary, .8);
+  }
+
+  .modal-content {
+    @include primaryBorderRadius();
+    position: relative;
+    background-color: $colorPrimary;
+    color: $colorBackgroundPrimary;
+    padding: em(30);
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 em(20) em(40) rgba($colorDark, .25);
+
+    p {
+      font-size: em(20);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+  }
+
+  .modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: auto;
+
+    button {
+      &.planning-poker-button {
+        margin: 0 em(15);
+        min-width: em(180);
+        height: em(60);
+      }
+    }
+  }
+}

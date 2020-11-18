@@ -13,3 +13,15 @@
     </planning-poker-card-container>
   </ng-container>
 </div>
+
+
+<div class="modal-container"
+     *ngIf="isInReview$ | async">
+  <div class="modal-overlay"></div>
+  <div class="modal-content">
+    <h1>Voting results</h1>
+    <planning-poker-table [gameState$]="gameState$"
+                          [cardsInRow]="7"
+                          [players$]="players$"></planning-poker-table>
+  </div>
+</div>

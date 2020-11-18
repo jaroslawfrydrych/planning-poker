@@ -7,13 +7,11 @@ import { BoardComponent } from './board/board.component';
 import { HostRoutingModule } from './host-routing.module';
 import { HostState } from './store/states/host.state';
 import { WaitComponent } from './wait/wait.component';
-import { CardWithLabelComponent } from './board/card-with-label/card-with-label.component';
 
 @NgModule({
   declarations: [
     BoardComponent,
-    WaitComponent,
-    CardWithLabelComponent
+    WaitComponent
   ],
   imports: [
     CommonModule,

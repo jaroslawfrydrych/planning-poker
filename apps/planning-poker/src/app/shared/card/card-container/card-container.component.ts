@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, Renderer2 } from '@angular/core';
 
 @Component({
   selector: 'planning-poker-card-container',
@@ -7,4 +7,12 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CardContainerComponent {
+
+  constructor(private elementRef: ElementRef,
+              private renderer: Renderer2) {
+  }
+
+  @Input() public set cardsInRow(count: number) {
+    this.renderer.addClass(this.elementRef.nativeElement, 'cards-in-row-' + count);
+  }
 }

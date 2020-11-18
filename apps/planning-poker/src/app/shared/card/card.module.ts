@@ -12,7 +12,7 @@ const COMPONENTS: Type<any>[] = [
   CardComponent,
   CardItemComponent,
   CardContainerComponent,
-  CardSymbolComponent
+  CardSymbolComponent,
 ];
 
 @NgModule({

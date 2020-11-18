@@ -4,7 +4,7 @@ import { GoogleAnalyticsService } from 'ngx-google-analytics';
 import { Observable } from 'rxjs';
 import { mergeMap, takeUntil, tap } from 'rxjs/operators';
 
-import { GameStates, Player, PlayerStatuses, RoomInfo } from '@planning-poker/api-interfaces';
+import { GameStates, Player, PlayerStatuses, Result, ResultsDto, RoomInfo } from '@planning-poker/api-interfaces';
 
 import { HostService } from '../../host.service';
 import { HostActions } from '../actions/host.actions';
@@ -18,6 +18,7 @@ import ToggleGameState = HostActions.ToggleGameState;
 import HostBoardInit = HostActions.HostBoardInit;
 import CopyRoomLink = HostActions.CopyRoomLink;
 import GetPlayerStatus = HostActions.GetPlayerStatus;
+import GetResults = HostActions.GetResults;
 
 @State<HostModel>({
   name: 'host',
@@ -95,10 +96,31 @@ export class HostState {
         takeUntil(this.actions$.pipe(ofAction(CloseRoom)))
       )
       .subscribe((players: Player[]) => {
-        console.log(players);
         context.patchState({
           players
         });
+      });
+  }
+
+  @Action(GetResults)
+  public getResults(context: StateContext<HostModel>): void {
+    this.hostService.getResults()
+      .pipe(
+        takeUntil(this.actions$.pipe(ofAction(CloseRoom)))
+      )
+      .subscribe((results: ResultsDto) => {
+        const state: HostModel = context.getState();
+        const players: Player[] = state.players;
+
+        const playersWithResults: Player[] = players.map((player: Player) => {
+          const result: Result = results[player.id] || null;
+          player.card = result && result.card;
+          return player;
+        });
+
+        context.patchState({
+          players: playersWithResults
+        })
       });
   }
 
@@ -128,8 +150,12 @@ export class HostState {
       )
       .subscribe((playerId: string) => {
         const state: HostModel = context.getState();
-        const selectedPlayer: Player = state.players.find((player: Player) => player.id === playerId);
-        selectedPlayer.status = PlayerStatuses.VOTED;
+        const selectedPlayer: Player = state.players && state.players.find((player: Player) => player.id === playerId);
+
+        if (selectedPlayer) {
+          selectedPlayer.status = PlayerStatuses.VOTED;
+        }
+
         context.setState(state);
       });
   }

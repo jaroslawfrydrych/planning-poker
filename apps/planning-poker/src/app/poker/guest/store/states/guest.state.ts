@@ -4,7 +4,14 @@ import { GoogleAnalyticsService } from 'ngx-google-analytics';
 import { Observable } from 'rxjs';
 import { map, takeUntil, tap } from 'rxjs/operators';
 
-import { Cards, GameStates, JoinRoomCodeResponseDto, RoomInfo } from '@planning-poker/api-interfaces';
+import {
+  Cards,
+  GameStates,
+  JoinRoomCodeResponseDto,
+  Player,
+  ResultsDto,
+  RoomInfo
+} from '@planning-poker/api-interfaces';
 
 import { GuestService } from '../../guest.service';
 import { GuestActions } from '../actions/guest.actions';
@@ -20,6 +27,7 @@ import LeaveRoom = GuestActions.LeaveRoom;
 import RemoveRoom = GuestActions.RemoveRoom;
 import SetRoomInfo = GuestActions.SetRoomInfo;
 import GetRoomRemove = GuestActions.GetRoomRemove;
+import GetPlayersResults = GuestActions.GetPlayersResults;
 
 interface JoinRoomModel {
   name: string;
@@ -45,7 +53,8 @@ interface SetRoomInfoModel {
     gameState: null,
     isRoomNumberValid: null,
     roomNumber: null,
-    availableCards: []
+    availableCards: [],
+    players: []
   }
 })
 @Injectable()
@@ -81,6 +90,11 @@ export class GuestState {
     return state.availableCards;
   }
 
+  @Selector<Player[]>()
+  public static players(state: GuestModel): Player[] {
+    return state.players;
+  }
+
   constructor(private $gaService: GoogleAnalyticsService,
               private guestService: GuestService,
               private actions$: Actions) {
@@ -99,6 +113,7 @@ export class GuestState {
   @Action(GuestGameInit)
   public guestGameInit(): void {
     this.$gaService.pageView('/guest/game');
+    this.guestService.roomJoined();
   }
 
   @Action(RoomNumberValidation)
@@ -176,6 +191,28 @@ export class GuestState {
       });
   }
 
+  @Action(GetPlayersResults)
+  public getPlayersResults(context: StateContext<GuestModel>): void {
+    this.guestService.getResults()
+      .pipe(
+        takeUntil(this.actions$.pipe(ofAction(LeaveRoom, RemoveRoom)))
+      )
+      .subscribe((results: ResultsDto) => {
+        const players: Player[] = Object.keys(results)
+          .map((id: string) => {
+            return {
+              id,
+              name: results[id].name,
+              card: results[id].card
+            }
+          });
+
+        context.patchState({
+          players
+        });
+      });
+  }
+
   @Action(GetRoomRemove)
   public getRoomRemove(context: StateContext<GuestModel>): void {
     this.guestService.roomRemove()
@@ -218,7 +255,8 @@ export class GuestState {
       gameState: null,
       isRoomNumberValid: null,
       roomNumber: null,
-      availableCards: []
+      availableCards: [],
+      players: []
     });
   }
 }

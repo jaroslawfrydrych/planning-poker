@@ -20,6 +20,10 @@ export namespace HostActions {
     static readonly type = '[HostActions] Get players';
   }
 
+  export class GetResults {
+    static readonly type = '[HostActions] Get results';
+  }
+
   export class GetGameState {
     static readonly type = '[HostActions] Get game state';
   }
