@@ -20,6 +20,10 @@ export namespace HostActions {
     static readonly type = '[HostActions] Get players';
   }
 
+  export class GetResults {
+    static readonly type = '[HostActions] Get results';
+  }
+
   export class GetGameState {
     static readonly type = '[HostActions] Get game state';
   }
@@ -30,5 +34,9 @@ export namespace HostActions {
 
   export class CloseRoom {
     static readonly type = '[HostActions] Close room';
+  }
+
+  export class GetPlayerStatus {
+    static readonly type = '[HostActions] Get player status'
   }
 }

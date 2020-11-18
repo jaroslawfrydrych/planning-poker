@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 import {
   GameStateBroadcastDto,
@@ -12,7 +12,7 @@ import {
   JoinRoomCodeResponseDto,
   Player,
   PlayersResponseDto,
-  PlayerType,
+  PlayerType, Result, ResultsDto,
   RoomInfo,
   SocketEvents,
   Vote
@@ -43,17 +43,21 @@ export class PokerService {
   }
 
   public getGameState(): Observable<GameStates> {
-    return this.socket.fromEvent(SocketEvents.STATE)
+    return this.socket.fromEvent<GameStateBroadcastDto>(SocketEvents.STATE)
       .pipe(
         map((response: GameStateBroadcastDto) => response.state)
       );
   }
 
-  public getUsers(): Observable<Player[]> {
-    return this.socket.fromEvent(SocketEvents.PLAYERS)
+  public getPlayers(): Observable<Player[]> {
+    return this.socket.fromEvent<PlayersResponseDto>(SocketEvents.PLAYERS)
       .pipe(
         map((response: PlayersResponseDto) => response.players)
       );
+  }
+
+  public getResults(): Observable<ResultsDto> {
+    return this.socket.fromEvent<ResultsDto>(SocketEvents.RESULTS);
   }
 
   public joinRoom(room: string, type: PlayerType, name?: string): void {
@@ -63,6 +67,10 @@ export class PokerService {
       type
     };
     this.socket.emit(SocketEvents.JOIN, request);
+  }
+
+  public roomJoined(): void {
+    this.socket.emit(SocketEvents.ROOM_JOINED);
   }
 
   public validateRoomCode(code: string): Observable<JoinRoomCodeResponseDto> {
@@ -82,7 +90,7 @@ export class PokerService {
   }
 
   public roomRemove(): Observable<null> {
-    return this.socket.fromEvent(SocketEvents.ROOM_REMOVED);
+    return this.socket.fromEvent<null>(SocketEvents.ROOM_REMOVED);
   }
 
   public leaveRoom(): void {
@@ -91,5 +99,9 @@ export class PokerService {
 
   public closeRoom(roomNumber: string): void {
     this.socket.emit(SocketEvents.CLOSE_ROOM, roomNumber);
+  }
+
+  public playerVoted(): Observable<string> {
+    return this.socket.fromEvent<string>(SocketEvents.VOTED);
   }
 }

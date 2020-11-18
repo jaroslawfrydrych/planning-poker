@@ -2,6 +2,7 @@
 
 .planning-poker-button {
   @include primaryOutline();
+  @include primaryBorderRadius();
   font: {
     weight: 700;
   }

@@ -1,12 +1,11 @@
 import { BehaviorSubject } from 'rxjs';
 
-import { GameStates, Player } from '@planning-poker/api-interfaces';
+import { GameStates, Player, PlayerType } from '@planning-poker/api-interfaces';
 
 export class Room {
 
   public id: string;
-  public host: Player;
-  public players: Map<string, Player> = new Map();
+  private playersMap: Map<string, Player> = new Map();
   private stateSubject$: BehaviorSubject<GameStates> = new BehaviorSubject<GameStates>(GameStates.IN_PROGRESS);
 
   private static generateRandomNumber(): string {
@@ -26,32 +25,47 @@ export class Room {
     this.stateSubject$.next(roomState);
   }
 
+  public get players(): Player[] {
+    return this.allPlayersArray
+      .filter((player: Player) => player.type === PlayerType.VOTER)
+      .sort((firstPlayer: Player, secondPlayer: Player) => secondPlayer.date - firstPlayer.date);
+  }
+
+  public get host(): Player {
+    return this.allPlayersArray
+      .find((player: Player) => player.type === PlayerType.HOST);
+  }
+
   public generateRoomNumber(): void {
     this.id = Room.generateRandomNumber();
   }
 
   public addPlayer(player: Player): void {
-    this.players.set(player.id, player);
+    this.playersMap.set(player.id, player);
   }
 
   public getPlayer(playerId: string): Player {
-    return this.players.get(playerId);
+    return this.playersMap.get(playerId);
   }
 
   public removePlayer(playerId: string): void {
-    this.players.delete(playerId);
+    this.playersMap.delete(playerId);
   }
 
   public patchPlayer(playerId: string, patchData: Partial<Player>): void {
-    const player: Player = this.players.get(playerId);
+    const player: Player = this.playersMap.get(playerId);
 
-    this.players.set(playerId, {
+    this.playersMap.set(playerId, {
       ...player,
       ...patchData
     });
   }
 
   public hasRoomPlayer(playerId: string): boolean {
-    return this.players.has(playerId);
+    return this.playersMap.has(playerId);
+  }
+
+  private get allPlayersArray(): Player[] {
+    return Array.from(this.playersMap.values())
   }
 }

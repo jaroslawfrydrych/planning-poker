@@ -1,0 +1,28 @@
+@import "@styles/shared";
+
+$cardSizeMultiply: 1.8;
+$boardCardSizeMultiply: 1.22;
+
+:host {
+  position: relative;
+  width: (100% / 5) - 2;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  box-sizing: content-box;
+  -webkit-perspective: 800px;
+  perspective: 800px;
+  margin: 1.5% 1%;
+
+  @for $i from 1 through 10 {
+    &.cards-in-row-#{$i} {
+      width: (100% / $i) - 2;
+    }
+  }
+}
+
+.card-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 100% * $cardAspectRatio;
+}

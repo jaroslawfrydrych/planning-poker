@@ -10,7 +10,6 @@ import { RoomCodeComponent } from './room-code/room-code.component';
 import { GuestState } from './store/states/guest.state';
 import { YourNameComponent } from './your-name/your-name.component';
 
-
 @NgModule({
   declarations: [
     RoomCodeComponent,

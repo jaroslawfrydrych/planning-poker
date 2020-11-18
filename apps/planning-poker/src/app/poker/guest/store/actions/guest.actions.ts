@@ -50,6 +50,10 @@ export namespace GuestActions {
     static readonly type = '[GuestActions] Get room remove';
   }
 
+  export class GetPlayersResults {
+    static readonly type = '[GuestActions] Get players results';
+  }
+
   export class RemoveRoom {
     static readonly type = '[GuestActions] Remove room';
   }

@@ -15,10 +15,12 @@ import { HostState } from '../store/states/host.state';
 import { BoardGuard } from './board.guard';
 import CloseRoom = HostActions.CloseRoom;
 import GetGameState = HostActions.GetGameState;
-import GetUsers = HostActions.GetPlayers;
+import GetPlayers = HostActions.GetPlayers;
 import ToggleGameState = HostActions.ToggleGameState;
 import HostBoardInit = HostActions.HostBoardInit;
 import CopyRoomLink = HostActions.CopyRoomLink;
+import GetPlayerStatus = HostActions.GetPlayerStatus;
+import GetResults = HostActions.GetResults;
 
 @Component({
   selector: 'planning-poker-board',
@@ -35,7 +37,6 @@ export class BoardComponent implements OnInit, OnDestroy {
   @Select(HostState.roomNumber) public readonly roomNumber$: Observable<string>;
   @Select(HostState.players) public readonly players$: Observable<Player[]>;
   public readonly gameStates = GameStates;
-  public readonly userStatues = PlayerStatuses;
   public readonly buttonColors = ButtonColor;
   private leaveModalVisibilitySubject$: BehaviorSubject<boolean>;
   private linkCopiedSubject$: BehaviorSubject<boolean>;
@@ -112,6 +113,10 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.closeLeaveModal();
   }
 
+  public isPlayerReady(player: Player): boolean {
+    return player.status === PlayerStatuses.VOTED
+  }
+
   @HostListener('window:beforeunload')
   public beforeUnloadHandler() {
     if (this.environmentService.production) {
@@ -121,8 +126,10 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   private dispatchOnInitActions(): void {
     this.store.dispatch([
-      new GetUsers(),
-      new GetGameState()
+      new GetPlayers(),
+      new GetResults(),
+      new GetGameState(),
+      new GetPlayerStatus()
     ]);
   }
 

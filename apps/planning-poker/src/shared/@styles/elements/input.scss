@@ -2,6 +2,7 @@
 
 .planing-poker-input {
   @include primaryOutline();
+  @include primaryBorderRadius();
   height: em($controlHeight);
   min-width: em($controlMinWidth);
   padding: 0 em($controlSidePadding + 5);

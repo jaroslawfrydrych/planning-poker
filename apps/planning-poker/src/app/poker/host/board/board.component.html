@@ -1,12 +1,5 @@
-<div class="cards">
-  <ng-container *ngFor="let player of players$ | async">
-    <planning-poker-card [boardCard]="true"
-                         [gameState]="gameState$ | async"
-                         [card]="player.card"
-                         [label]="player.name"
-                         [playerReady]="player.status === userStatues.VOTED"></planning-poker-card>
-  </ng-container>
-</div>
+<planning-poker-table [players$]="players$"
+                      [gameState$]="gameState$"></planning-poker-table>
 
 <div class="sidebar">
   <header class="sidebar-header">
