@@ -95,7 +95,17 @@ export class HostState {
       .pipe(
         takeUntil(this.actions$.pipe(ofAction(CloseRoom)))
       )
-      .subscribe((players: Player[]) => {
+      .subscribe((newPlayers: Player[]) => {
+        const state: HostModel = context.getState();
+        const oldPlayers: Player[] = state.players;
+
+        const players: Player [] = newPlayers.map((player: Player) => {
+          const oldPlayer: Player = oldPlayers && oldPlayers.find((p: Player) => p.id === player.id);
+          player.card = oldPlayer && oldPlayer.card || null;
+          player.status = oldPlayer && oldPlayer.status || PlayerStatuses.WAITING;
+          return player;
+        });
+
         context.patchState({
           players
         });

@@ -16,7 +16,6 @@ export class TableComponent {
   @Input() public cardsInRow = 5;
 
   public isPlayerReady(player: Player): boolean {
-    console.log('is player ready', player.status);
     return player.status === PlayerStatuses.VOTED;
   }
 }
