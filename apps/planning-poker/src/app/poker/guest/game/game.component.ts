@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Actions, ofActionSuccessful, Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { isNullOrUndefined } from 'util';
 
 import { Cards, GameStates, Player } from '@planning-poker/api-interfaces';
 import { TakeUntilDestroy, untilDestroyed } from '@shared/decorators/take-until-destroy.decorator';
@@ -14,7 +15,7 @@ import ChooseCard = GuestActions.ChooseCard;
 import GuestGameInit = GuestActions.GuestGameInit;
 import GetGameState = GuestActions.GetGameState;
 import RoomRemove = GuestActions.RemoveRoom;
-import CloseRoom = GuestActions.LeaveRoom;
+import LeaveRoom = GuestActions.LeaveRoom;
 import GetRoomRemove = GuestActions.GetRoomRemove;
 import GetPlayersResults = GuestActions.GetPlayersResults;
 
@@ -64,7 +65,7 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.store.dispatch(CloseRoom);
+    this.store.dispatch(LeaveRoom);
     this.navigateToLadingPage();
   }
 
@@ -86,7 +87,7 @@ export class GameComponent implements OnInit, OnDestroy {
   public isCardNotSelected(cardItem: Cards): Observable<boolean> {
     return this.card$
       .pipe(
-        map((card: Cards) => card !== null && card !== cardItem)
+        map((card: Cards) => !isNullOrUndefined(card) && card !== cardItem)
       );
   }
 
