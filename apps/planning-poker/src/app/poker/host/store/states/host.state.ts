@@ -25,7 +25,7 @@ import GetResults = HostActions.GetResults;
   defaults: {
     roomNumber: null,
     gameState: GameStates.IN_PROGRESS,
-    players: []
+    players: new Map<string, Player>()
   }
 })
 @Injectable()
@@ -43,7 +43,7 @@ export class HostState {
 
   @Selector<string>()
   public static players(state: HostModel): Player[] {
-    return state.players;
+    return Array.from(state.players.values());
   }
 
   constructor(private hostService: HostService,
@@ -96,14 +96,10 @@ export class HostState {
         takeUntil(this.actions$.pipe(ofAction(CloseRoom)))
       )
       .subscribe((newPlayers: Player[]) => {
-        const state: HostModel = context.getState();
-        const oldPlayers: Player[] = state.players;
+        const players: Map<string, Player> = new Map<string, Player>();
 
-        const players: Player [] = newPlayers.map((player: Player) => {
-          const oldPlayer: Player = oldPlayers && oldPlayers.find((p: Player) => p.id === player.id);
-          player.card = oldPlayer && oldPlayer.card || null;
-          player.status = oldPlayer && oldPlayer.status || PlayerStatuses.WAITING;
-          return player;
+        newPlayers.forEach((player: Player) => {
+          players.set(player.id, player);
         });
 
         context.patchState({
@@ -120,17 +116,17 @@ export class HostState {
       )
       .subscribe((results: ResultsDto) => {
         const state: HostModel = context.getState();
-        const players: Player[] = state.players;
+        const players: Map<string, Player> = state.players;
 
-        const playersWithResults: Player[] = players.map((player: Player) => {
-          const result: Result = results[player.id] || null;
+        players.forEach((player: Player, key: string) => {
+          const result: Result = results[key] || null;
           player.card = result && result.card;
-          return player;
+          players.set(key, player);
         });
 
         context.patchState({
-          players: playersWithResults
-        })
+          players
+        });
       });
   }
 
@@ -160,13 +156,17 @@ export class HostState {
       )
       .subscribe((playerId: string) => {
         const state: HostModel = context.getState();
-        const selectedPlayer: Player = state.players && state.players.find((player: Player) => player.id === playerId);
+        const players: Map<string, Player> = state.players;
+        const player: Player = players.get(playerId);
 
-        if (selectedPlayer) {
-          selectedPlayer.status = PlayerStatuses.VOTED;
+        if (player) {
+          player.status = PlayerStatuses.VOTED;
+          players.set(playerId, player);
         }
 
-        context.setState(state);
+        context.patchState({
+          players
+        });
       });
   }
 
@@ -184,13 +184,17 @@ export class HostState {
 
   private resetPlayersVotes(context: StateContext<HostModel>): void {
     const state: HostModel = context.getState();
+    const players: Map<string, Player> = state.players;
 
-    state.players = state.players.map((player: Player) => {
+    players.forEach((player: Player, key: string) => {
       player.status = PlayerStatuses.WAITING;
       player.card = null;
-      return player;
+
+      players.set(key, player);
     });
 
-    context.setState(state);
+    context.patchState({
+      players
+    });
   }
 }

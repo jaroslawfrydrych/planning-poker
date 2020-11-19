@@ -6,5 +6,5 @@ export interface GuestModel extends BaseModel {
   card: Cards;
   isRoomNumberValid: boolean;
   availableCards: Cards[];
-  players: Player[];
+  players: Map<string, Player>;
 }

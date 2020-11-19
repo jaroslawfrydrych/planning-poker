@@ -54,7 +54,7 @@ interface SetRoomInfoModel {
     isRoomNumberValid: null,
     roomNumber: null,
     availableCards: [],
-    players: []
+    players: new Map<string, Player>()
   }
 })
 @Injectable()
@@ -92,7 +92,7 @@ export class GuestState {
 
   @Selector<Player[]>()
   public static players(state: GuestModel): Player[] {
-    return state.players;
+    return Array.from(state.players.values());
   }
 
   constructor(private $gaService: GoogleAnalyticsService,
@@ -198,13 +198,15 @@ export class GuestState {
         takeUntil(this.actions$.pipe(ofAction(LeaveRoom, RemoveRoom)))
       )
       .subscribe((results: ResultsDto) => {
-        const players: Player[] = Object.keys(results)
-          .map((id: string) => {
-            return {
+        const players: Map<string, Player> = new Map<string, Player>();
+
+        Object.keys(results)
+          .forEach((id: string) => {
+            players.set(id, {
               id,
               name: results[id].name,
               card: results[id].card
-            }
+            })
           });
 
         context.patchState({
@@ -256,7 +258,7 @@ export class GuestState {
       isRoomNumberValid: null,
       roomNumber: null,
       availableCards: [],
-      players: []
+      players: new Map<string, Player>()
     });
   }
 }
