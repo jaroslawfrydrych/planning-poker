@@ -61,4 +61,8 @@ export namespace GuestActions {
   export class LeaveRoom {
     static readonly type = '[GuestActions] Leave room';
   }
+
+  export class GetIsPlayerInRoom {
+    static readonly type = '[GuestActions] Get is player in room';
+  }
 }

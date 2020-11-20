@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { NavigationEnd, Router, RouterEvent, RouterOutlet } from '@angular/router';
-import { Subject } from 'rxjs';
-import { filter, pairwise, takeUntil } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Data, NavigationEnd, Router, RouterEvent, RouterOutlet } from '@angular/router';
+import { filter, pairwise } from 'rxjs/operators';
+
+import { TakeUntilDestroy, untilDestroyed } from '@shared/decorators/take-until-destroy.decorator';
 
 import { routerAnimations } from './app.animations';
 import { AppService } from './app.service';
@@ -15,9 +16,8 @@ import { AppService } from './app.service';
     routerAnimations
   ]
 })
-export class AppComponent implements OnInit, OnDestroy {
-
-  private destroySubject$: Subject<null> = new Subject<null>();
+@TakeUntilDestroy()
+export class AppComponent implements OnInit {
 
   constructor(private appService: AppService,
               private router: Router) {
@@ -26,24 +26,28 @@ export class AppComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.appService.connectSocket();
 
+    this.handleRouterEvents();
+  }
+
+  public prepareRoute(outlet: RouterOutlet): Data {
+    return outlet && outlet.activatedRouteData && outlet.activatedRouteData['animation'];
+  }
+
+  private handleRouterEvents(): void {
     this.router.events
       .pipe(
         filter((event: RouterEvent) => event instanceof NavigationEnd),
         pairwise(),
-        takeUntil(this.destroySubject$)
+        untilDestroyed(this)
       )
       .subscribe(([previous, current]: [RouterEvent, RouterEvent]) => {
         if (previous.url !== '/' && current.url === '/') {
           this.appService.reconnectSocket();
         }
+
+        if (current.url === '/?reconnectFailed=true') {
+          this.router.navigateByUrl('/');
+        }
       });
-  }
-
-  public ngOnDestroy(): void {
-    this.destroySubject$.next(null);
-  }
-
-  public prepareRoute(outlet: RouterOutlet) {
-    return outlet && outlet.activatedRouteData && outlet.activatedRouteData['animation'];
   }
 }

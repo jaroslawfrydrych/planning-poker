@@ -81,4 +81,8 @@ export class GuestService {
   public roomJoined(): void {
     this.pokerService.roomJoined();
   }
+
+  public getIsPlayerInRoom(roomNumber: string): Observable<boolean> {
+    return this.pokerService.getIsPlayerInRoom(roomNumber);
+  }
 }

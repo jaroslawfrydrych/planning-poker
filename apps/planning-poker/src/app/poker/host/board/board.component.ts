@@ -2,7 +2,7 @@ import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { BehaviorSubject, interval, Observable } from 'rxjs';
-import { debounceTime, filter, map, startWith } from 'rxjs/operators';
+import { debounceTime, filter, map, mergeMap, startWith, take } from 'rxjs/operators';
 
 import { GameStates, Player, PlayerStatuses } from '@planning-poker/api-interfaces';
 import { ButtonColor } from '@shared/button/button-color.enum';
@@ -10,9 +10,7 @@ import { TakeUntilDestroy, untilDestroyed } from '@shared/decorators/take-until-
 import { CopyToClipboardService } from '@shared/services/copy-to-clipboard/copy-to-clipboard.service';
 import { EnvironmentService } from '@shared/services/environment/environment.service';
 
-import { HostActions } from '../store/actions/host.actions';
-import { HostState } from '../store/states/host.state';
-import { BoardGuard } from './board.guard';
+import { AppService } from '../../../app.service';
 import CloseRoom = HostActions.CloseRoom;
 import GetGameState = HostActions.GetGameState;
 import GetPlayers = HostActions.GetPlayers;
@@ -21,6 +19,10 @@ import HostBoardInit = HostActions.HostBoardInit;
 import CopyRoomLink = HostActions.CopyRoomLink;
 import GetPlayerStatus = HostActions.GetPlayerStatus;
 import GetResults = HostActions.GetResults;
+import { HostService } from '../host.service';
+import { HostActions } from '../store/actions/host.actions';
+import { HostState } from '../store/states/host.state';
+import { BoardGuard } from './board.guard';
 
 @Component({
   selector: 'planning-poker-board',
@@ -42,6 +44,8 @@ export class BoardComponent implements OnInit, OnDestroy {
   private linkCopiedSubject$: BehaviorSubject<boolean>;
 
   constructor(private boardGuard: BoardGuard,
+              private hostService: HostService,
+              private appService: AppService,
               private router: Router,
               private environmentService: EnvironmentService,
               private copyToClipboardService: CopyToClipboardService,
@@ -56,6 +60,7 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.dispatchOnInitActions();
     this.store.dispatch(new HostBoardInit());
     this.currentTime$ = this.getCurrentTime$();
+    this.handleSocketEvents();
   }
 
   public ngOnDestroy(): void {
@@ -114,7 +119,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   }
 
   public isPlayerReady(player: Player): boolean {
-    return player.status === PlayerStatuses.VOTED
+    return player.status === PlayerStatuses.VOTED;
   }
 
   @HostListener('window:beforeunload')
@@ -143,5 +148,32 @@ export class BoardComponent implements OnInit, OnDestroy {
         startWith(<Date>null),
         map(() => new Date())
       );
+  }
+
+  private handleSocketEvents(): void {
+    this.appService.reconnectFailed$()
+      .pipe(
+        untilDestroyed(this)
+      )
+      .subscribe(() => {
+        this.router.navigateByUrl('/?reconnectFailed=true');
+      });
+
+    this.appService.connect$()
+      .pipe(
+        untilDestroyed(this)
+      )
+      .subscribe(() => console.log('connect'));
+
+
+    this.appService.connect$()
+      .pipe(
+        mergeMap(() => this.roomNumber$),
+        take(1),
+        mergeMap((roomNumber: string) => this.hostService.getIsHostOfRoom(roomNumber)),
+        filter((isHostOfRoom: boolean) => !isHostOfRoom),
+        untilDestroyed(this)
+      )
+      .subscribe(() => this.router.navigateByUrl('/?reconnectFailed=true'));
   }
 }

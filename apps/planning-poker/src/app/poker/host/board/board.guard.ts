@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, CanDeactivate, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, CanDeactivate, Router, RouterStateSnapshot } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { Observable, Subject } from 'rxjs';
 import { first, map, tap } from 'rxjs/operators';
@@ -31,7 +31,12 @@ export class BoardGuard extends HostBaseGuard implements CanActivate, CanDeactiv
       );
   }
 
-  public canDeactivate(component: BoardComponent): Observable<boolean> {
+  public canDeactivate(component: BoardComponent, currentRoute: ActivatedRouteSnapshot,
+                       currentState: RouterStateSnapshot, nextState?: RouterStateSnapshot): Observable<boolean> | boolean {
+    if (nextState.url === '/?reconnectFailed=true') {
+      return true;
+    }
+
     component.showLeaveModal();
 
     return this.discardSubject.asObservable()

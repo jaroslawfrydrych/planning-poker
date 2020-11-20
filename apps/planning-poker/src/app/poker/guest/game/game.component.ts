@@ -2,13 +2,15 @@ import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, ofActionSuccessful, Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { filter, map, mergeMap, take } from 'rxjs/operators';
 import { isNullOrUndefined } from 'util';
 
 import { Cards, GameStates, Player } from '@planning-poker/api-interfaces';
 import { TakeUntilDestroy, untilDestroyed } from '@shared/decorators/take-until-destroy.decorator';
 import { EnvironmentService } from '@shared/services/environment/environment.service';
 
+import { AppService } from '../../../app.service';
+import { GuestService } from '../guest.service';
 import { GuestActions } from '../store/actions/guest.actions';
 import { GuestState } from '../store/states/guest.state';
 import ChooseCard = GuestActions.ChooseCard;
@@ -34,8 +36,10 @@ export class GameComponent implements OnInit, OnDestroy {
   @Select(GuestState.players) public readonly players$: Observable<Player[]>;
 
   constructor(private router: Router,
+              private guestService: GuestService,
               private actions$: Actions,
               private store: Store,
+              private appService: AppService,
               private environmentService: EnvironmentService) {
   }
 
@@ -62,6 +66,8 @@ export class GameComponent implements OnInit, OnDestroy {
         untilDestroyed(this)
       )
       .subscribe(() => this.navigateToLadingPage());
+
+    this.handleSocketEvents();
   }
 
   public ngOnDestroy(): void {
@@ -100,5 +106,23 @@ export class GameComponent implements OnInit, OnDestroy {
 
   private navigateToLadingPage(): void {
     this.router.navigateByUrl('/');
+  }
+
+  private handleSocketEvents(): void {
+    this.appService.reconnectFailed$()
+      .pipe(
+        untilDestroyed(this)
+      )
+      .subscribe(() => this.navigateToLadingPage());
+
+    this.appService.connect$()
+      .pipe(
+        mergeMap(() => this.roomNumber$),
+        take(1),
+        mergeMap((roomNumber: string) => this.guestService.getIsPlayerInRoom(roomNumber)),
+        filter((isPlayerInRoom: boolean) => !isPlayerInRoom),
+        untilDestroyed(this)
+      )
+      .subscribe(() => this.navigateToLadingPage());
   }
 }

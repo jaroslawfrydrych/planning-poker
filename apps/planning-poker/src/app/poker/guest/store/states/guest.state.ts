@@ -28,6 +28,7 @@ import RemoveRoom = GuestActions.RemoveRoom;
 import SetRoomInfo = GuestActions.SetRoomInfo;
 import GetRoomRemove = GuestActions.GetRoomRemove;
 import GetPlayersResults = GuestActions.GetPlayersResults;
+import GetIsPlayerInRoom = GuestActions.GetIsPlayerInRoom;
 
 interface JoinRoomModel {
   name: string;
@@ -260,5 +261,12 @@ export class GuestState {
       availableCards: [],
       players: new Map<string, Player>()
     });
+  }
+
+  @Action(GetIsPlayerInRoom)
+  public getIsPlayerInRoom(context: StateContext<GuestModel>): Observable<boolean> {
+    const state: GuestModel = context.getState();
+
+    return this.guestService.getIsPlayerInRoom(state.roomNumber);
   }
 }

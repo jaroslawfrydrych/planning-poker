@@ -80,7 +80,7 @@ export class PokerService {
     return this.rooms.get(roomNumber);
   }
 
-  public findPlayerRoom(playerId: string): Room {
+  public findPlayerRoom(playerId: string): Room | null {
     const roomsArray: Room[] = Array.from(this.rooms.values());
     const foundRoom: Room = roomsArray.find((room: Room) => room.hasRoomPlayer(playerId));
     return foundRoom || null;

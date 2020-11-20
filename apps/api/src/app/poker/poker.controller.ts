@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 
 import {
   CreateRoomDto,
@@ -51,8 +51,15 @@ export class PokerController {
     };
   }
 
-  @Get('room-votes')
-  public roomVotes() {
-    // todo get room client votes
+  @Get('check-player-in-room/:playerId/:roomNumber')
+  public checkPlayerInRoom(@Param('playerId') playerId: string, @Param('roomNumber') roomNumber: string): boolean {
+    const room: Room | null = this.pokerService.findPlayerRoom(playerId);
+    return room ? room.id === roomNumber : false;
+  }
+
+  @Get('check-host-of-room/:playerId/:roomNumber')
+  public checkHostOfRoom(@Param('playerId') playerId: string, @Param('roomNumber') roomNumber: string): boolean {
+    const room: Room | null = this.pokerService.getRoom(roomNumber);
+    return room ? room.host.id === playerId : false;
   }
 }

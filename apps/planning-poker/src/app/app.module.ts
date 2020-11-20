@@ -21,8 +21,10 @@ const config: SocketIoConfig = {
     autoConnect: true,
     reconnect: true,
     reconnection: true,
-    reconnectionDelay: 500,
-    reconnectionAttempts: Infinity,
+    reconnectionDelay: 1000,
+    reconnectionDelayMax: 5000,
+    reconnectionAttempts: 5,
+    randomizationFactor: 0.5,
     pingTimeout: 10000,
     pingInterval: 30000
   }
