@@ -5,10 +5,10 @@ import { ButtonModule } from '@shared/button/button.module';
 import { CardModule } from '@shared/card/card.module';
 import { FormModule } from '@shared/form/form.module';
 import { IconModule } from '@shared/icon/icon.module';
+import { LayoutModule } from '@shared/layout/layout.module';
+import { ModalModule } from '@shared/modal/modal.module';
 import { TableModule } from '@shared/table/table.module';
 import { TextFixedWidthModule } from '@shared/text-fixed-width/text-fixed-width.module';
-
-import { LayoutModule } from './layout/layout.module';
 
 const MODULES: Type<any>[] = [
   ButtonModule,
@@ -17,7 +17,8 @@ const MODULES: Type<any>[] = [
   LayoutModule,
   IconModule,
   TextFixedWidthModule,
-  TableModule
+  TableModule,
+  ModalModule
 ];
 
 @NgModule({

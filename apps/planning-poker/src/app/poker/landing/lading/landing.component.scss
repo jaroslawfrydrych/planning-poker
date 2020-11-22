@@ -12,10 +12,15 @@ planning-poker-header {
   position: relative;
 
   h2 {
-    position: absolute;
-    top: em(45);
     display: flex;
     width: 100%;
+    padding-top: em(10);
+
+    @include media-breakpoint-up(sm) {
+      position: absolute;
+      top: em(45);
+      padding-top: 0;
+    }
   }
 }
 

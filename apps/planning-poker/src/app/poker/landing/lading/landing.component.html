@@ -9,8 +9,9 @@
             buttonColor="secondary"
             (click)="goToGuestPath()">Join existing room
     </button>
-    <span>or</span>
-    <button planningPokerButton
+    <span class="hidden-on-mobile">or</span>
+    <button class="hidden-on-mobile"
+            planningPokerButton
             (click)="goToHostPath()">Create new one
     </button>
   </planning-poker-content>

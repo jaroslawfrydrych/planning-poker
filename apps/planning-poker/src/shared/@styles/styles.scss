@@ -30,11 +30,19 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-  font-size: em(48);
+  font-size: em(34);
+
+  @include media-breakpoint-up(sm) {
+    font-size: em(48);
+  }
 }
 
 h2 {
-  font-size: em(24);
+  font-size: em(18);
+
+  @include media-breakpoint-up(sm) {
+    font-size: em(24);
+  }
 }
 
 h3 {
@@ -56,5 +64,11 @@ a {
   &:focus {
     outline: none;
     box-shadow: none;
+  }
+}
+
+.hidden-on-mobile {
+  @include media-breakpoint-down(sm) {
+    display: none!important;
   }
 }
