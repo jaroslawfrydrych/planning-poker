@@ -7,10 +7,16 @@ import { debounceTime, filter, map, mergeMap, startWith, take } from 'rxjs/opera
 import { GameStates, Player, PlayerStatuses } from '@planning-poker/api-interfaces';
 import { ButtonColor } from '@shared/button/button-color.enum';
 import { TakeUntilDestroy, untilDestroyed } from '@shared/decorators/take-until-destroy.decorator';
+import { ConnectionStatus } from '@shared/enum/connection-status.enum';
 import { CopyToClipboardService } from '@shared/services/copy-to-clipboard/copy-to-clipboard.service';
 import { EnvironmentService } from '@shared/services/environment/environment.service';
+import { SocketState } from '@store/states/socket.state';
 
 import { AppService } from '../../../app.service';
+import { HostService } from '../host.service';
+import { HostActions } from '../store/actions/host.actions';
+import { HostState } from '../store/states/host.state';
+import { BoardGuard } from './board.guard';
 import CloseRoom = HostActions.CloseRoom;
 import GetGameState = HostActions.GetGameState;
 import GetPlayers = HostActions.GetPlayers;
@@ -19,10 +25,6 @@ import HostBoardInit = HostActions.HostBoardInit;
 import CopyRoomLink = HostActions.CopyRoomLink;
 import GetPlayerStatus = HostActions.GetPlayerStatus;
 import GetResults = HostActions.GetResults;
-import { HostService } from '../host.service';
-import { HostActions } from '../store/actions/host.actions';
-import { HostState } from '../store/states/host.state';
-import { BoardGuard } from './board.guard';
 
 @Component({
   selector: 'planning-poker-board',
@@ -38,6 +40,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   @Select(HostState.gameState) public readonly gameState$: Observable<GameStates>;
   @Select(HostState.roomNumber) public readonly roomNumber$: Observable<string>;
   @Select(HostState.players) public readonly players$: Observable<Player[]>;
+  @Select(SocketState.connectionStatus) public readonly connectionStatus$: Observable<ConnectionStatus>;
   public readonly gameStates = GameStates;
   public readonly buttonColors = ButtonColor;
   private leaveModalVisibilitySubject$: BehaviorSubject<boolean>;
@@ -61,6 +64,7 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.store.dispatch(new HostBoardInit());
     this.currentTime$ = this.getCurrentTime$();
     this.handleSocketEvents();
+    this.handleIntervalHostCheck();
   }
 
   public ngOnDestroy(): void {
@@ -161,17 +165,39 @@ export class BoardComponent implements OnInit, OnDestroy {
 
     this.appService.connect$
       .pipe(
-        untilDestroyed(this)
-      )
-      .subscribe(() => console.log('connect'));
-
-
-    this.appService.connect$
-      .pipe(
         mergeMap(() => this.roomNumber$),
         take(1),
-        mergeMap((roomNumber: string) => this.hostService.getIsHostOfRoom(roomNumber)),
-        filter((isHostOfRoom: boolean) => !isHostOfRoom),
+        mergeMap((roomNumber: string) => this.getIfIsHostOfRoom(roomNumber)),
+        untilDestroyed(this)
+      )
+      .subscribe(() => this.router.navigateByUrl('/?reconnectFailed=true'));
+  }
+
+  /**
+   * Helper function to get data from api check-host-of-room/:playerId/:roomNumber
+   * @param roomNumber
+   */
+  private getIfIsHostOfRoom(roomNumber: string): Observable<boolean> {
+    return this.hostService.getIsHostOfRoom(roomNumber)
+      .pipe(
+        filter((isHostOfRoom: boolean) => !isHostOfRoom)
+      );
+  }
+
+  /**
+   * Check every 30 seconds on api check-host-of-room/:playerId/:roomNumber is client still host of room.
+   */
+  private handleIntervalHostCheck(): void {
+    interval(30000)
+      .pipe(
+        mergeMap(() => this.connectionStatus$
+          .pipe(take(1))
+        ),
+        filter((connectionStatus: ConnectionStatus) => connectionStatus === ConnectionStatus.CONNECTED),
+        mergeMap(() => this.roomNumber$
+          .pipe(take(1))
+        ),
+        mergeMap((roomNumber: string) => this.getIfIsHostOfRoom(roomNumber)),
         untilDestroyed(this)
       )
       .subscribe(() => this.router.navigateByUrl('/?reconnectFailed=true'));

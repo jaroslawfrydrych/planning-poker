@@ -1,18 +1,21 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, ofActionSuccessful, Select, Store } from '@ngxs/store';
-import { Observable } from 'rxjs';
+import { interval, Observable } from 'rxjs';
 import { filter, map, mergeMap, take } from 'rxjs/operators';
 import { isNullOrUndefined } from 'util';
 
 import { Cards, GameStates, Player } from '@planning-poker/api-interfaces';
 import { TakeUntilDestroy, untilDestroyed } from '@shared/decorators/take-until-destroy.decorator';
+import { ConnectionStatus } from '@shared/enum/connection-status.enum';
 import { EnvironmentService } from '@shared/services/environment/environment.service';
+import { SocketState } from '@store/states/socket.state';
 
 import { AppService } from '../../../app.service';
 import { GuestService } from '../guest.service';
 import { GuestActions } from '../store/actions/guest.actions';
 import { GuestState } from '../store/states/guest.state';
+
 import ChooseCard = GuestActions.ChooseCard;
 import GuestGameInit = GuestActions.GuestGameInit;
 import GetGameState = GuestActions.GetGameState;
@@ -34,6 +37,7 @@ export class GameComponent implements OnInit, OnDestroy {
   @Select(GuestState.roomNumber) public readonly roomNumber$: Observable<string>;
   @Select(GuestState.gameState) public readonly gameState$: Observable<GameStates>;
   @Select(GuestState.players) public readonly players$: Observable<Player[]>;
+  @Select(SocketState.connectionStatus) public readonly connectionStatus$: Observable<ConnectionStatus>;
 
   constructor(private router: Router,
               private guestService: GuestService,
@@ -68,6 +72,7 @@ export class GameComponent implements OnInit, OnDestroy {
       .subscribe(() => this.navigateToLadingPage());
 
     this.handleSocketEvents();
+    this.handleIntervalPlayerCheck();
   }
 
   public ngOnDestroy(): void {
@@ -124,5 +129,35 @@ export class GameComponent implements OnInit, OnDestroy {
         untilDestroyed(this)
       )
       .subscribe(() => this.navigateToLadingPage());
+  }
+
+  /**
+   * Helper function to get data from api check-host-of-room/:playerId/:roomNumber
+   * @param roomNumber
+   */
+  private getIfIsStillPlayerInRoom(roomNumber: string): Observable<boolean> {
+    return this.guestService.getIsPlayerInRoom(roomNumber)
+      .pipe(
+        filter((isPlayerInRoom: boolean) => !isPlayerInRoom)
+      );
+  }
+
+  /**
+   * Check every 30 seconds on api check-host-of-room/:playerId/:roomNumber is client still host of room.
+   */
+  private handleIntervalPlayerCheck(): void {
+    interval(30000)
+      .pipe(
+        mergeMap(() => this.connectionStatus$
+          .pipe(take(1))
+        ),
+        filter((connectionStatus: ConnectionStatus) => connectionStatus === ConnectionStatus.CONNECTED),
+        mergeMap(() => this.roomNumber$
+          .pipe(take(1))
+        ),
+        mergeMap((roomNumber: string) => this.getIfIsStillPlayerInRoom(roomNumber)),
+        untilDestroyed(this)
+      )
+      .subscribe(() => this.router.navigateByUrl('/?reconnectFailed=true'));
   }
 }
