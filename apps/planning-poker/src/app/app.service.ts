@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { merge, Observable, Subscriber } from 'rxjs';
 
-import { ConnectionStatus } from '@shared/enum/connection-status.enum';
 import { ConnectionError } from '@shared/enum/connection-error.enum';
+import { ConnectionStatus } from '@shared/enum/connection-status.enum';
 
 @Injectable({
   providedIn: 'root'

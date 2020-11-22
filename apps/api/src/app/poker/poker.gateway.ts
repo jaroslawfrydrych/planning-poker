@@ -5,6 +5,8 @@ import {
   WebSocketGateway,
   WebSocketServer
 } from '@nestjs/websockets';
+import { Observable, of, Subject } from 'rxjs';
+import { delay, filter, takeUntil } from 'rxjs/operators';
 import { Server, Socket } from 'socket.io';
 
 import {
@@ -19,10 +21,8 @@ import {
   Vote
 } from '@planning-poker/api-interfaces';
 
-import { Observable, of, Subject } from 'rxjs';
 import { PokerService } from './poker.service';
 import { Room } from './room';
-import { delay, filter, takeUntil } from 'rxjs/operators';
 
 @WebSocketGateway()
 export class PokerGateway implements OnGatewayConnection, OnGatewayDisconnect {

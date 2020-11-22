@@ -9,9 +9,9 @@ import { TakeUntilDestroy, untilDestroyed } from '@shared/decorators/take-until-
 import { ConnectionStatus } from '@shared/enum/connection-status.enum';
 import { SocketState } from '@store/states/socket.state';
 
-import { HostActions } from '../store/actions/host.actions';
 import CreateRoom = HostActions.CreateRoom;
 import { AppService } from '../../../app.service';
+import { HostActions } from '../store/actions/host.actions';
 
 @Component({
   selector: 'planning-poker-wait',
