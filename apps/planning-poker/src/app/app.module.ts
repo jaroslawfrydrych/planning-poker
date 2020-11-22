@@ -12,6 +12,7 @@ import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { environment } from '@environments/environment';
 import { ENVIRONMENT } from '@environments/utils';
 import { SharedModule } from '@shared/shared.module';
+import { SocketState } from '@store/states/socket.state';
 
 import { AppComponent } from './app.component';
 import { PokerModule } from './poker/poker.module';
@@ -21,7 +22,7 @@ const config: SocketIoConfig = {
     autoConnect: true,
     reconnect: true,
     reconnection: true,
-    reconnectionDelay: 1000,
+    reconnectionDelay: environment.socketReconnectionDelay,
     reconnectionDelayMax: 5000,
     reconnectionAttempts: 5,
     randomizationFactor: 0.5,
@@ -43,7 +44,9 @@ const config: SocketIoConfig = {
     RouterModule,
     SocketIoModule.forRoot(config),
     NgxGoogleAnalyticsModule.forRoot('UA-180323084-1'),
-    NgxsModule.forRoot(),
+    NgxsModule.forRoot([
+      SocketState
+    ]),
     NgxsReduxDevtoolsPluginModule.forRoot({
       disabled: !!environment.production
     }),

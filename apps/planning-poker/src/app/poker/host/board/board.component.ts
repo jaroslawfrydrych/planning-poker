@@ -151,7 +151,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   }
 
   private handleSocketEvents(): void {
-    this.appService.reconnectFailed$()
+    this.appService.reconnectFailed$
       .pipe(
         untilDestroyed(this)
       )
@@ -159,14 +159,14 @@ export class BoardComponent implements OnInit, OnDestroy {
         this.router.navigateByUrl('/?reconnectFailed=true');
       });
 
-    this.appService.connect$()
+    this.appService.connect$
       .pipe(
         untilDestroyed(this)
       )
       .subscribe(() => console.log('connect'));
 
 
-    this.appService.connect$()
+    this.appService.connect$
       .pipe(
         mergeMap(() => this.roomNumber$),
         take(1),

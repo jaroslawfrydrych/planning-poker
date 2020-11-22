@@ -4,6 +4,8 @@ import { Store } from '@ngxs/store';
 import { GoogleAnalyticsService } from 'ngx-google-analytics';
 
 import { TakeUntilDestroy } from '@shared/decorators/take-until-destroy.decorator';
+import { StoreName } from '@store/store-name.enum';
+import { StoreModel } from '@store/store.model';
 
 import { GuestService } from '../../guest/guest.service';
 
@@ -24,8 +26,7 @@ export class LandingComponent implements OnInit {
 
   public ngOnInit(): void {
     this.$gaService.pageView('/');
-
-    this.store.reset({});
+    this.resetStates();
   }
 
   public goToGuestPath(): void {
@@ -34,5 +35,15 @@ export class LandingComponent implements OnInit {
 
   public goToHostPath(): void {
     this.router.navigateByUrl('/host');
+  }
+
+  private resetStates(): void {
+    const storeSnapshoot: StoreModel = this.store.snapshot();
+
+    this.store.reset({
+      ...storeSnapshoot,
+      [StoreName.HOST]: {},
+      [StoreName.GUEST]: {}
+    });
   }
 }

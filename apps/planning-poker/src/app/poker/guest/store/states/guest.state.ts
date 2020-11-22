@@ -12,10 +12,12 @@ import {
   ResultsDto,
   RoomInfo
 } from '@planning-poker/api-interfaces';
+import { StoreName } from '@store/store-name.enum';
 
 import { GuestService } from '../../guest.service';
 import { GuestActions } from '../actions/guest.actions';
 import { GuestModel } from '../models/guest.model';
+
 import JoinRoom = GuestActions.JoinRoom;
 import ChooseCard = GuestActions.ChooseCard;
 import GuestGameInit = GuestActions.GuestGameInit;
@@ -47,7 +49,7 @@ interface SetRoomInfoModel {
 }
 
 @State<GuestModel>({
-  name: 'guest',
+  name: StoreName.GUEST,
   defaults: {
     name: null,
     card: null,
@@ -251,8 +253,8 @@ export class GuestState {
   }
 
   @Action([RemoveRoom, LeaveRoom])
-  public resetRoom(context: StateContext<GuestModel>): void {
-    context.setState({
+  public resetRoom({patchState}: StateContext<GuestModel>): void {
+    patchState({
       name: null,
       card: null,
       gameState: null,

@@ -1,13 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Store } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { GoogleAnalyticsService } from 'ngx-google-analytics';
-import { delay } from 'rxjs/operators';
+import { Observable, of, race } from 'rxjs';
+import { delay, filter, map, mergeMap, take } from 'rxjs/operators';
 
 import { TakeUntilDestroy, untilDestroyed } from '@shared/decorators/take-until-destroy.decorator';
+import { ConnectionStatus } from '@shared/enum/connection-status.enum';
+import { SocketState } from '@store/states/socket.state';
 
 import { HostActions } from '../store/actions/host.actions';
 import CreateRoom = HostActions.CreateRoom;
+import { AppService } from '../../../app.service';
 
 @Component({
   selector: 'planning-poker-wait',
@@ -17,7 +21,10 @@ import CreateRoom = HostActions.CreateRoom;
 @TakeUntilDestroy()
 export class WaitComponent implements OnInit {
 
+  @Select(SocketState.connectionStatus) public connectionStatus$: Observable<ConnectionStatus>;
+
   constructor(private router: Router,
+              private appService: AppService,
               private store: Store,
               private $gaService: GoogleAnalyticsService) {
   }
@@ -25,11 +32,42 @@ export class WaitComponent implements OnInit {
   public ngOnInit(): void {
     this.$gaService.pageView('/host/board');
 
-    this.store.dispatch(new CreateRoom())
+    const connectionStatus$: Observable<ConnectionStatus> = this.connectionStatus$
       .pipe(
+        map((connectionStatus: ConnectionStatus) => {
+          if (connectionStatus === ConnectionStatus.DISCONNECTED) {
+            this.appService.reconnectSocket();
+            return null;
+          }
+
+          return connectionStatus;
+        }),
+        filter((connectionStatus: ConnectionStatus) => connectionStatus === ConnectionStatus.CONNECTED),
+        take(1)
+      );
+
+    const connectionTimeout$: Observable<null> = of(null)
+      .pipe(
+        delay(15000),
+        map(() => {
+          throw new Error('timeout');
+        })
+      );
+
+    race(connectionStatus$, connectionTimeout$)
+      .pipe(
+        mergeMap(() => this.store.dispatch(new CreateRoom())),
         delay(1500),
         untilDestroyed(this)
       )
-      .subscribe(() => this.router.navigateByUrl('/host/board'));
+      .subscribe(
+        () => this.router.navigateByUrl('/host/board'),
+        (error: ConnectionStatus) => this.handleSocketTimeout(error));
+  }
+
+  private handleSocketTimeout(error: ConnectionStatus) {
+    // TODO add snakcbar or modal info
+    console.error('Error of socket due to', error);
+    this.router.navigateByUrl('/');
   }
 }

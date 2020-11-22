@@ -13,4 +13,8 @@ export class EnvironmentService implements Environment {
   get production(): boolean {
     return this.environment.production;
   }
+
+  get socketReconnectionDelay(): number {
+    return this.environment.socketReconnectionDelay;
+  }
 }

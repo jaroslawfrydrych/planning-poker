@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
-import { Observable, Subject } from 'rxjs';
+import { merge, Observable, Subscriber } from 'rxjs';
+
+import { ConnectionStatus } from '@shared/enum/connection-status.enum';
+import { ConnectionError } from '@shared/enum/connection-error.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +11,26 @@ import { Observable, Subject } from 'rxjs';
 export class AppService {
 
   constructor(private readonly socket: Socket) {
+  }
+
+  public get reconnectFailed$(): Observable<ConnectionStatus> {
+    return this.getObservableOfSocketEvent$<ConnectionStatus>('reconnect_failed', ConnectionError.RECONNECT_FAILED);
+  }
+
+  public get connect$(): Observable<ConnectionStatus> {
+    return this.getObservableOfSocketEvent$<ConnectionStatus>('connect', ConnectionStatus.CONNECTED);
+  }
+
+  public get reconnectError$(): Observable<ConnectionStatus> {
+    return this.getObservableOfSocketEvent$<ConnectionStatus>('reconnect_error', ConnectionError.RECONNECT_ERROR);
+  }
+
+  public get disconnect$(): Observable<ConnectionStatus> {
+    return this.getObservableOfSocketEvent$<ConnectionStatus>('disconnect', ConnectionStatus.DISCONNECTED);
+  }
+
+  public get connectionStatusChange$(): Observable<ConnectionStatus> {
+    return merge(this.connect$, this.reconnectFailed$, this.reconnectError$, this.disconnect$);
   }
 
   public connectSocket(): void {
@@ -23,23 +46,11 @@ export class AppService {
     this.connectSocket();
   }
 
-  public reconnectFailed$(): Observable<null> {
-    const subject: Subject<null> = new Subject<null>();
-
-    this.socket.on('reconnect_failed', () => {
-      subject.next(null);
+  private getObservableOfSocketEvent$<T>(socketEvent: string, response = null): Observable<T> {
+    return new Observable<T>((observer: Subscriber<T>) => {
+      this.socket.on(socketEvent, () => {
+        observer.next(response);
+      });
     });
-
-    return subject;
-  }
-
-  public connect$(): Observable<null> {
-    const subject: Subject<null> = new Subject<null>();
-
-    this.socket.on('connect', () => {
-      subject.next(null);
-    });
-
-    return subject;
   }
 }

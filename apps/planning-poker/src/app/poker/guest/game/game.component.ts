@@ -109,13 +109,13 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   private handleSocketEvents(): void {
-    this.appService.reconnectFailed$()
+    this.appService.reconnectFailed$
       .pipe(
         untilDestroyed(this)
       )
       .subscribe(() => this.navigateToLadingPage());
 
-    this.appService.connect$()
+    this.appService.connect$
       .pipe(
         mergeMap(() => this.roomNumber$),
         take(1),

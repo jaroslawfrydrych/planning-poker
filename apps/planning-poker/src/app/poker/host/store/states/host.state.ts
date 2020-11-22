@@ -5,10 +5,12 @@ import { Observable } from 'rxjs';
 import { mergeMap, takeUntil, tap } from 'rxjs/operators';
 
 import { GameStates, Player, PlayerStatuses, Result, ResultsDto, RoomInfo } from '@planning-poker/api-interfaces';
+import { StoreName } from '@store/store-name.enum';
 
 import { HostService } from '../../host.service';
 import { HostActions } from '../actions/host.actions';
 import { HostModel } from '../models/host.model';
+
 import CloseRoom = HostActions.CloseRoom;
 import CreateRoom = HostActions.CreateRoom;
 import GetGameState = HostActions.GetGameState;
@@ -21,7 +23,7 @@ import GetPlayerStatus = HostActions.GetPlayerStatus;
 import GetResults = HostActions.GetResults;
 
 @State<HostModel>({
-  name: 'host',
+  name: StoreName.HOST,
   defaults: {
     roomNumber: null,
     gameState: GameStates.IN_PROGRESS,

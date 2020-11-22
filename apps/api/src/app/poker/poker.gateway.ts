@@ -19,19 +19,24 @@ import {
   Vote
 } from '@planning-poker/api-interfaces';
 
+import { Observable, of, Subject } from 'rxjs';
 import { PokerService } from './poker.service';
 import { Room } from './room';
+import { delay, filter, takeUntil } from 'rxjs/operators';
 
 @WebSocketGateway()
 export class PokerGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @WebSocketServer() public server: Server;
+  private clientConnectedSubject$: Subject<string> = new Subject<string>();
 
   constructor(private pokerService: PokerService) {
   }
 
   public handleConnection(client: Socket): void {
     console.log('on connect', client.id);
+    this.clientConnectedSubject$.next(client.id);
+
     this.pokerService.addPlayer({
       id: client.id
     });
@@ -44,18 +49,21 @@ export class PokerGateway implements OnGatewayConnection, OnGatewayDisconnect {
     if (!room) {
       return;
     }
+
     const player: Player = room.getPlayer(client.id);
 
-    if (player && player.type === PlayerType.HOST) {
-      console.log('remove room', room.id);
-      this.removeRoom(room.id);
-    } else if (room) {
-      room.removePlayer(client.id);
-    }
-
-    this.pokerService.removePlayer(client.id);
-
-    this.emitPlayersChangeToRoom(room.id);
+    of<string>(client.id)
+      .pipe(
+        delay(15000),
+        takeUntil(this.untilClientReconnect$(client.id))
+      )
+      .subscribe((id: string) => {
+        if (player && player.type === PlayerType.HOST) {
+          this.onHostDisconnect(room, id);
+        } else if (room) {
+          this.onPlayerDisconnect(room, id);
+        }
+      });
   }
 
   /**
@@ -212,5 +220,25 @@ export class PokerGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   private emitPlayerVoted(room: Room, clientId: string): void {
     this.server.to(room.host.id).emit(SocketEvents.VOTED, clientId);
+  }
+
+  private onHostDisconnect(room: Room, id: string) {
+    this.removeRoom(room.id);
+    this.pokerService.removePlayer(id);
+    this.emitPlayersChangeToRoom(id);
+  }
+
+  private onPlayerDisconnect(room: Room, id: string) {
+    room.removePlayer(id);
+
+    this.pokerService.removePlayer(id);
+    this.emitPlayersChangeToRoom(room.id);
+  }
+
+  private untilClientReconnect$(clientId: string): Observable<string> {
+    return this.clientConnectedSubject$
+      .pipe(
+        filter((id: string) => id === clientId)
+      );
   }
 }
