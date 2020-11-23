@@ -6,8 +6,9 @@ import { debounceTime, filter, map, mergeMap, startWith, take } from 'rxjs/opera
 
 import { GameStates, Player, PlayerStatuses } from '@planning-poker/api-interfaces';
 import { ButtonColor } from '@shared/button/button-color.enum';
-import { TakeUntilDestroy, untilDestroyed } from '@shared/decorators/take-until-destroy.decorator';
+import { TakeUntilDestroy } from '@shared/decorators/take-until-destroy.decorator';
 import { ConnectionStatus } from '@shared/enum/connection-status.enum';
+import { untilDestroyed } from '@shared/operators/until-destroyed.operator';
 import { CopyToClipboardService } from '@shared/services/copy-to-clipboard/copy-to-clipboard.service';
 import { EnvironmentService } from '@shared/services/environment/environment.service';
 import { SocketState } from '@store/states/socket.state';

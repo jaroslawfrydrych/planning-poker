@@ -5,8 +5,9 @@ import { GoogleAnalyticsService } from 'ngx-google-analytics';
 import { Observable, of, race } from 'rxjs';
 import { delay, filter, map, mergeMap, take } from 'rxjs/operators';
 
-import { TakeUntilDestroy, untilDestroyed } from '@shared/decorators/take-until-destroy.decorator';
+import { TakeUntilDestroy } from '@shared/decorators/take-until-destroy.decorator';
 import { ConnectionStatus } from '@shared/enum/connection-status.enum';
+import { untilDestroyed } from '@shared/operators/until-destroyed.operator';
 import { SocketState } from '@store/states/socket.state';
 
 import CreateRoom = HostActions.CreateRoom;

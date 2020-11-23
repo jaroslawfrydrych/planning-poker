@@ -1,13 +1,8 @@
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
-export interface OnDestroy {
-  readonly destroyed$?: Observable<boolean>;
+const destroyMethodName = 'ngOnDestroy';
 
-  ngOnDestroy(): void;
-}
-
-export function TakeUntilDestroy(destroyMethodName = 'ngOnDestroy') {
+export function TakeUntilDestroy(): any {
   return <T extends new (...args: any[]) => {}>(constructor: T) => {
 
     const originalDestroy = constructor.prototype[destroyMethodName];
@@ -31,11 +26,3 @@ export function TakeUntilDestroy(destroyMethodName = 'ngOnDestroy') {
     };
   };
 }
-
-export const untilDestroyed = that => <T>(source: Observable<T>) => {
-  if (!('destroyed$' in that)) {
-    console.warn(`'destroyed$' property does not exist on ${that.constructor.name}`);
-    return source;
-  }
-  return source.pipe(takeUntil<T>(that.destroyed$));
-};

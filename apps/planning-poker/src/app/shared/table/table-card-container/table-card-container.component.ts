@@ -3,7 +3,8 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 import { delay, map, mergeMap, take } from 'rxjs/operators';
 
 import { Cards, GameStates } from '@planning-poker/api-interfaces';
-import { TakeUntilDestroy, untilDestroyed } from '@shared/decorators/take-until-destroy.decorator';
+import { TakeUntilDestroy } from '@shared/decorators/take-until-destroy.decorator';
+import { untilDestroyed } from '@shared/operators/until-destroyed.operator';
 
 @Component({
   selector: 'planning-poker-table-card-container',

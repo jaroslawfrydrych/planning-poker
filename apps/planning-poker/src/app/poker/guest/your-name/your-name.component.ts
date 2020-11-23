@@ -3,7 +3,8 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
 
-import { TakeUntilDestroy, untilDestroyed } from '@shared/decorators/take-until-destroy.decorator';
+import { TakeUntilDestroy } from '@shared/decorators/take-until-destroy.decorator';
+import { untilDestroyed } from '@shared/operators/until-destroyed.operator';
 
 import { GuestActions } from '../store/actions/guest.actions';
 import JoinRoom = GuestActions.JoinRoom;

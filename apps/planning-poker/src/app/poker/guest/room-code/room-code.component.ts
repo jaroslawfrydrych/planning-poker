@@ -5,11 +5,13 @@ import { GoogleAnalyticsService } from 'ngx-google-analytics';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { delay, finalize, mergeMap, tap } from 'rxjs/operators';
 
-import { TakeUntilDestroy, untilDestroyed } from '@shared/decorators/take-until-destroy.decorator';
+import { TakeUntilDestroy } from '@shared/decorators/take-until-destroy.decorator';
 import { CodeComponent } from '@shared/form/code/code.component';
+import { untilDestroyed } from '@shared/operators/until-destroyed.operator';
 
 import { GuestActions } from '../store/actions/guest.actions';
 import { GuestState } from '../store/states/guest.state';
+
 import RoomNumberValidation = GuestActions.RoomNumberValidation;
 import GuestRoomNumberValidationInit = GuestActions.GuestRoomNumberValidationInit;
 
