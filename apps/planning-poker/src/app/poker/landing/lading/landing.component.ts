@@ -8,6 +8,7 @@ import { StoreName } from '@store/store-name.enum';
 import { StoreModel } from '@store/store.model';
 
 import { GuestService } from '../../guest/guest.service';
+import { ModalService } from '@shared/modal/modal.service';
 
 @Component({
   selector: 'planning-poker-landing',
@@ -21,12 +22,17 @@ export class LandingComponent implements OnInit {
   constructor(private router: Router,
               private store: Store,
               private guestService: GuestService,
+              private modalService: ModalService,
               private $gaService: GoogleAnalyticsService) {
   }
 
   public ngOnInit(): void {
     this.$gaService.pageView('/');
     this.resetStates();
+
+    setTimeout(() => {
+      this.modalService.open();
+    }, 1000);
   }
 
   public goToGuestPath(): void {
