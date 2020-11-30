@@ -46,6 +46,7 @@ $boardCardSizeMultiply: 1.22;
   align-items: center;
   justify-content: center;
   font-size: em(80);
+  overflow: hidden;
 
   ::ng-deep {
     planning-poker-icon {
