@@ -10,7 +10,6 @@ import { StoreName } from '@store/store-name.enum';
 import { HostService } from '../../host.service';
 import { HostActions } from '../actions/host.actions';
 import { HostModel } from '../models/host.model';
-
 import CloseRoom = HostActions.CloseRoom;
 import CreateRoom = HostActions.CreateRoom;
 import GetGameState = HostActions.GetGameState;
@@ -101,7 +100,12 @@ export class HostState {
         const players: Map<string, Player> = new Map<string, Player>();
 
         newPlayers.forEach((player: Player) => {
-          players.set(player.id, player);
+          const oldPlayer: Player = this.getPlayerData(context, player.id);
+
+          players.set(player.id, {
+            ...oldPlayer,
+            ...player
+          });
         });
 
         context.patchState({
@@ -198,5 +202,12 @@ export class HostState {
     context.patchState({
       players
     });
+  }
+
+  private getPlayerData(context: StateContext<HostModel>, playerId: string): Player {
+    const state: HostModel = context.getState();
+    const players: Map<string, Player> = state.players;
+
+    return players && players.get(playerId) || null;
   }
 }
