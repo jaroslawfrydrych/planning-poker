@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { AfterViewInit, ChangeDetectionStrategy, Component, Inject, OnInit, Renderer2 } from '@angular/core';
 import { Data, NavigationEnd, Router, RouterEvent, RouterOutlet } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
@@ -13,7 +14,6 @@ import { SocketState } from '@store/states/socket.state';
 
 import { routerAnimations } from './app.animations';
 import { AppService } from './app.service';
-
 import SetConnectionStatus = SocketActions.SetConnectionStatus;
 
 @Component({
@@ -26,14 +26,16 @@ import SetConnectionStatus = SocketActions.SetConnectionStatus;
   ]
 })
 @TakeUntilDestroy()
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
 
   @Select(SocketState.connectionStatus) public connectionStatus$: Observable<ConnectionStatus>;
   @Select(SocketState.connectionError) public connectionError$: Observable<ConnectionError>;
 
   constructor(private appService: AppService,
               private store: Store,
-              private router: Router) {
+              private router: Router,
+              private renderer: Renderer2,
+              @Inject(DOCUMENT) private document: Document) {
   }
 
   public ngOnInit(): void {
@@ -42,6 +44,34 @@ export class AppComponent implements OnInit {
     this.handleRouterEvents();
     this.handleSocketEvents();
     this.handleSocketErrors();
+  }
+
+  public ngAfterViewInit() {
+    const preloaderElement: HTMLElement = this.document.getElementById('preloader');
+
+    setTimeout(() => {
+      if (this.router.url === '/') {
+        const mainLadingHeaderCollection: HTMLCollectionOf<Element> = this.document
+          .getElementsByClassName('main-landing-header');
+
+        if (mainLadingHeaderCollection && mainLadingHeaderCollection.length) {
+          const mainLandingHeaderElement: Element  = mainLadingHeaderCollection[0];
+          const preloaderHeaderElement: Element = preloaderElement.children[0];
+          const mainLandingHeaderElementBoundingClientRect: DOMRect = mainLandingHeaderElement.getBoundingClientRect();
+          const preloaderHeaderElementBoundingClientRect: DOMRect = preloaderHeaderElement.getBoundingClientRect();
+          const offsetTopDiff: number = mainLandingHeaderElementBoundingClientRect.top - preloaderHeaderElementBoundingClientRect.top;
+          this.renderer.setStyle(preloaderHeaderElement, 'transform', 'translate3d(0, ' + offsetTopDiff + 'px, 0');
+        }
+      }
+    }, 500);
+
+    setTimeout(() => {
+      this.renderer.setStyle(preloaderElement, 'opacity', 0);
+    }, 1000);
+
+    setTimeout(() => {
+      preloaderElement.remove();
+    }, 1500);
   }
 
   public prepareRoute(outlet: RouterOutlet): Data {

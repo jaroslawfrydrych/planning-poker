@@ -73,3 +73,11 @@ a {
     display: none!important;
   }
 }
+
+#preloader {
+  h1 {
+    transition: opacity 150ms ease, transform 400ms ease;
+    transition-delay: 150ms;
+    opacity: 1!important;
+  }
+}
