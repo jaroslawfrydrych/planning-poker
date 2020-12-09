@@ -12,7 +12,7 @@ export const cookiesComponentAnimation = trigger(
         }),
         animate('600ms 1700ms cubic-bezier(0.175, 0.885, 0.32, 1.275)',
           style({
-            opacity: .8,
+            opacity: 1,
             transform: 'translate3d(0, 0, 0) scale(1)'
           }))
       ]
@@ -21,7 +21,7 @@ export const cookiesComponentAnimation = trigger(
       ':leave',
       [
         style({
-          opacity: .8,
+          opacity: 1,
           transform: 'translate3d(0, 0, 0) scale(1)'
         }),
         animate('250ms ease-in',

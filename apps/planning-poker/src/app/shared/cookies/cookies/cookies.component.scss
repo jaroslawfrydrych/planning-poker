@@ -15,16 +15,15 @@
   bottom: em(40);
   margin: 0 em(20);
   padding: em($controlSidePadding) em($controlSidePadding) em($controlSidePadding) em($controlSidePadding);
-  background-color: $colorPrimary;
+  background-color: darken($colorPrimary, 10);
   color: $colorBackgroundPrimary;
-  transition: opacity 250ms ease;
-  opacity: .8;
+  transition: background-color 250ms ease;
   z-index: 999;
   max-width: em(900);
   box-shadow: 0 em(20) em(40) rgba($colorDark, .25);
 
   &:hover {
-    opacity: 1;
+    background-color: $colorPrimary;
   }
 }
 
