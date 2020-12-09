@@ -26,10 +26,8 @@ export class CookiesComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     const cookie: string = this.cookieService.get(this.cookieName);
 
-    if(!cookie || cookie !== this.cookieValue) {
-      setTimeout(() => {
-        this.displayCookiesSubject$.next(true);
-      }, 1000);
+    if (!cookie || cookie !== this.cookieValue) {
+      this.displayCookiesSubject$.next(true);
     }
   }
 

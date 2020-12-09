@@ -8,12 +8,12 @@ export const cookiesComponentAnimation = trigger(
       [
         style({
           opacity: 0,
-          transform: 'translate3d(0, 100%, 0)'
+          transform: 'translate3d(0, 100%, 0) scale(.9)'
         }),
-        animate('600ms cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+        animate('600ms 1000ms cubic-bezier(0.175, 0.885, 0.32, 1.275)',
           style({
             opacity: .8,
-            transform: 'translate3d(0, 0, 0)'
+            transform: 'translate3d(0, 0, 0) scale(1)'
           }))
       ]
     ),
@@ -22,12 +22,12 @@ export const cookiesComponentAnimation = trigger(
       [
         style({
           opacity: .8,
-          transform: 'translate3d(0, 0, 0)'
+          transform: 'translate3d(0, 0, 0) scale(1)'
         }),
         animate('250ms ease-in',
           style({
             opacity: 0,
-            transform: 'translate3d(0, 100%, 0)'
+            transform: 'translate3d(0, 100%, 0) scale(.9)'
           }))
       ]
     )
