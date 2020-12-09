@@ -50,7 +50,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     const preloaderElement: HTMLElement = this.document.getElementById('preloader');
 
     setTimeout(() => {
-      if (this.router.url === '/') {
+      if (this.router.url === '/' || this.router.url.startsWith('/guest/room-code?code=')) {
         const mainLadingHeaderCollection: HTMLCollectionOf<Element> = this.document
           .getElementsByClassName('main-landing-header');
 

@@ -1,6 +1,15 @@
 <planning-poker-layout>
   <planning-poker-header>
-    <h1>Join to exsiting room</h1>
+
+    <ng-container *ngIf="!queryRoomCode">
+      <h1>Join to exsiting room</h1>
+    </ng-container>
+
+    <ng-container *ngIf="queryRoomCode">
+      <h1 class="main-landing-header">Planning Poker</h1>
+      <h2>Join to exsiting room</h2>
+    </ng-container>
+
   </planning-poker-header>
 
   <planning-poker-content>
