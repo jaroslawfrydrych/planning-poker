@@ -1,17 +1,20 @@
 @import "@styles/shared";
 
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .cookies-container {
   @include primaryBorderRadius();
   position: fixed;
   display: flex;
-  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  right: em(20);
-  bottom: 0;
-  left: em(20);
-  margin: em(20) auto;
-  padding: em($controlSidePadding) em($controlSidePadding) em($controlSidePadding) em($controlSidePadding * 2);
+  bottom: em(40);
+  margin: 0 em(20);
+  padding: em($controlSidePadding) em($controlSidePadding) em($controlSidePadding) em($controlSidePadding);
   background-color: $colorPrimary;
   color: $colorBackgroundPrimary;
   transition: opacity 250ms ease;
@@ -27,7 +30,7 @@
 
 p {
   margin: 0;
-  padding: 0;
+  padding: 0 em(30);
   font: {
     size: em(13);
     weight: 700;
@@ -36,4 +39,10 @@ p {
 
 button {
   font-size: em(12);
+  min-width: 9em;
+  height: 3.5em;
+}
+
+img {
+  height: em(38);
 }
