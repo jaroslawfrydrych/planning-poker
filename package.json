@@ -1,6 +1,6 @@
 {
   "name": "planning-poker",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "license": "MIT",
   "scripts": {
     "ng": "nx",
@@ -47,6 +47,7 @@
     "@ngxs/store": "^3.7.0",
     "@ngxs/websocket-plugin": "^3.7.0",
     "@nrwl/angular": "10.3.0",
+    "ngx-cookie-service": "^11.0.2",
     "ngx-google-analytics": "^9.0.1",
     "ngx-socket-io": "^3.2.0",
     "normalize.css": "^8.0.1",

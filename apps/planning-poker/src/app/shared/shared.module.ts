@@ -3,6 +3,7 @@ import { NgModule, Type } from '@angular/core';
 
 import { ButtonModule } from '@shared/button/button.module';
 import { CardModule } from '@shared/card/card.module';
+import { CookiesModule } from '@shared/cookies/cookies.module';
 import { FormModule } from '@shared/form/form.module';
 import { IconModule } from '@shared/icon/icon.module';
 import { LayoutModule } from '@shared/layout/layout.module';
@@ -13,6 +14,7 @@ import { TextFixedWidthModule } from '@shared/text-fixed-width/text-fixed-width.
 const MODULES: Type<any>[] = [
   ButtonModule,
   CardModule,
+  CookiesModule,
   FormModule,
   LayoutModule,
   IconModule,

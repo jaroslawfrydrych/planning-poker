@@ -1,0 +1,9 @@
+<div class="cookies-container"
+     [@inOutAnimation]
+     *ngIf="displayCookiesSubject$ | async">
+  <p>This website uses cookies to ensure you get the best experience on our website.</p>
+  <button planningPokerButton
+          [buttonColor]="buttonColor.ACCENT"
+          (click)="acceptCookies()">Got it!
+  </button>
+</div>

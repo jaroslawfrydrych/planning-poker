@@ -1,0 +1,39 @@
+@import "@styles/shared";
+
+.cookies-container {
+  @include primaryBorderRadius();
+  position: fixed;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  right: em(20);
+  bottom: 0;
+  left: em(20);
+  margin: em(20) auto;
+  padding: em($controlSidePadding) em($controlSidePadding) em($controlSidePadding) em($controlSidePadding * 2);
+  background-color: $colorPrimary;
+  color: $colorBackgroundPrimary;
+  transition: opacity 250ms ease;
+  opacity: .8;
+  z-index: 999;
+  max-width: em(900);
+  box-shadow: 0 em(20) em(40) rgba($colorDark, .25);
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+p {
+  margin: 0;
+  padding: 0;
+  font: {
+    size: em(13);
+    weight: 700;
+  }
+}
+
+button {
+  font-size: em(12);
+}

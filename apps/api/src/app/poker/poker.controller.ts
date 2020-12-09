@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 
 import {
+  AppInfoDtoInterface,
   CreateRoomDto,
   JoinRoomCodeRequestDto,
   JoinRoomCodeResponseDto,
@@ -8,6 +9,7 @@ import {
   RoomInfo
 } from '@planning-poker/api-interfaces';
 
+import { version } from '../../../../../package.json';
 import { PokerService } from './poker.service';
 import { Room } from './room';
 
@@ -61,5 +63,12 @@ export class PokerController {
   public checkHostOfRoom(@Param('playerId') playerId: string, @Param('roomNumber') roomNumber: string): boolean {
     const room: Room | null = this.pokerService.getRoom(roomNumber);
     return room ? room.host.id === playerId : false;
+  }
+
+  @Get('app-info')
+  public getAppInfo(): AppInfoDtoInterface {
+    return {
+      info: 'version ' + version
+    };
   }
 }

@@ -2,12 +2,16 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { GoogleAnalyticsService } from 'ngx-google-analytics';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
+import { AppInfoDtoInterface } from '@planning-poker/api-interfaces';
 import { TakeUntilDestroy } from '@shared/decorators/take-until-destroy.decorator';
 import { StoreName } from '@store/store-name.enum';
 import { StoreModel } from '@store/store.model';
 
 import { GuestService } from '../../guest/guest.service';
+import { LandingService } from './landing.service';
 
 @Component({
   selector: 'planning-poker-landing',
@@ -18,15 +22,22 @@ import { GuestService } from '../../guest/guest.service';
 @TakeUntilDestroy()
 export class LandingComponent implements OnInit {
 
+  public appInfo$: Observable<string>;
+
   constructor(private router: Router,
               private store: Store,
               private guestService: GuestService,
-              private $gaService: GoogleAnalyticsService) {
+              private $gaService: GoogleAnalyticsService,
+              private landingService: LandingService) {
   }
 
   public ngOnInit(): void {
     this.$gaService.pageView('/');
     this.resetStates();
+
+    this.appInfo$ = this.landingService.getAppInfo()
+      .pipe(
+        map((appInfo: AppInfoDtoInterface) => appInfo.info));
   }
 
   public goToGuestPath(): void {

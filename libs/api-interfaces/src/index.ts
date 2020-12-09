@@ -1,6 +1,7 @@
 /**
  * Model
  */
+export * from './lib/model/app-info-dto.interface';
 export * from './lib/model/vote.interface';
 export * from './lib/model/state.interface';
 export * from './lib/model/room.info';
