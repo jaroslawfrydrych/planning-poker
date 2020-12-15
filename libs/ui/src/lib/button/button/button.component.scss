@@ -2,12 +2,11 @@
 
 @keyframes rippleIn {
   0% {
-    transform: scale(0);
+    transform: scale(.2);
     opacity: 0;
   }
 
   50% {
-    transform: scale(.5);
     opacity: 1;
   }
 
@@ -96,7 +95,7 @@
     };
 
     &.button-color-secondary, &.button-color-inactive, &.button-color-accent, &.button-color-transparent {
-      background-color: rgba($colorSecondary, .1);
+      background-color: rgba($colorSecondary, .08);
     }
   }
 }
