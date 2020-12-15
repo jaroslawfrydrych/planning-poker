@@ -68,7 +68,7 @@ export class ButtonComponent implements OnInit {
 
     setTimeout(() => {
       this.removeRippleElementFromButton(rippleElement);
-    }, this.getRippleAnimationDuration(rippleElement));
+    }, this.getRippleAnimationDuration(rippleElement) || 500);
   }
 
   private handleButtonColorChange(color: ButtonColor, buttonElement: HTMLButtonElement): void {
@@ -132,14 +132,12 @@ export class ButtonComponent implements OnInit {
   }
 
   private getRippleAnimationDuration(rippleElement: HTMLElement): number {
-    const duration = getComputedStyle(rippleElement).animationDuration
+    return getComputedStyle(rippleElement).animationDuration
       .slice(0, -1)
       .split('.')
       .map((value: string) => parseInt(value, 10))
       .map((value: number, index: number) => index === 0 ? value * 1000 : value * 100)
       .reduce((total: number, value: number) => total + value)
-
-    return duration;
   }
 
   private setColorChangeSubject(): void {
