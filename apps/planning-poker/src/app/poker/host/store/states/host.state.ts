@@ -125,6 +125,10 @@ export class HostState {
         const state: HostModel = context.getState();
         const players: Map<string, Player> = state.players;
 
+        if (!players || !players.size) {
+          return;
+        }
+
         players.forEach((player: Player, key: string) => {
           const result: Result = results[key] || null;
           player.card = result && result.card;
@@ -192,6 +196,10 @@ export class HostState {
   private resetPlayersVotes(context: StateContext<HostModel>): void {
     const state: HostModel = context.getState();
     const players: Map<string, Player> = state.players;
+
+    if (!players || !players.size) {
+      return;
+    }
 
     players.forEach((player: Player, key: string) => {
       player.status = PlayerStatuses.WAITING;
