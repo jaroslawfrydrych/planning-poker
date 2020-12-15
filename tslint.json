@@ -122,13 +122,13 @@
             "order": 10
           },
           {
-            "name": "Environments",
-            "match": "^@environments.*",
-            "order": 20
-          },
-          {
             "name": "Api interfaces and enums",
             "match": "^@planning-poker.*",
+            "order": 15
+          },
+          {
+            "name": "Environments",
+            "match": "^@environments.*",
             "order": 20
           },
           {

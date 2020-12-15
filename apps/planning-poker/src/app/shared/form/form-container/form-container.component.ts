@@ -1,7 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChild } from '@angular/core';
 
-import { ButtonColor } from '@shared/button/button-color.enum';
-import { ButtonDirective } from '@shared/button/button.directive';
+import { ButtonColor, ButtonComponent } from '@planning-poker/ui';
 
 @Component({
   selector: 'planning-poker-form-container',
@@ -11,17 +10,18 @@ import { ButtonDirective } from '@shared/button/button.directive';
 })
 export class FormContainerComponent implements AfterViewInit {
 
-  @ContentChild(ButtonDirective) planingPokerButton: ButtonDirective;
-  public hasPlaningPokerButton = false;
+  @ContentChild(ButtonComponent) haxitButton: ButtonComponent;
+  public hasHaxitButton = false;
 
   constructor(private changeDetectorRef: ChangeDetectorRef) {
   }
 
   ngAfterViewInit(): void {
-    if (this.planingPokerButton) {
-      this.hasPlaningPokerButton = true;
-      this.planingPokerButton.small = true;
-      this.planingPokerButton.buttonColor = ButtonColor.TRANSPARENT;
+    console.log(this.haxitButton);
+    if (this.haxitButton) {
+      this.hasHaxitButton = true;
+      this.haxitButton.small = true;
+      this.haxitButton.buttonColor = ButtonColor.TRANSPARENT;
       this.changeDetectorRef.detectChanges();
     }
   }

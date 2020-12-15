@@ -3,23 +3,24 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
 
-import { TakeUntilDestroy } from '@shared/decorators/take-until-destroy.decorator';
-import { untilDestroyed } from '@shared/operators/until-destroyed.operator';
+import { ButtonColor } from '@planning-poker/ui';
+import { TakeUntilDestroy, untilDestroyed } from '@planning-poker/utils';
 
 import { GuestActions } from '../store/actions/guest.actions';
+
 import JoinRoom = GuestActions.JoinRoom;
 import GuestNameInit = GuestActions.GuestNameInit;
 
 @Component({
   selector: 'planning-poker-your-name',
   templateUrl: './your-name.component.html',
-  styleUrls: ['./your-name.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 @TakeUntilDestroy()
 export class YourNameComponent implements OnInit {
 
   public formGroup: FormGroup;
+  public buttonColor = ButtonColor;
   private userNameLocalStorageItemKey = 'user-name';
 
   constructor(private formBuilder: FormBuilder,

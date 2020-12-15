@@ -19,7 +19,10 @@
       "@environments/*": ["apps/planning-poker/src/environments/*"],
       "@planning-poker/api-interfaces": ["libs/api-interfaces/src/index.ts"],
       "@shared/*": ["apps/planning-poker/src/app/shared/*"],
-      "@store/*": ["apps/planning-poker/src/app/store/*"]
+      "@store/*": ["apps/planning-poker/src/app/store/*"],
+      "@planning-poker/ui": ["libs/ui/src/index.ts"],
+      "@planning-poker/utils": ["libs/utils/src/index.ts"],
+      "@planning-poker/modal": ["libs/modal/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

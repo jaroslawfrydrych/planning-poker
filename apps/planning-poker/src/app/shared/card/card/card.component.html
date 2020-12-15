@@ -12,10 +12,10 @@
       {{card}}
     </ng-container>
     <ng-container *ngIf="card === cards.COFFEE">
-      <planning-poker-icon>local_cafe</planning-poker-icon>
+      <haxit-icon>local_cafe</haxit-icon>
     </ng-container>
     <ng-container *ngIf="card === cards.INFINITE">
-      <planning-poker-icon>all_inclusive</planning-poker-icon>
+      <haxit-icon>all_inclusive</haxit-icon>
     </ng-container>
   </div>
   <div class="footer">Scrum Game</div>
@@ -37,21 +37,21 @@
         {{card}}
       </ng-container>
       <ng-container *ngIf="card === cards.COFFEE">
-        <planning-poker-icon>local_cafe</planning-poker-icon>
+        <haxit-icon>local_cafe</haxit-icon>
       </ng-container>
       <ng-container *ngIf="card === cards.INFINITE">
-        <planning-poker-icon>all_inclusive</planning-poker-icon>
+        <haxit-icon>all_inclusive</haxit-icon>
       </ng-container>
     </ng-container>
 
     <ng-contianer *ngIf="boardCard && !isInReviewState && !playerReady">
-      <planning-poker-icon>hourglass_empty</planning-poker-icon>
+      <haxit-icon>hourglass_empty</haxit-icon>
     </ng-contianer>
     <ng-contianer *ngIf="boardCard && playerReady">
-      <planning-poker-icon>check</planning-poker-icon>
+      <haxit-icon>check</haxit-icon>
     </ng-contianer>
     <ng-container *ngIf="boardCard && isInReviewState && !playerReady">
-      <planning-poker-icon>close</planning-poker-icon>
+      <haxit-icon>close</haxit-icon>
     </ng-container>
   </div>
   <div class="footer">Scrum Game</div>

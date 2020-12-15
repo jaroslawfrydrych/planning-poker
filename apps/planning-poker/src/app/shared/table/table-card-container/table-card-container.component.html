@@ -2,15 +2,15 @@
 
 <planning-poker-card-item class="card-front"
                           [class.in-review]="isInReviewState$ | async">
-  <planning-poker-icon *ngIf="!playerReady">hourglass_empty</planning-poker-icon>
-  <planning-poker-icon *ngIf="playerReady">check</planning-poker-icon>
+  <haxit-icon *ngIf="!playerReady">hourglass_empty</haxit-icon>
+  <haxit-icon *ngIf="playerReady">check</haxit-icon>
 </planning-poker-card-item>
 
 <planning-poker-card-item class="card-back"
                           [class.in-review]="isInReviewState$ | async"
                           [class.player-no-choice]="(card$ | async) === null && (isInReviewState$ | async)">
   <ng-container [ngSwitch]="card$ | async">
-    <planning-poker-icon *ngSwitchCase="null">close</planning-poker-icon>
+    <haxit-icon *ngSwitchCase="null">close</haxit-icon>
     <planning-poker-card-symbol *ngSwitchDefault
                                 [card]="card$ | async"></planning-poker-card-symbol>
   </ng-container>

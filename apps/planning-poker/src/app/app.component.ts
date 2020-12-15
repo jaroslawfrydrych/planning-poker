@@ -5,10 +5,8 @@ import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { filter, map, pairwise } from 'rxjs/operators';
 
-import { TakeUntilDestroy } from '@shared/decorators/take-until-destroy.decorator';
-import { ConnectionError } from '@shared/enum/connection-error.enum';
-import { ConnectionStatus } from '@shared/enum/connection-status.enum';
-import { untilDestroyed } from '@shared/operators/until-destroyed.operator';
+import { ConnectionError, ConnectionStatus, TakeUntilDestroy, untilDestroyed } from '@planning-poker/utils';
+
 import { SocketActions } from '@store/actions/socket.actions';
 import { SocketState } from '@store/states/socket.state';
 

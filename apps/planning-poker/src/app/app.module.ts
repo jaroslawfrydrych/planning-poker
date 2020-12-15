@@ -9,6 +9,8 @@ import { NgxsModule } from '@ngxs/store';
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 
+import { UiModule } from '@planning-poker/ui';
+
 import { environment } from '@environments/environment';
 import { ENVIRONMENT } from '@environments/utils';
 import { SharedModule } from '@shared/shared.module';
@@ -39,6 +41,7 @@ const config: SocketIoConfig = {
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    UiModule,
     SharedModule,
     PokerModule,
     RouterModule,
@@ -46,7 +49,9 @@ const config: SocketIoConfig = {
     NgxGoogleAnalyticsModule.forRoot('UA-180323084-1'),
     NgxsModule.forRoot([
       SocketState
-    ]),
+    ], {
+      developmentMode: !environment.production
+    }),
     NgxsReduxDevtoolsPluginModule.forRoot({
       disabled: !!environment.production
     }),

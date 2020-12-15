@@ -45,12 +45,7 @@ export class PokerController {
 
   @Post('room-info')
   public roomInfo(@Body() request: JoinRoomCodeRequestDto): RoomInfo {
-    const room: Room = this.pokerService.getRoom(request.id);
-
-    return {
-      id: room.id,
-      gameState: room.state
-    };
+    return this.pokerService.getRoomInfo(request.id);
   }
 
   @Get('check-player-in-room/:playerId/:roomNumber')

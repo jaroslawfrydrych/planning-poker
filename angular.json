@@ -27,12 +27,12 @@
             ],
             "styles": [
               "node_modules/normalize.css/normalize.css",
-              "apps/planning-poker/src/shared/@styles/styles.scss",
-              "apps/planning-poker/src/shared/@styles/elements/elements.scss"
+              "apps/planning-poker/src/shared/@styles/styles.scss"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
-                "./apps/planning-poker/src/shared"
+                "./apps/planning-poker/src/shared",
+                "./libs/ui/styles"
               ]
             },
             "scripts": []
@@ -103,9 +103,7 @@
             "jestConfig": "apps/planning-poker/jest.config.js",
             "passWithNoTests": true,
             "stylePreprocessorOptions": {
-              "includePaths": [
-                "./apps/planning-poker/src/shared"
-              ]
+              "includePaths": ["./apps/planning-poker/src/shared"]
             }
           }
         }
@@ -214,6 +212,96 @@
             "jestConfig": "libs/api-interfaces/jest.config.js",
             "passWithNoTests": true
           }
+        }
+      }
+    },
+    "ui": {
+      "projectType": "library",
+      "root": "libs/ui",
+      "sourceRoot": "libs/ui/src",
+      "prefix": "planning-poker",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/ui/tsconfig.lib.json",
+              "libs/ui/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/ui/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "utils": {
+      "projectType": "library",
+      "root": "libs/utils",
+      "sourceRoot": "libs/utils/src",
+      "prefix": "planning-poker",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/utils/tsconfig.lib.json",
+              "libs/utils/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/utils/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/utils/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "modal": {
+      "projectType": "library",
+      "root": "libs/modal",
+      "sourceRoot": "libs/modal/src",
+      "prefix": "planning-poker",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/modal/tsconfig.lib.json",
+              "libs/modal/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/modal/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/modal/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
         }
       }
     }

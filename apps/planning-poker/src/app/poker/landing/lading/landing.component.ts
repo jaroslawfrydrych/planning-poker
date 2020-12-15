@@ -6,7 +6,8 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { AppInfoDtoInterface } from '@planning-poker/api-interfaces';
-import { TakeUntilDestroy } from '@shared/decorators/take-until-destroy.decorator';
+import { TakeUntilDestroy } from '@planning-poker/utils';
+
 import { StoreName } from '@store/store-name.enum';
 import { StoreModel } from '@store/store.model';
 

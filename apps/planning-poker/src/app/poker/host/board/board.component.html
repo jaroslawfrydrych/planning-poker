@@ -4,14 +4,15 @@
 <div class="sidebar">
   <header class="sidebar-header">
     <h1>ROOM ID:</h1>
-    <h2 planningPokerTextFixedWidth>{{roomNumber$ | async}}</h2>
+    <h2 haxit-text-fixed-width>{{roomNumber$ | async}}</h2>
 
-    <planning-poker-text-fixed-width class="clock"
+    <haxit-text-fixed-width class="clock"
                                      [value]="currentTime$ | async | date:'HH:mm'">
-    </planning-poker-text-fixed-width>
+    </haxit-text-fixed-width>
   </header>
+
   <footer class="sidebar-footer">
-    <button planningPokerButton
+    <button haxit-button
             class="toggle-game-state"
             [buttonColor]="buttonColors.PRIMARY"
             [ngSwitch]="gameState$ | async"
@@ -20,7 +21,7 @@
       <ng-container *ngSwitchDefault>Finish Voting</ng-container>
     </button>
 
-    <button planningPokerButton
+    <button haxit-button
             [buttonColor]="buttonColors.SECONDARY"
             (click)="copyToClipboardRoomLink()"
             [ngSwitch]="linkCopied$ | async">
@@ -28,7 +29,7 @@
       <ng-container *ngSwitchCase="true">Link copied</ng-container>
     </button>
 
-    <button planningPokerButton
+    <button haxit-button
             [buttonColor]="buttonColors.INACTIVE"
             (click)="closeRoom()">
       <ng-container>Close room</ng-container>
@@ -44,12 +45,12 @@
       Are you sure to end this session?
     </p>
     <footer class="modal-footer">
-      <button planningPokerButton
+      <button haxit-button
               [buttonColor]="buttonColors.ACCENT"
               (click)="leaveModalAction(true)">
         YES
       </button>
-      <button planningPokerButton
+      <button haxit-button
               [buttonColor]="buttonColors.ACCENT"
               (click)="leaveModalAction(false)">
         NO

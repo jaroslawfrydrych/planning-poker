@@ -1,0 +1,17 @@
+$baseFontSize: 18;
+$h1FontSize: 48;
+$h2FontSize: 24;
+$h1SecondFontSize: 33;
+$controlHeight: 72;
+$controlMinWidth: 270;
+$controlSidePadding: 15;
+$cardAspectRatio: 88 / 63;
+$buttonRippleSize: 200;
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1440px
+) !default;

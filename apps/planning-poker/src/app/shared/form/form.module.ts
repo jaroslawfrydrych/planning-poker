@@ -2,8 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { ButtonModule } from '@shared/button/button.module';
-import { IconModule } from '@shared/icon/icon.module';
+import { UiModule } from '@planning-poker/ui';
 
 import { CodeComponent } from './code/code.component';
 import { FocusDirective } from './focus/focus.directive';
@@ -27,9 +26,9 @@ const DIRECTIVES: Type<any>[] = [
   ],
   imports: [
     CommonModule,
+    UiModule,
     ReactiveFormsModule,
-    IconModule,
-    ButtonModule
+    UiModule
   ],
   exports: [
     ...COMPONENTS,

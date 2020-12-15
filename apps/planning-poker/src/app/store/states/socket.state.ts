@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 
-import { ConnectionError } from '@shared/enum/connection-error.enum';
-import { ConnectionStatus } from '@shared/enum/connection-status.enum';
+import { ConnectionError, ConnectionStatus } from '@planning-poker/utils';
+
 import { StoreName } from '@store/store-name.enum';
 
 import { SocketActions } from '../actions/socket.actions';

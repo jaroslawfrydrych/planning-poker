@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
 
-import { ButtonModule } from '@shared/button/button.module';
+import { UiModule } from '@planning-poker/ui';
 
 import { CookiesComponent } from './cookies/cookies.component';
 
@@ -15,7 +15,7 @@ const COMPONENTS: Type<any>[] = [
   ],
   imports: [
     CommonModule,
-    ButtonModule
+    UiModule
   ],
   exports: [
     ...COMPONENTS

@@ -1,5 +1,4 @@
-import { ConnectionError } from '@shared/enum/connection-error.enum';
-import { ConnectionStatus } from '@shared/enum/connection-status.enum';
+import { ConnectionError, ConnectionStatus } from '@planning-poker/utils';
 
 export namespace SocketActions {
   export class SetConnectionStatus {

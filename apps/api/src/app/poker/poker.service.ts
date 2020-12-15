@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { GameStates, Player, PlayerStatuses } from '@planning-poker/api-interfaces';
+import { GameStates, Player, PlayerStatuses, RoomInfo } from '@planning-poker/api-interfaces';
 
 import { Room } from './room';
 
@@ -84,5 +84,15 @@ export class PokerService {
     const roomsArray: Room[] = Array.from(this.rooms.values());
     const foundRoom: Room = roomsArray.find((room: Room) => room.hasRoomPlayer(playerId));
     return foundRoom || null;
+  }
+
+  public getRoomInfo(roomNumber: string): RoomInfo {
+    const room: Room = this.getRoom(roomNumber);
+
+    return {
+      id: room.id,
+      gameState: room.state
+    };
+
   }
 }

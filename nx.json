@@ -35,6 +35,15 @@
     },
     "api-interfaces": {
       "tags": []
+    },
+    "ui": {
+      "tags": []
+    },
+    "utils": {
+      "tags": []
+    },
+    "modal": {
+      "tags": []
     }
   }
 }

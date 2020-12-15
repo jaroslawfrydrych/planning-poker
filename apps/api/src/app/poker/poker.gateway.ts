@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common';
 import {
   OnGatewayConnection,
   OnGatewayDisconnect,
@@ -29,12 +30,13 @@ export class PokerGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @WebSocketServer() public server: Server;
   private clientConnectedSubject$: Subject<string> = new Subject<string>();
+  private readonly logger: Logger = new Logger(PokerGateway.name);
 
   constructor(private pokerService: PokerService) {
   }
 
   public handleConnection(client: Socket): void {
-    console.log('on connect', client.id);
+    this.logger.log('on connect ' + client.id);
     this.clientConnectedSubject$.next(client.id);
 
     this.pokerService.addPlayer({
@@ -43,7 +45,7 @@ export class PokerGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   public handleDisconnect(client: Socket): void {
-    console.log('on disconnect', client.id);
+    this.logger.log('on disconnect ' + client.id);
     const room: Room = this.pokerService.findPlayerRoom(client.id);
 
     if (!room) {

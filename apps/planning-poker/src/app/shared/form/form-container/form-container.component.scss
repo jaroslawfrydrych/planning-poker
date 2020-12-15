@@ -1,10 +1,10 @@
-@import "@styles/shared";
+@import "@ui/shared";
 
-.has-planing-poker-button {
+.form-container {
   position: relative;
 
   ::ng-deep {
-    button {
+    .submit-button {
       position: absolute;
       top: 0;
       right: em($controlSidePadding);
@@ -15,7 +15,7 @@
       align-items: center;
       justify-content: center;
 
-      planning-poker-icon {
+      haxit-icon {
         .material-icons {
           font-size: em(38);
         }

@@ -5,14 +5,14 @@ import { GoogleAnalyticsService } from 'ngx-google-analytics';
 import { Observable, of, race } from 'rxjs';
 import { delay, filter, map, mergeMap, take } from 'rxjs/operators';
 
-import { TakeUntilDestroy } from '@shared/decorators/take-until-destroy.decorator';
-import { ConnectionStatus } from '@shared/enum/connection-status.enum';
-import { untilDestroyed } from '@shared/operators/until-destroyed.operator';
+import { ConnectionStatus, TakeUntilDestroy, untilDestroyed } from '@planning-poker/utils';
+
 import { SocketState } from '@store/states/socket.state';
 
-import CreateRoom = HostActions.CreateRoom;
 import { AppService } from '../../../app.service';
 import { HostActions } from '../store/actions/host.actions';
+
+import CreateRoom = HostActions.CreateRoom;
 
 @Component({
   selector: 'planning-poker-wait',

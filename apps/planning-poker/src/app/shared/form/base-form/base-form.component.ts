@@ -1,16 +1,6 @@
-import {
-  AfterViewInit,
-  ContentChildren,
-  Host,
-  Input,
-  OnDestroy,
-  OnInit,
-  Optional,
-  QueryList,
-  SkipSelf
-} from '@angular/core';
-import {AbstractControl, ControlContainer, FormControl} from '@angular/forms';
-import {BehaviorSubject, Observable, Subscription} from 'rxjs';
+import { Host, Input, OnDestroy, OnInit, Optional, SkipSelf } from '@angular/core';
+import { AbstractControl, ControlContainer, FormControl } from '@angular/forms';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
 export class BaseFormComponent implements OnInit, OnDestroy {
   @Input() public placeholder: string;

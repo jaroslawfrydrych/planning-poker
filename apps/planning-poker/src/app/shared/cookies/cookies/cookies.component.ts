@@ -2,7 +2,8 @@ import { AfterViewInit, Component } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { BehaviorSubject } from 'rxjs';
 
-import { ButtonColor } from '@shared/button/button-color.enum';
+import { ButtonColor } from '@planning-poker/ui';
+
 import { cookiesComponentAnimation } from '@shared/cookies/cookies/cookies.component.animation';
 
 @Component({

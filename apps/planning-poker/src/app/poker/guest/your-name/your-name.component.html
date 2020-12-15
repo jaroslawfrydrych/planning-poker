@@ -10,11 +10,14 @@
                formControlName="name"
                planningPokerFocus
                planningPokerInput>
-        <button planningPokerButton
+        <button class="submit-button"
+                haxit-button
+                small
+                [buttonColor]="buttonColor.TRANSPARENT"
                 (click)="submit()">
-          <planning-poker-icon>
+          <haxit-icon>
             arrow_forward
-          </planning-poker-icon>
+          </haxit-icon>
         </button>
       </form>
     </planning-poker-form-container>

@@ -1,4 +1,4 @@
-@import "@styles/shared";
+@import "@ui/shared";
 
 $cardSizeMultiply: 1.8;
 $boardCardSizeMultiply: 1.22;
@@ -107,7 +107,7 @@ $boardCardSizeMultiply: 1.22;
     justify-content: center;
     font-size: em(80);
 
-    planning-poker-icon {
+    haxit-icon {
       ::ng-deep {
         .material-icons {
           font-size: em(20);

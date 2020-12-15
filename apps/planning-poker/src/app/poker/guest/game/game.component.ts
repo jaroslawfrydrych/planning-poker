@@ -6,9 +6,8 @@ import { filter, map, mergeMap, take } from 'rxjs/operators';
 import { isNullOrUndefined } from 'util';
 
 import { Cards, GameStates, Player } from '@planning-poker/api-interfaces';
-import { TakeUntilDestroy } from '@shared/decorators/take-until-destroy.decorator';
-import { ConnectionStatus } from '@shared/enum/connection-status.enum';
-import { untilDestroyed } from '@shared/operators/until-destroyed.operator';
+import { ConnectionStatus, TakeUntilDestroy, untilDestroyed } from '@planning-poker/utils';
+
 import { EnvironmentService } from '@shared/services/environment/environment.service';
 import { SocketState } from '@store/states/socket.state';
 

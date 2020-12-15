@@ -1,5 +1,5 @@
-@import "@styles/shared";
-@import "@styles/animation/rotate";
+@import "@ui/shared";
+@import "@ui/shared";
 
 :host {
   @include primaryOutline();
@@ -56,7 +56,7 @@ input {
   align-items: center;
   justify-content: center;
 
-  planning-poker-icon {
+  haxit-icon {
     ::ng-deep {
       .material-icons {
         font-size: em(38);

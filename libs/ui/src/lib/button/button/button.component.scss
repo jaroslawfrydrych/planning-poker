@@ -1,0 +1,102 @@
+@import "libs/ui/styles/@ui/shared.scss";
+
+@keyframes rippleIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  50% {
+    transform: scale(.5);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+:host {
+  @include primaryOutline();
+  @include primaryBorderRadius();
+  position: relative;
+  font: {
+    weight: 700;
+  }
+  cursor: pointer;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: em($controlHeight);
+  min-width: em($controlMinWidth);
+  padding: 0 em($controlSidePadding);
+  overflow: hidden;
+  z-index: 0;
+  -webkit-appearance: none;
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+  &.button-color-primary {
+    background: $colorPrimary;
+    color: $colorBackgroundPrimary;
+  }
+
+  &.button-color-secondary {
+    background: transparent;
+    color: $colorPrimary;
+  }
+
+  &.button-color-inactive {
+    background: $colorInactive;
+    color: $colorBackgroundPrimary;
+    border-color: $colorInactive;;
+  }
+
+  &.button-color-accent {
+    background: transparent;
+    color: $colorBackgroundPrimary;
+    border-color: $colorBackgroundPrimary;
+  }
+
+  &.button-color-transparent {
+    background: transparent;
+    color: $colorPrimary;
+    border-style: none;
+  }
+
+  &.button-small {
+    height: auto;
+    min-width: unset;
+    padding: 0;
+  }
+
+  .button-wrapper {
+    position: relative;
+    z-index: 1;
+  }
+
+  .haxit-button-ripple {
+    position: absolute;
+    width: em($buttonRippleSize);
+    height: em($buttonRippleSize);
+    background-color: rgba($colorSecondary, .2);
+    border-radius: 50%;
+    opacity: 0;
+    z-index: 0;
+    animation: {
+      name: rippleIn;
+      timing-function: linear;
+      duration: 450ms;
+      iteration-count: 1;
+    };
+
+    &.button-color-secondary, &.button-color-inactive, &.button-color-accent, &.button-color-transparent {
+      background-color: rgba($colorSecondary, .1);
+    }
+  }
+}

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
 
-import { IconModule } from '@shared/icon/icon.module';
+import { UiModule } from '@planning-poker/ui';
 
 import { CardContainerComponent } from './card-container/card-container.component';
 import { CardItemComponent } from './card-item/card-item.component';
@@ -21,7 +21,7 @@ const COMPONENTS: Type<any>[] = [
   ],
   imports: [
     CommonModule,
-    IconModule
+    UiModule
   ],
   exports: [
     ...COMPONENTS

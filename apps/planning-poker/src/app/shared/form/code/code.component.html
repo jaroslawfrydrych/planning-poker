@@ -10,7 +10,7 @@
           *ngIf="i < codeFormArray.controls.length - 1"></span>
   </ng-container>
   <button #submitButton
-          planningPokerButton
+          haxit-button
           buttonColor="transparent"
           class="submit-button"
           small
@@ -18,22 +18,22 @@
           (click)="submit()">
 
     <ng-container *ngIf="(isSuccess$ | async) === false && (isError$ | async) === false">
-      <planning-poker-icon *ngIf="(isLoading$ | async) === false">
+      <haxit-icon *ngIf="(isLoading$ | async) === false">
         arrow_forward
-      </planning-poker-icon>
+      </haxit-icon>
 
-      <planning-poker-icon class="loop-loader"
+      <haxit-icon class="loop-loader"
                            *ngIf="isLoading$ | async">
         loop
-      </planning-poker-icon>
+      </haxit-icon>
     </ng-container>
 
-    <planning-poker-icon *ngIf="isSuccess$ | async">
+    <haxit-icon *ngIf="isSuccess$ | async">
       check
-    </planning-poker-icon>
+    </haxit-icon>
 
-    <planning-poker-icon *ngIf="isError$ | async">
+    <haxit-icon *ngIf="isError$ | async">
       close
-    </planning-poker-icon>
+    </haxit-icon>
   </button>
 </form>
