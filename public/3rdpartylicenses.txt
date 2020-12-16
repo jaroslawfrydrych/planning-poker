@@ -25,6 +25,9 @@ MIT
 @ngxs/store
 MIT
 
+@rx-angular/template
+MIT
+
 after
 MIT
 Copyright (c) 2011 Raynos.

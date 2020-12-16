@@ -53,7 +53,7 @@ export class ButtonComponent implements OnInit {
     return this.buttonSmallSubject$.getValue();
   }
 
-  @HostListener('click', ['$event'])
+  @HostListener('mousedown', ['$event'])
   private click(event: MouseEvent) {
     const rippleElement: HTMLElement = this.createRippleElementToButton();
     const buttonDOMRect: DOMRect = this.buttonElement.getBoundingClientRect();

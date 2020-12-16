@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { NgxsModule } from '@ngxs/store';
+import { TemplateModule } from '@rx-angular/template';
 
 import { UiModule } from '@planning-poker/ui';
 
@@ -22,7 +23,8 @@ import { WaitComponent } from './wait/wait.component';
     SharedModule,
     NgxsModule.forFeature([
       HostState
-    ])
+    ]),
+    TemplateModule
   ]
 })
 export class HostModule {

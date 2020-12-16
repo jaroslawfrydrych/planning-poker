@@ -4,10 +4,10 @@
 <div class="sidebar">
   <header class="sidebar-header">
     <h1>ROOM ID:</h1>
-    <h2 haxitTextFixedWidth>{{roomNumber$ | async}}</h2>
+    <h2 haxitTextFixedWidth>{{roomNumber$ | push}}</h2>
 
     <haxit-text-fixed-width class="clock"
-                                     [value]="currentTime$ | async | date:'HH:mm'">
+                                     [value]="currentTime$ | push | date:'HH:mm'">
     </haxit-text-fixed-width>
   </header>
 
@@ -15,7 +15,7 @@
     <button haxit-button
             class="toggle-game-state"
             [buttonColor]="buttonColors.PRIMARY"
-            [ngSwitch]="gameState$ | async"
+            [ngSwitch]="gameState$ | push"
             (click)="toggleGameState()">
       <ng-container *ngSwitchCase="gameStates.REVIEW">New voting</ng-container>
       <ng-container *ngSwitchDefault>Finish Voting</ng-container>
@@ -24,7 +24,7 @@
     <button haxit-button
             [buttonColor]="buttonColors.SECONDARY"
             (click)="copyToClipboardRoomLink()"
-            [ngSwitch]="linkCopied$ | async">
+            [ngSwitch]="linkCopied$ | push">
       <ng-container *ngSwitchDefault>Get room link</ng-container>
       <ng-container *ngSwitchCase="true">Link copied</ng-container>
     </button>
@@ -38,7 +38,7 @@
 </div>
 
 <div class="modal-container"
-     *ngIf="leaveModalVisibility$ | async">
+     *ngIf="leaveModalVisibility$ | push">
   <div class="modal-overlay"></div>
   <div class="modal-content">
     <p>
