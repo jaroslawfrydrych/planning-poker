@@ -71,12 +71,12 @@ export class RippleDirective implements OnInit {
     return getComputedStyle(rippleElement).animationDuration
       .slice(0, -1)
       .split('.')
-      .map((value: string) => parseInt(value, 10))
-      .map((value: number) => {
-        const pow: number = Math.pow(10, value.toString().length - 1);
-        return value / pow;
+      .map((value: string, index: number) => {
+        const parsed: number = parseInt(value, 10);
+        const pow: number = Math.pow(10, parsed.toString().length - 1);
+        const divided: number = parsed / pow;
+        return index === 0 ? divided * 1000 : divided * 100
       })
-      .map((value: number, index: number) => index === 0 ? value * 1000 : value * 100)
       .reduce((total: number, value: number) => {
         return total + value;
       });
