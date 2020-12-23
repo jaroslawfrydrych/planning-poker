@@ -17,7 +17,6 @@ export class FormContainerComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    console.log(this.haxitButton);
     if (this.haxitButton) {
       this.hasHaxitButton = true;
       this.haxitButton.small = true;

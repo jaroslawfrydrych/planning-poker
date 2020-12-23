@@ -25,6 +25,7 @@
     width: (100% / 7) - 2;
 
     button {
+      @include primaryBorderRadius();
       position: absolute;
       top: 0;
       right: 0;
@@ -36,7 +37,13 @@
       cursor: pointer;
       -webkit-appearance: none;
       border-style: none;
-      opacity: 0;
+      background: transparent;
+      transition: opacity 500ms ease, transform 250ms ease;
+      overflow: hidden;
+
+      &.card-selected {
+        transform: scale(1.075);
+      }
     }
 
     planning-poker-card-item {

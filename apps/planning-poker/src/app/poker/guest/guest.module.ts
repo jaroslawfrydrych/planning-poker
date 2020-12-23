@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgxsModule } from '@ngxs/store';
+import { LetModule } from '@rx-angular/template';
 
 import { UiModule } from '@planning-poker/ui';
 
@@ -26,7 +27,8 @@ import { YourNameComponent } from './your-name/your-name.component';
     ReactiveFormsModule,
     NgxsModule.forFeature([
       GuestState
-    ])
+    ]),
+    LetModule
   ]
 })
 export class GuestModule {

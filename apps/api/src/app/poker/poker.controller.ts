@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
 
 import {
   AppInfoDtoInterface,
@@ -22,6 +22,10 @@ export class PokerController {
   @Post('create-room')
   public createRoom(@Body() request: CreateRoomDto): RoomInfo {
     // todo create secure http only cookie here with client id
+
+    if (!request || !request.clientId) {
+      throw new HttpException('No clinet id is provided', HttpStatus.BAD_REQUEST);
+    }
 
     const room: Room = this.pokerService.createRoom();
 

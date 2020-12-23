@@ -3,6 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 
 import { Coordinates, TakeUntilDestroy, untilDestroyed } from '@planning-poker/utils';
 
+import { RippleDirective } from '../../ripple/ripple.directive';
 import { ButtonColor } from '../button-color.enum';
 
 @Component({
@@ -13,26 +14,23 @@ import { ButtonColor } from '../button-color.enum';
   styleUrls: ['./button.component.scss']
 })
 @TakeUntilDestroy()
-export class ButtonComponent implements OnInit {
+export class ButtonComponent extends RippleDirective implements OnInit {
 
-  private buttonElement: HTMLButtonElement;
   private buttonColorSubject$: BehaviorSubject<ButtonColor> = new BehaviorSubject<ButtonColor>(ButtonColor.PRIMARY);
   private buttonSmallSubject$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  constructor(private elementRef: ElementRef,
-              private renderer: Renderer2) {
+  constructor(protected renderer: Renderer2,
+              elementRef: ElementRef) {
+    super(renderer, elementRef);
   }
 
   public ngOnInit(): void {
-    this.buttonElement = this.getButtonElement();
-
-    if (!this.buttonElement) {
-      return;
-    }
+    super.ngOnInit();
 
     this.addClassToButtonElement();
     this.setColorChangeSubject();
     this.setSizeChangeSubject();
+    this.additionalRippleClass = this.getButtonColorClassName(this.buttonColor);
   }
 
   @Input()
@@ -51,24 +49,6 @@ export class ButtonComponent implements OnInit {
 
   public get small(): boolean {
     return this.buttonSmallSubject$.getValue();
-  }
-
-  @HostListener('mousedown', ['$event'])
-  private click(event: MouseEvent) {
-    const rippleElement: HTMLElement = this.createRippleElementToButton();
-    const buttonDOMRect: DOMRect = this.buttonElement.getBoundingClientRect();
-    const clickPosition: Coordinates = {
-      x: event.clientX - buttonDOMRect.x,
-      y: event.clientY - buttonDOMRect.y
-    };
-
-    this.addRippleElementToButton(rippleElement);
-    this.setRipplePosition(rippleElement, clickPosition);
-
-
-    setTimeout(() => {
-      this.removeRippleElementFromButton(rippleElement);
-    }, this.getRippleAnimationDuration(rippleElement) || 500);
   }
 
   private handleButtonColorChange(color: ButtonColor, buttonElement: HTMLButtonElement): void {
@@ -92,52 +72,8 @@ export class ButtonComponent implements OnInit {
     return 'button-color-' + color;
   }
 
-  private getButtonElement(): HTMLButtonElement | null {
-    const buttonElement: HTMLButtonElement = this.elementRef.nativeElement;
-
-    if (buttonElement.tagName !== 'BUTTON') {
-      console.error('haxitButton is used on element that is not button element!');
-      return null;
-    }
-
-    return buttonElement;
-  }
-
   private addClassToButtonElement(): void {
-    this.renderer.addClass(this.buttonElement, 'haxit-button');
-  }
-
-  private createRippleElementToButton(): HTMLElement {
-    const rippleElement: HTMLElement = this.renderer.createElement('div');
-    this.renderer.addClass(rippleElement, 'haxit-button-ripple');
-    this.renderer.addClass(rippleElement, this.getButtonColorClassName(this.buttonColor));
-    return rippleElement;
-  }
-
-  private setRipplePosition(rippleElement: HTMLElement, position: Coordinates): void {
-    const offsetPosition: Coordinates = {
-      x: position.x - (rippleElement.offsetWidth / 2),
-      y: position.y - (rippleElement.offsetHeight / 2)
-    };
-    this.renderer.setStyle(rippleElement, 'left', offsetPosition.x + 'px');
-    this.renderer.setStyle(rippleElement, 'top', offsetPosition.y + 'px');
-  }
-
-  private addRippleElementToButton(rippleElement: HTMLElement): void {
-    this.renderer.appendChild(this.buttonElement, rippleElement);
-  }
-
-  private removeRippleElementFromButton(rippleElement: HTMLElement): void {
-    rippleElement.remove();
-  }
-
-  private getRippleAnimationDuration(rippleElement: HTMLElement): number {
-    return getComputedStyle(rippleElement).animationDuration
-      .slice(0, -1)
-      .split('.')
-      .map((value: string) => parseInt(value, 10))
-      .map((value: number, index: number) => index === 0 ? value * 1000 : value * 100)
-      .reduce((total: number, value: number) => total + value)
+    this.renderer.addClass(this.nativeElement, 'haxit-button');
   }
 
   private setColorChangeSubject(): void {
@@ -145,7 +81,7 @@ export class ButtonComponent implements OnInit {
       .pipe(
         untilDestroyed(this)
       )
-      .subscribe((color: ButtonColor) => this.handleButtonColorChange(color, this.buttonElement));
+      .subscribe((color: ButtonColor) => this.handleButtonColorChange(color, this.nativeElement as HTMLButtonElement));
   }
 
   private setSizeChangeSubject(): void {
@@ -153,6 +89,6 @@ export class ButtonComponent implements OnInit {
       .pipe(
         untilDestroyed(this)
       )
-      .subscribe((small: boolean) => this.handleButtonSmallChange(small, this.buttonElement));
+      .subscribe((small: boolean) => this.handleButtonSmallChange(small, this.nativeElement as HTMLButtonElement));
   }
 }
