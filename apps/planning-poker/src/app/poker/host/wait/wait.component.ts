@@ -49,7 +49,7 @@ export class WaitComponent implements OnInit {
 
     const connectionTimeout$: Observable<null> = of(null)
       .pipe(
-        delay(15000),
+        delay(30000),
         map(() => {
           throw new Error('timeout');
         })
