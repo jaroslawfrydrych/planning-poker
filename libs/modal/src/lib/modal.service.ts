@@ -11,14 +11,14 @@ import {
 import { Observable } from 'rxjs';
 import { take, tap } from 'rxjs/operators';
 
+import { AlertComponent } from './alert/alert.component';
+import { ModalAlertData } from './alert/modal-alert-data';
 import { ConfirmComponent } from './confirm/confirm.component';
 import { ModalConfirmData } from './confirm/modal-confirm-data';
 import { ModalBase } from './modal-base';
 import { ModalCommonComponent } from './modal-common/modal-common.component';
 import { ModalConfig } from './modal-config';
 import { OverlayComponent } from './overlay/overlay.component';
-import { ModalAlertData } from './alert/modal-alert-data';
-import { AlertComponent } from './alert/alert.component';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +32,7 @@ export class ModalService {
               private injector: Injector) {
   }
 
-  public open<T, K>(component: Type<T>, modalConfig?: ModalConfig<K>): Observable<boolean> {
+  public open<T, K>(component: Type<T>, modalConfig?: ModalConfig<K>): ComponentRef<ModalCommonComponent<T & ModalBase<K>, K>> {
     const modalComponentRef: ComponentRef<ModalCommonComponent<T & ModalBase<K>, K>> = this.createModal<T & ModalBase<K>, K>();
     modalComponentRef.instance.loadChildComponent(component, modalConfig);
 
@@ -40,25 +40,33 @@ export class ModalService {
     this.appendToBody(this.overlayComponentRef);
     this.appendToBody(modalComponentRef);
 
-    return modalComponentRef.instance.result$
+    modalComponentRef.instance.result$
       .pipe(
-        take(1),
-        tap(() => this.removeModal<T & ModalBase<K>, K>(modalComponentRef))
-      );
+        tap(() => this.removeModal<T, K>(modalComponentRef))
+      )
+      .subscribe();
+
+    return modalComponentRef;
   }
 
   public confirm(data: ModalConfirmData): Observable<boolean> {
-    return this.open<ConfirmComponent, ModalConfirmData>(ConfirmComponent, {
-      data
-    });
+    const modalRef: ComponentRef<ModalCommonComponent<ConfirmComponent, ModalConfirmData>> =
+      this.open<ConfirmComponent, ModalConfirmData>(ConfirmComponent, {
+        data
+      });
+
+    return modalRef.instance.result$
   }
 
   public alert(text: string): Observable<boolean> {
-    return this.open<AlertComponent, ModalAlertData>(AlertComponent, {
-      data: {
-        text
-      }
-    });
+    const modalRef: ComponentRef<ModalCommonComponent<AlertComponent, ModalAlertData>> =
+      this.open<AlertComponent, ModalAlertData>(AlertComponent, {
+        data: {
+          text
+        }
+      });
+
+    return modalRef.instance.result$
   }
 
   private appendToBody<T>(componentRef: ComponentRef<T>): void {

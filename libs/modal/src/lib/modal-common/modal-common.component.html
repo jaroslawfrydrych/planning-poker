@@ -1,8 +1,8 @@
 <div class="modal-overlay"
      (click)="onModalOverlayClick()"></div>
 
-<div class="modal-wrapper">
-  <div class="modal-container">
+<div [className]="'modal-wrapper ' + modalConfig?.wrapperClassName">
+  <div [className]="'modal-container ' + modalConfig?.containerClassName">
     <ng-template haxitInsertionPoint></ng-template>
   </div>
 </div>

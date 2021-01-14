@@ -1,4 +1,4 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Component, ComponentRef, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, ofActionSuccessful, Select, Store } from '@ngxs/store';
 import { interval, Observable } from 'rxjs';
@@ -6,6 +6,8 @@ import { filter, map, mergeMap, take } from 'rxjs/operators';
 import { isNullOrUndefined } from 'util';
 
 import { Cards, GameStates, Player } from '@planning-poker/api-interfaces';
+import { ModalConfig, ModalService } from '@planning-poker/modal';
+import { ModalCommonComponent } from '@planning-poker/modal';
 import { ConnectionStatus, TakeUntilDestroy, untilDestroyed } from '@planning-poker/utils';
 
 import { EnvironmentService } from '@shared/services/environment/environment.service';
@@ -15,7 +17,8 @@ import { AppService } from '../../../app.service';
 import { GuestService } from '../guest.service';
 import { GuestActions } from '../store/actions/guest.actions';
 import { GuestState } from '../store/states/guest.state';
-
+import { ModalGameResultsConfig } from './modal-game-results-review/modal-game-results-config';
+import { ModalGameResultsReviewComponent } from './modal-game-results-review/modal-game-results-review.component';
 import ChooseCard = GuestActions.ChooseCard;
 import GuestGameInit = GuestActions.GuestGameInit;
 import GetGameState = GuestActions.GetGameState;
@@ -23,7 +26,6 @@ import RoomRemove = GuestActions.RemoveRoom;
 import LeaveRoom = GuestActions.LeaveRoom;
 import GetRoomRemove = GuestActions.GetRoomRemove;
 import GetPlayersResults = GuestActions.GetPlayersResults;
-import { ModalService } from '@planning-poker/modal';
 
 @Component({
   selector: 'planning-poker-game',
@@ -39,6 +41,7 @@ export class GameComponent implements OnInit, OnDestroy {
   @Select(GuestState.gameState) public readonly gameState$: Observable<GameStates>;
   @Select(GuestState.players) public readonly players$: Observable<Player[]>;
   @Select(SocketState.connectionStatus) public readonly connectionStatus$: Observable<ConnectionStatus>;
+  private resultsModal: ComponentRef<ModalCommonComponent<ModalGameResultsReviewComponent, ModalGameResultsConfig>>;
 
   constructor(private router: Router,
               private guestService: GuestService,
@@ -75,6 +78,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
     this.handleSocketEvents();
     this.handleIntervalPlayerCheck();
+    this.handleGameStateChange();
   }
 
   public ngOnDestroy(): void {
@@ -166,5 +170,33 @@ export class GameComponent implements OnInit, OnDestroy {
   private handleConnectionFailed(): void {
     this.router.navigateByUrl('/?reconnectFailed=true');
     this.modalService.alert('Connection error!').subscribe();
+  }
+
+  private handleGameStateChange(): void {
+    this.gameState$
+      .pipe(
+        map((gameState: GameStates) => gameState === GameStates.REVIEW),
+        untilDestroyed(this)
+      )
+      .subscribe((result: boolean) => {
+        if (result) {
+
+          const resultsModalConfig: ModalConfig<ModalGameResultsConfig> = {
+            disableClose: true,
+            wrapperClassName: 'game-results-modal-wrapper',
+            containerClassName: 'game-results-modal-container',
+            data: {
+              players$: this.players$,
+              gameState$: this.gameState$,
+              cardsInRow: 7
+            }
+          };
+
+          this.resultsModal = this.modalService
+            .open<ModalGameResultsReviewComponent, ModalGameResultsConfig>(ModalGameResultsReviewComponent, resultsModalConfig);
+        } else if (this.resultsModal) {
+          this.resultsModal.instance.closeModal();
+        }
+      });
   }
 }

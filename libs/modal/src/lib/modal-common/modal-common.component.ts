@@ -1,11 +1,16 @@
 import {
   Component,
   ComponentFactory,
-  ComponentFactoryResolver, ComponentRef,
-  ElementRef, HostListener, OnDestroy,
+  ComponentFactoryResolver,
+  ComponentRef,
+  ElementRef,
+  HostListener,
+  OnDestroy,
   OnInit,
   Renderer2,
-  Type, ViewChild, ViewContainerRef
+  Type,
+  ViewChild,
+  ViewContainerRef
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -28,6 +33,7 @@ export class ModalCommonComponent<T, K> implements OnInit, OnDestroy {
   public childComponentRef: ComponentRef<T & ModalBase<K>>;
   public result$: Observable<boolean>;
   public dismiss$: Observable<void>;
+  public modalConfig: ModalConfig<K>;
   private animationendSubject$: Subject<void>;
   private resultSubject$: Subject<boolean>;
   private dismissSubject$: Subject<void>;
@@ -36,7 +42,10 @@ export class ModalCommonComponent<T, K> implements OnInit, OnDestroy {
               private render: Renderer2,
               private componentFactoryResolver: ComponentFactoryResolver) {
     this.resultSubject$ = new Subject<boolean>();
-    this.result$ = this.resultSubject$.asObservable();
+    this.result$ = this.resultSubject$.asObservable()
+      .pipe(
+        take(1)
+      );
 
     this.dismissSubject$ = new Subject<void>();
     this.dismiss$ = this.dismissSubject$.asObservable();
@@ -54,6 +63,10 @@ export class ModalCommonComponent<T, K> implements OnInit, OnDestroy {
   }
 
   public onModalOverlayClick(): void {
+    if (this.modalConfig.disableClose) {
+      return;
+    }
+
     this.closeModal();
   }
 
@@ -86,7 +99,15 @@ export class ModalCommonComponent<T, K> implements OnInit, OnDestroy {
   }
 
   private setModalConfig(modalConfig: ModalConfig<K>): void {
-    this.childComponentRef.instance.modalData = modalConfig.data;
+    if (!modalConfig) {
+      return;
+    }
+
+    if (modalConfig.data) {
+      this.childComponentRef.instance.modalData = modalConfig.data;
+    }
+
+    this.modalConfig = modalConfig;
   }
 
   private setAnimation(animation: string): void {
@@ -98,11 +119,13 @@ export class ModalCommonComponent<T, K> implements OnInit, OnDestroy {
   }
 
   private watchChildComponentClose(): void {
-    this.childComponentRef.instance.close$
-      .pipe(
-        take(1),
-        untilDestroyed(this)
-      )
-      .subscribe((result?: boolean) => this.closeModal(result));
+    if (this.childComponentRef.instance && this.childComponentRef.instance.close$) {
+      this.childComponentRef.instance.close$
+        .pipe(
+          take(1),
+          untilDestroyed(this)
+        )
+        .subscribe((result?: boolean) => this.closeModal(result));
+    }
   }
 }

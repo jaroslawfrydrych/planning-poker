@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, CanDeactivate, Router, RouterStateSnapshot } from '@angular/router';
 import { Store } from '@ngxs/store';
-import { Observable, of, Subject } from 'rxjs';
-import { delay, first, map, mapTo, mergeMap, tap } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { first, map, tap } from 'rxjs/operators';
+
+import { ModalService } from '@planning-poker/modal';
 
 import { HostBaseGuard } from '../host-base.guard';
 import { BoardComponent } from './board.component';
-import { ModalService } from '@planning-poker/modal';
 
 @Injectable({
   providedIn: 'root'
