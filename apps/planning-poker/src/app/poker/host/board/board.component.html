@@ -36,25 +36,3 @@
     </button>
   </footer>
 </div>
-
-<div class="modal-container"
-     *ngIf="leaveModalVisibility$ | push">
-  <div class="modal-overlay"></div>
-  <div class="modal-content">
-    <p>
-      Are you sure to end this session?
-    </p>
-    <footer class="modal-footer">
-      <button haxit-button
-              [buttonColor]="buttonColors.ACCENT"
-              (click)="leaveModalAction(true)">
-        YES
-      </button>
-      <button haxit-button
-              [buttonColor]="buttonColors.ACCENT"
-              (click)="leaveModalAction(false)">
-        NO
-      </button>
-    </footer>
-  </div>
-</div>

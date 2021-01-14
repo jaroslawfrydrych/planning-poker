@@ -12,6 +12,7 @@ import { SocketState } from '@store/states/socket.state';
 
 import { routerAnimations } from './app.animations';
 import { AppService } from './app.service';
+
 import SetConnectionStatus = SocketActions.SetConnectionStatus;
 
 @Component({

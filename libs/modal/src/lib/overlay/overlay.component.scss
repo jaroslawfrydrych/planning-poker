@@ -1,0 +1,30 @@
+@import "libs/ui/styles/@ui/shared.scss";
+
+@keyframes overlayIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes overlayOut {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+:host {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgb($colorBackgroundPrimary, .75);
+}

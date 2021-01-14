@@ -5,7 +5,6 @@ import { CardModule } from '@shared/card/card.module';
 import { CookiesModule } from '@shared/cookies/cookies.module';
 import { FormModule } from '@shared/form/form.module';
 import { LayoutModule } from '@shared/layout/layout.module';
-import { ModalModule } from '@shared/modal/modal.module';
 import { TableModule } from '@shared/table/table.module';
 
 const MODULES: Type<any>[] = [
@@ -13,8 +12,7 @@ const MODULES: Type<any>[] = [
   CookiesModule,
   FormModule,
   LayoutModule,
-  TableModule,
-  ModalModule
+  TableModule
 ];
 
 @NgModule({

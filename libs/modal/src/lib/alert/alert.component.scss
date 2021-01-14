@@ -1,0 +1,24 @@
+@import "libs/ui/styles/@ui/shared.scss";
+
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  p {
+    font-size: em(20);
+    text-transform: uppercase;
+    font-weight: 700;
+    padding-bottom: em(30);
+  }
+}
+
+footer {
+  display: flex;
+
+  button {
+    margin: 0 em(15);
+    height: em(60);
+  }
+}

@@ -11,7 +11,7 @@ import { SocketState } from '@store/states/socket.state';
 
 import { AppService } from '../../../app.service';
 import { HostActions } from '../store/actions/host.actions';
-
+import { HostState } from '../store/states/host.state';
 import CreateRoom = HostActions.CreateRoom;
 
 @Component({
@@ -31,6 +31,11 @@ export class WaitComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    if (this.store.selectSnapshot(HostState.roomNumber)) {
+      this.router.navigateByUrl('/');
+      return;
+    }
+
     this.$gaService.pageView('/host/board');
 
     const connectionStatus$: Observable<ConnectionStatus> = this.connectionStatus$

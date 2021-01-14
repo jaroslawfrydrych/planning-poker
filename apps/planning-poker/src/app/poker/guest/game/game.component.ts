@@ -23,6 +23,7 @@ import RoomRemove = GuestActions.RemoveRoom;
 import LeaveRoom = GuestActions.LeaveRoom;
 import GetRoomRemove = GuestActions.GetRoomRemove;
 import GetPlayersResults = GuestActions.GetPlayersResults;
+import { ModalService } from '@planning-poker/modal';
 
 @Component({
   selector: 'planning-poker-game',
@@ -44,7 +45,8 @@ export class GameComponent implements OnInit, OnDestroy {
               private actions$: Actions,
               private store: Store,
               private appService: AppService,
-              private environmentService: EnvironmentService) {
+              private environmentService: EnvironmentService,
+              private modalService: ModalService) {
   }
 
   public get isInReview$(): Observable<boolean> {
@@ -158,6 +160,11 @@ export class GameComponent implements OnInit, OnDestroy {
         mergeMap((roomNumber: string) => this.getIfIsStillPlayerInRoom(roomNumber)),
         untilDestroyed(this)
       )
-      .subscribe(() => this.router.navigateByUrl('/?reconnectFailed=true'));
+      .subscribe(() => this.handleConnectionFailed());
+  }
+
+  private handleConnectionFailed(): void {
+    this.router.navigateByUrl('/?reconnectFailed=true');
+    this.modalService.alert('Connection error!').subscribe();
   }
 }

@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, CanDeactivate, Router, RouterStateSnapshot } from '@angular/router';
 import { Store } from '@ngxs/store';
-import { Observable, Subject } from 'rxjs';
-import { first, map, tap } from 'rxjs/operators';
+import { Observable, of, Subject } from 'rxjs';
+import { delay, first, map, mapTo, mergeMap, tap } from 'rxjs/operators';
 
 import { HostBaseGuard } from '../host-base.guard';
 import { BoardComponent } from './board.component';
+import { ModalService } from '@planning-poker/modal';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,8 @@ export class BoardGuard extends HostBaseGuard implements CanActivate, CanDeactiv
   private discardSubject: Subject<boolean> = new Subject<boolean>();
 
   constructor(store: Store,
-              router: Router) {
+              router: Router,
+              private modalService: ModalService) {
     super(store, router);
   }
 
@@ -37,23 +39,14 @@ export class BoardGuard extends HostBaseGuard implements CanActivate, CanDeactiv
       return true;
     }
 
-    component.showLeaveModal();
-
-    return this.discardSubject.asObservable()
+    return this.modalService
+      .confirm({
+        text: 'Are you sure to end this session?',
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No'
+      })
       .pipe(
         first()
       );
-  }
-
-  public discard(): void {
-    this.discardSubject.next(true);
-
-    setTimeout(() => {
-      this.discardSubject.next(true);
-    });
-  }
-
-  public keep(): void {
-    this.discardSubject.next(false);
   }
 }

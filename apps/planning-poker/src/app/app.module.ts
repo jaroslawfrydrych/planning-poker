@@ -9,6 +9,7 @@ import { NgxsModule } from '@ngxs/store';
 import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 
+import { ModalModule } from '@planning-poker/modal';
 import { UiModule } from '@planning-poker/ui';
 
 import { environment } from '@environments/environment';
@@ -42,6 +43,7 @@ const config: SocketIoConfig = {
     BrowserAnimationsModule,
     HttpClientModule,
     UiModule,
+    ModalModule,
     SharedModule,
     PokerModule,
     RouterModule,

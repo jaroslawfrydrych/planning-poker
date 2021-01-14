@@ -1,0 +1,8 @@
+<p>{{modalData?.text}}</p>
+<footer>
+  <button haxit-button
+          [buttonColor]="buttonColors.ACCENT"
+          (click)="close()">
+    {{modalData?.promptButtonText || 'OK'}}
+  </button>
+</footer>

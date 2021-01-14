@@ -1,0 +1,13 @@
+<p>{{modalData?.text}}</p>
+<footer>
+  <button haxit-button
+          [buttonColor]="buttonColors.ACCENT"
+          (click)="close(true)">
+    {{modalData?.confirmButtonText || 'Yes'}}
+  </button>
+  <button haxit-button
+          [buttonColor]="buttonColors.ACCENT"
+          (click)="close(false)">
+    {{modalData?.cancelButtonText || 'No'}}
+  </button>
+</footer>

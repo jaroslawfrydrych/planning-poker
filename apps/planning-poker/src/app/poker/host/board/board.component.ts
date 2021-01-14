@@ -5,6 +5,7 @@ import { BehaviorSubject, interval, Observable } from 'rxjs';
 import { debounceTime, filter, map, mergeMap, startWith, take } from 'rxjs/operators';
 
 import { GameStates, Player, PlayerStatuses } from '@planning-poker/api-interfaces';
+import { ModalService } from '@planning-poker/modal';
 import { ButtonColor } from '@planning-poker/ui';
 import { ConnectionStatus, TakeUntilDestroy, untilDestroyed } from '@planning-poker/utils';
 
@@ -17,6 +18,7 @@ import { HostService } from '../host.service';
 import { HostActions } from '../store/actions/host.actions';
 import { HostState } from '../store/states/host.state';
 import { BoardGuard } from './board.guard';
+
 import CloseRoom = HostActions.CloseRoom;
 import GetGameState = HostActions.GetGameState;
 import GetPlayers = HostActions.GetPlayers;
@@ -35,7 +37,6 @@ import GetResults = HostActions.GetResults;
 export class BoardComponent implements OnInit, OnDestroy {
 
   public currentTime$: Observable<Date>;
-  public leaveModalVisibility$: Observable<boolean>;
   public linkCopied$: Observable<boolean>;
   @Select(HostState.gameState) public readonly gameState$: Observable<GameStates>;
   @Select(HostState.roomNumber) public readonly roomNumber$: Observable<string>;
@@ -43,7 +44,6 @@ export class BoardComponent implements OnInit, OnDestroy {
   @Select(SocketState.connectionStatus) public readonly connectionStatus$: Observable<ConnectionStatus>;
   public readonly gameStates = GameStates;
   public readonly buttonColors = ButtonColor;
-  private leaveModalVisibilitySubject$: BehaviorSubject<boolean>;
   private linkCopiedSubject$: BehaviorSubject<boolean>;
 
   constructor(private boardGuard: BoardGuard,
@@ -52,9 +52,8 @@ export class BoardComponent implements OnInit, OnDestroy {
               private router: Router,
               private environmentService: EnvironmentService,
               private copyToClipboardService: CopyToClipboardService,
-              private store: Store) {
-    this.leaveModalVisibilitySubject$ = new BehaviorSubject<boolean>(false);
-    this.leaveModalVisibility$ = this.leaveModalVisibilitySubject$.asObservable();
+              private store: Store,
+              private modalService: ModalService) {
     this.linkCopiedSubject$ = new BehaviorSubject<boolean>(false);
     this.linkCopied$ = this.linkCopiedSubject$.asObservable();
   }
@@ -79,10 +78,6 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl('/');
   }
 
-  public set leaveModalVisibility(value: boolean) {
-    this.leaveModalVisibilitySubject$.next(value);
-  }
-
   public get roomLink(): string {
     const roomNumber: string = this.store.selectSnapshot(HostState.roomNumber);
     return window.location.origin + '/guest/room-code?code=' + roomNumber;
@@ -102,24 +97,6 @@ export class BoardComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.linkCopiedSubject$.next(false);
       });
-  }
-
-  public showLeaveModal(): void {
-    this.leaveModalVisibility = true;
-  }
-
-  public closeLeaveModal(): void {
-    this.leaveModalVisibility = false;
-  }
-
-  public leaveModalAction(result: boolean): void {
-    if (result) {
-      this.boardGuard.discard();
-    } else {
-      this.boardGuard.keep();
-    }
-
-    this.closeLeaveModal();
   }
 
   public isPlayerReady(player: Player): boolean {
@@ -170,7 +147,7 @@ export class BoardComponent implements OnInit, OnDestroy {
         mergeMap((roomNumber: string) => this.getIfIsHostOfRoom(roomNumber)),
         untilDestroyed(this)
       )
-      .subscribe(() => this.router.navigateByUrl('/?reconnectFailed=true'));
+      .subscribe(() => this.handleConnectionFailed());
   }
 
   /**
@@ -200,6 +177,11 @@ export class BoardComponent implements OnInit, OnDestroy {
         mergeMap((roomNumber: string) => this.getIfIsHostOfRoom(roomNumber)),
         untilDestroyed(this)
       )
-      .subscribe(() => this.router.navigateByUrl('/?reconnectFailed=true'));
+      .subscribe(() => this.handleConnectionFailed());
+  }
+
+  private handleConnectionFailed(): void {
+    this.router.navigateByUrl('/?reconnectFailed=true');
+    this.modalService.alert('Connection error!').subscribe();
   }
 }

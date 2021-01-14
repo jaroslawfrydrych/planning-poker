@@ -1,7 +1,7 @@
-import { Component, ElementRef, HostListener, Input, OnInit, Renderer2 } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-import { Coordinates, TakeUntilDestroy, untilDestroyed } from '@planning-poker/utils';
+import { TakeUntilDestroy, untilDestroyed } from '@planning-poker/utils';
 
 import { RippleDirective } from '../../ripple/ripple.directive';
 import { ButtonColor } from '../button-color.enum';
