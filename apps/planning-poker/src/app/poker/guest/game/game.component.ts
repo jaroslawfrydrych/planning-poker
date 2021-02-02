@@ -6,8 +6,7 @@ import { filter, map, mergeMap, take } from 'rxjs/operators';
 import { isNullOrUndefined } from 'util';
 
 import { Cards, GameStates, Player } from '@planning-poker/api-interfaces';
-import { ModalConfig, ModalService } from '@planning-poker/modal';
-import { ModalCommonComponent } from '@planning-poker/modal';
+import { ModalCommonComponent, ModalConfig, ModalService } from '@planning-poker/modal';
 import { ConnectionStatus, TakeUntilDestroy, untilDestroyed } from '@planning-poker/utils';
 
 import { EnvironmentService } from '@shared/services/environment/environment.service';
@@ -52,13 +51,6 @@ export class GameComponent implements OnInit, OnDestroy {
               private modalService: ModalService) {
   }
 
-  public get isInReview$(): Observable<boolean> {
-    return this.gameState$
-      .pipe(
-        map((gameState: GameStates) => gameState === GameStates.REVIEW)
-      );
-  }
-
   public ngOnInit(): void {
     this.store.dispatch([
       new GuestGameInit(),
@@ -84,6 +76,10 @@ export class GameComponent implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
     this.store.dispatch(LeaveRoom);
     this.navigateToLadingPage();
+
+    if (this.resultsModal && this.resultsModal.instance) {
+      this.resultsModal.instance.closeModal();
+    }
   }
 
   public onCardClick(card: Cards): void {
