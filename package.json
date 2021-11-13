@@ -70,7 +70,7 @@
     "@ngxs/logger-plugin": "^3.7.0",
     "@nrwl/cli": "10.3.0",
     "@nrwl/cypress": "13.1.4",
-    "@nrwl/jest": "10.3.0",
+    "@nrwl/jest": "13.1.4",
     "@nrwl/nest": "10.3.0",
     "@nrwl/node": "10.3.0",
     "@nrwl/workspace": "10.3.0",
