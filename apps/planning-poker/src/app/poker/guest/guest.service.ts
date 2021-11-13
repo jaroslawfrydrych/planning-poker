@@ -83,6 +83,6 @@ export class GuestService {
   }
 
   public getIsPlayerInRoom(roomNumber: string): Observable<boolean> {
-    return this.pokerService.getIsPlayerInRoom(roomNumber);
+    return this.pokerService.getIsPlayerInRoom();
   }
 }

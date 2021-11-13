@@ -6,7 +6,7 @@ import { Store } from '@ngxs/store';
 import { ButtonColor } from '@planning-poker/ui';
 import { TakeUntilDestroy, untilDestroyed } from '@planning-poker/utils';
 
-import { GuestActions } from '../store/actions/guest.actions';
+import { GuestActions } from '../../store/actions/guest.actions';
 
 import JoinRoom = GuestActions.JoinRoom;
 import GuestNameInit = GuestActions.GuestNameInit;

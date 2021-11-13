@@ -9,8 +9,8 @@ import { TakeUntilDestroy, untilDestroyed } from '@planning-poker/utils';
 
 import { CodeComponent } from '@shared/form/code/code.component';
 
-import { GuestActions } from '../store/actions/guest.actions';
-import { GuestState } from '../store/states/guest.state';
+import { GuestActions } from '../../store/actions/guest.actions';
+import { GuestState } from '../../store/states/guest.state';
 
 import RoomNumberValidation = GuestActions.RoomNumberValidation;
 import GuestRoomNumberValidationInit = GuestActions.GuestRoomNumberValidationInit;

@@ -5,7 +5,7 @@ import { UiModule } from '@planning-poker/ui';
 
 import { SharedModule } from '@shared/shared.module';
 
-import { LandingComponent } from './lading/landing.component';
+import { LandingComponent } from './features/lading/landing.component';
 import { LandingRoutingModule } from './landing-routing.module';
 
 @NgModule({

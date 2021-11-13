@@ -4,7 +4,7 @@ import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-import { GuestState } from '../store/states/guest.state';
+import { GuestState } from '../../store/states/guest.state';
 
 @Injectable({
   providedIn: 'root'

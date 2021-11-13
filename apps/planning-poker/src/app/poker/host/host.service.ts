@@ -45,8 +45,8 @@ export class HostService {
     return this.pokerService.playerVoted();
   }
 
-  public getIsHostOfRoom(roomNumber: string): Observable<boolean> {
-    return this.pokerService.getIsHostOfRoom(roomNumber);
+  public getIsHostOfRoom(): Observable<boolean> {
+    return this.pokerService.getIsHostOfRoom();
   }
 }
 

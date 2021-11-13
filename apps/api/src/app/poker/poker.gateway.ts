@@ -98,6 +98,7 @@ export class PokerGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage(SocketEvents.STATE)
   public onState(client: Socket, roomNumber: string): void {
     this.pokerService.toggleRoomGameState(roomNumber);
+
     const state: GameStates = this.pokerService.getRoomGameState(roomNumber);
     const broadcastMessage: GameStateBroadcastDto = {
       state

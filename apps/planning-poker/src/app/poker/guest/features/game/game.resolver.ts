@@ -6,9 +6,9 @@ import { tap } from 'rxjs/operators';
 
 import { RoomInfo } from '@planning-poker/api-interfaces';
 
-import { GuestService } from '../guest.service';
-import { GuestActions } from '../store/actions/guest.actions';
-import { GuestState } from '../store/states/guest.state';
+import { GuestService } from '../../guest.service';
+import { GuestActions } from '../../store/actions/guest.actions';
+import { GuestState } from '../../store/states/guest.state';
 import SetRoomInfo = GuestActions.SetRoomInfo;
 
 @Injectable({

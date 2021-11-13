@@ -1,5 +1,5 @@
 <planning-poker-card-container *ngFor="let player of players$ | async"
-                               [cardsInRow]="cardsInRow">
+                               [cardsInRow$]="cardsInRow$">
   <planning-poker-table-card-container [label]="player.name"
                                        [card]="player.card"
                                        [playerReady]="isPlayerReady(player)"

@@ -1,4 +1,5 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Req, Res } from '@nestjs/common';
+import { Request, Response } from 'express';
 
 import {
   AppInfoDtoInterface,
@@ -20,11 +21,11 @@ export class PokerController {
   }
 
   @Post('create-room')
-  public createRoom(@Body() request: CreateRoomDto): RoomInfo {
+  public createRoom(@Res() response: Response, @Body() request: CreateRoomDto): void {
     // todo create secure http only cookie here with client id
 
     if (!request || !request.clientId) {
-      throw new HttpException('No clinet id is provided', HttpStatus.BAD_REQUEST);
+      throw new HttpException('No client id is provided', HttpStatus.BAD_REQUEST);
     }
 
     const room: Room = this.pokerService.createRoom();
@@ -34,10 +35,13 @@ export class PokerController {
       type: PlayerType.HOST
     });
 
-    return {
+    const token: string = this.pokerService.createUserToken(request.clientId, room.id);
+    this.pokerService.setJwtCookie(token, response);
+
+    response.send({
       id: room.id,
       gameState: room.state
-    };
+    });
   }
 
   @Post('join-room-code')
@@ -52,16 +56,22 @@ export class PokerController {
     return this.pokerService.getRoomInfo(request.id);
   }
 
-  @Get('check-player-in-room/:playerId/:roomNumber')
-  public checkPlayerInRoom(@Param('playerId') playerId: string, @Param('roomNumber') roomNumber: string): boolean {
-    const room: Room | null = this.pokerService.findPlayerRoom(playerId);
-    return room ? room.id === roomNumber : false;
+  @Get('check-player-in-room')
+  public checkPlayerInRoom(@Req() request: Request): boolean {
+    const token: string = this.pokerService.getJwtCookie(request);
+    const decodedToken = this.pokerService.decodeJwt(token);
+
+    const room: Room | null = this.pokerService.findPlayerRoom(decodedToken.playerId);
+    return room ? room.id === decodedToken.roomNumber : false;
   }
 
-  @Get('check-host-of-room/:playerId/:roomNumber')
-  public checkHostOfRoom(@Param('playerId') playerId: string, @Param('roomNumber') roomNumber: string): boolean {
-    const room: Room | null = this.pokerService.getRoom(roomNumber);
-    return room ? room.host.id === playerId : false;
+  @Get('check-host-of-room')
+  public checkHostOfRoom(@Req() request: Request): boolean {
+    const token: string = this.pokerService.getJwtCookie(request);
+    const decodedToken = this.pokerService.decodeJwt(token);
+
+    const room: Room | null = this.pokerService.getRoom(decodedToken.roomNumber);
+    return room ? room.host.id === decodedToken.playerId : false;
   }
 
   @Get('app-info')

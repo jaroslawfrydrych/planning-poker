@@ -81,457 +81,24 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 39);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
-/***/ (function(module, exports) {
+/******/ ({
 
-module.exports = require("tslib");
-
-/***/ }),
-/* 1 */
+/***/ "./apps/api/src/app/app.controller.ts":
+/*!********************************************!*\
+  !*** ./apps/api/src/app/app.controller.ts ***!
+  \********************************************/
+/*! exports provided: AppController */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var _lib_model_app_info_dto_interface__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8);
-/* harmony import */ var _lib_model_vote_interface__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
-/* harmony import */ var _lib_model_state_interface__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(10);
-/* harmony import */ var _lib_model_room_info__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(11);
-/* harmony import */ var _lib_model_player_interface__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(12);
-/* harmony import */ var _lib_model_create_room_dto_interface__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(13);
-/* harmony import */ var _lib_model_game_state_dto_interface__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(14);
-/* harmony import */ var _lib_model_game_state_broadcast_dto_interface__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(15);
-/* harmony import */ var _lib_model_join_room_code_request_dto_interface__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(16);
-/* harmony import */ var _lib_model_join_room_code_response_dto_interface__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(17);
-/* harmony import */ var _lib_model_join_room_name_request_dto_interface__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(18);
-/* harmony import */ var _lib_model_join_request_dto_interface__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(19);
-/* harmony import */ var _lib_model_results_dto_interface__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(20);
-/* harmony import */ var _lib_model_result_interface__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(21);
-/* harmony import */ var _lib_model_users_response_dto_interface__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(22);
-/* harmony import */ var _lib_model_voted_interface__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(23);
-/* harmony import */ var _lib_enum_cards_enum__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(24);
-/* harmony import */ var _lib_enum_game_states_enum__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(25);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "c", function() { return _lib_enum_game_states_enum__WEBPACK_IMPORTED_MODULE_17__["a"]; });
-
-/* harmony import */ var _lib_enum_socket_events__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(26);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "j", function() { return _lib_enum_socket_events__WEBPACK_IMPORTED_MODULE_18__["a"]; });
-
-/* harmony import */ var _lib_enum_player_statuses_enum__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(27);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "g", function() { return _lib_enum_player_statuses_enum__WEBPACK_IMPORTED_MODULE_19__["a"]; });
-
-/* harmony import */ var _lib_enum_player_type_enum__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(28);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "h", function() { return _lib_enum_player_type_enum__WEBPACK_IMPORTED_MODULE_20__["a"]; });
-
-/**
- * Model
- */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
- * Enum
- */
-
-
-
-
-
-
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports) {
-
-module.exports = require("@nestjs/common");
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
-module.exports = require("socket.io");
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports) {
-
-module.exports = require("@nestjs/websockets");
-
-/***/ }),
-/* 5 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PokerService; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppController", function() { return AppController; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "tslib");
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(tslib__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _nestjs_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
-/* harmony import */ var _nestjs_common__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1);
-/* harmony import */ var _room__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(35);
-
-
-
-
-let PokerService = class PokerService {
-    constructor() {
-        this.rooms = new Map();
-        this.players = new Map();
-    }
-    toggleGameState(currentState) {
-        switch (currentState) {
-            case _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__[/* GameStates */ "c"].IN_PROGRESS:
-                return _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__[/* GameStates */ "c"].REVIEW;
-            case _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__[/* GameStates */ "c"].REVIEW:
-                return _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__[/* GameStates */ "c"].IN_PROGRESS;
-        }
-    }
-    toggleRoomGameState(roomNumber) {
-        const room = this.rooms.get(roomNumber);
-        if (!room) {
-            return;
-        }
-        room.state = this.toggleGameState(room.state);
-        this.rooms.set(roomNumber, room);
-    }
-    getRoomGameState(roomNumber) {
-        const room = this.rooms.get(roomNumber);
-        return room.state;
-    }
-    createRoom() {
-        const room = new _room__WEBPACK_IMPORTED_MODULE_3__[/* Room */ "a"]();
-        if (this.checkIsRoomExists(room.id)) {
-            while (!this.checkIsRoomExists(room.id)) {
-                room.generateRoomNumber();
-            }
-        }
-        this.rooms.set(room.id, room);
-        return room;
-    }
-    removeRoom(id) {
-        this.rooms.delete(id);
-    }
-    addPlayer(player) {
-        this.players.set(player.id, player);
-    }
-    removePlayer(id) {
-        this.players.delete(id);
-    }
-    checkIsRoomExists(id) {
-        return this.rooms.has(id);
-    }
-    resetVotingForRoom(roomNumber) {
-        const room = this.getRoom(roomNumber);
-        room.players.forEach((player) => {
-            room.patchPlayer(player.id, {
-                card: null,
-                status: _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__[/* PlayerStatuses */ "g"].WAITING
-            });
-        });
-    }
-    getRoom(roomNumber) {
-        return this.rooms.get(roomNumber);
-    }
-    findPlayerRoom(playerId) {
-        const roomsArray = Array.from(this.rooms.values());
-        const foundRoom = roomsArray.find((room) => room.hasRoomPlayer(playerId));
-        return foundRoom || null;
-    }
-    getRoomInfo(roomNumber) {
-        const room = this.getRoom(roomNumber);
-        return {
-            id: room.id,
-            gameState: room.state
-        };
-    }
-};
-PokerService = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
-    Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Injectable"])()
-], PokerService);
-
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports) {
-
-module.exports = require("rxjs");
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports) {
-
-module.exports = require("rxjs/operators");
-
-/***/ }),
-/* 8 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-
-
-/***/ }),
-/* 9 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-
-
-/***/ }),
-/* 10 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-
-
-/***/ }),
-/* 11 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-
-
-/***/ }),
-/* 12 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-
-
-/***/ }),
-/* 13 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-
-
-/***/ }),
-/* 14 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-
-
-/***/ }),
-/* 15 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-
-
-/***/ }),
-/* 16 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-
-
-/***/ }),
-/* 17 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-
-
-/***/ }),
-/* 18 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-
-
-/***/ }),
-/* 19 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-
-
-/***/ }),
-/* 20 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-
-
-/***/ }),
-/* 21 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-
-
-/***/ }),
-/* 22 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-
-
-/***/ }),
-/* 23 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-
-
-/***/ }),
-/* 24 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* unused harmony export Cards */
-var Cards;
-(function (Cards) {
-    Cards[Cards["ZERO"] = 0] = "ZERO";
-    Cards["HALF"] = "1/2";
-    Cards[Cards["ONE"] = 1] = "ONE";
-    Cards[Cards["TWO"] = 2] = "TWO";
-    Cards[Cards["THREE"] = 3] = "THREE";
-    Cards[Cards["FIVE"] = 5] = "FIVE";
-    Cards[Cards["EIGHT"] = 8] = "EIGHT";
-    Cards[Cards["THIRTEEN"] = 13] = "THIRTEEN";
-    Cards[Cards["TWENTY"] = 20] = "TWENTY";
-    Cards[Cards["FORTY"] = 40] = "FORTY";
-    Cards[Cards["HUNDRED"] = 100] = "HUNDRED";
-    Cards["QUESTION_MARK"] = "?";
-    Cards["COFFEE"] = "coffee";
-    Cards["INFINITE"] = "infinite";
-})(Cards || (Cards = {}));
-
-
-/***/ }),
-/* 25 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GameStates; });
-var GameStates;
-(function (GameStates) {
-    GameStates["IN_PROGRESS"] = "IN_PROGRESS";
-    GameStates["REVIEW"] = "REVIEW";
-})(GameStates || (GameStates = {}));
-
-
-/***/ }),
-/* 26 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SocketEvents; });
-var SocketEvents;
-(function (SocketEvents) {
-    SocketEvents["VOTE"] = "VOTE";
-    SocketEvents["PLAYERS"] = "PLAYERS";
-    SocketEvents["STATE"] = "STATE";
-    SocketEvents["JOIN"] = "JOIN";
-    SocketEvents["ROOM_JOINED"] = "ROOM_JOINED";
-    SocketEvents["LEAVE"] = "LEAVE";
-    SocketEvents["CLOSE_ROOM"] = "CLOSE_ROOM";
-    SocketEvents["ROOM_REMOVED"] = "ROOM_REMOVED";
-    SocketEvents["VOTED"] = "VOTED";
-    SocketEvents["RESULTS"] = "RESULTS";
-})(SocketEvents || (SocketEvents = {}));
-
-
-/***/ }),
-/* 27 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PlayerStatuses; });
-var PlayerStatuses;
-(function (PlayerStatuses) {
-    PlayerStatuses["WAITING"] = "WAITING";
-    PlayerStatuses["VOTED"] = "VOTED";
-})(PlayerStatuses || (PlayerStatuses = {}));
-
-
-/***/ }),
-/* 28 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PlayerType; });
-var PlayerType;
-(function (PlayerType) {
-    PlayerType["VOTER"] = "VOTER";
-    PlayerType["HOST"] = "HOST";
-})(PlayerType || (PlayerType = {}));
-
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports) {
-
-module.exports = require("@nestjs/core");
-
-/***/ }),
-/* 30 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(tslib__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _nestjs_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
-/* harmony import */ var _nestjs_common__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _app_controller__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(31);
-/* harmony import */ var _poker_poker_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(32);
-
-
-
-
-let AppModule = class AppModule {
-};
-AppModule = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
-    Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Module"])({
-        imports: [_poker_poker_module__WEBPACK_IMPORTED_MODULE_3__[/* PokerModule */ "a"]],
-        controllers: [_app_controller__WEBPACK_IMPORTED_MODULE_2__[/* AppController */ "a"]]
-    })
-], AppModule);
-
-
-
-/***/ }),
-/* 31 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppController; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(tslib__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _nestjs_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var _nestjs_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 /* harmony import */ var _nestjs_common__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__);
 
 
@@ -544,54 +111,62 @@ AppController = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
 
 
 /***/ }),
-/* 32 */
+
+/***/ "./apps/api/src/app/app.module.ts":
+/*!****************************************!*\
+  !*** ./apps/api/src/app/app.module.ts ***!
+  \****************************************/
+/*! exports provided: AppModule */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PokerModule; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppModule", function() { return AppModule; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "tslib");
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(tslib__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _nestjs_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var _nestjs_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 /* harmony import */ var _nestjs_common__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _poker_controller__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(33);
-/* harmony import */ var _poker_gateway__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(36);
-/* harmony import */ var _poker_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(5);
+/* harmony import */ var _app_controller__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./app.controller */ "./apps/api/src/app/app.controller.ts");
+/* harmony import */ var _poker_poker_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./poker/poker.module */ "./apps/api/src/app/poker/poker.module.ts");
 
 
 
 
-
-let PokerModule = class PokerModule {
+let AppModule = class AppModule {
 };
-PokerModule = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+AppModule = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
     Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Module"])({
-        controllers: [
-            _poker_controller__WEBPACK_IMPORTED_MODULE_2__[/* PokerController */ "a"]
-        ],
-        providers: [
-            _poker_gateway__WEBPACK_IMPORTED_MODULE_3__[/* PokerGateway */ "a"],
-            _poker_service__WEBPACK_IMPORTED_MODULE_4__[/* PokerService */ "a"]
-        ]
+        imports: [_poker_poker_module__WEBPACK_IMPORTED_MODULE_3__["PokerModule"]],
+        controllers: [_app_controller__WEBPACK_IMPORTED_MODULE_2__["AppController"]]
     })
-], PokerModule);
+], AppModule);
 
 
 
 /***/ }),
-/* 33 */
+
+/***/ "./apps/api/src/app/poker/poker.controller.ts":
+/*!****************************************************!*\
+  !*** ./apps/api/src/app/poker/poker.controller.ts ***!
+  \****************************************************/
+/*! exports provided: PokerController */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PokerController; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PokerController", function() { return PokerController; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "tslib");
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(tslib__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _nestjs_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var _nestjs_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 /* harmony import */ var _nestjs_common__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1);
-/* harmony import */ var _package_json__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(34);
-var _package_json__WEBPACK_IMPORTED_MODULE_3___namespace = /*#__PURE__*/__webpack_require__.t(34, 1);
-/* harmony import */ var _poker_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(5);
-var _a, _b, _c, _d, _e, _f, _g, _h;
+/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! express */ "express");
+/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(express__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @planning-poker/api-interfaces */ "./libs/api-interfaces/src/index.ts");
+/* harmony import */ var _package_json__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../../package.json */ "./package.json");
+var _package_json__WEBPACK_IMPORTED_MODULE_4___namespace = /*#__PURE__*/__webpack_require__.t(/*! ../../../../../package.json */ "./package.json", 1);
+/* harmony import */ var _poker_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./poker.service */ "./apps/api/src/app/poker/poker.service.ts");
+var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
+
 
 
 
@@ -601,20 +176,22 @@ let PokerController = class PokerController {
     constructor(pokerService) {
         this.pokerService = pokerService;
     }
-    createRoom(request) {
+    createRoom(response, request) {
         // todo create secure http only cookie here with client id
         if (!request || !request.clientId) {
-            throw new _nestjs_common__WEBPACK_IMPORTED_MODULE_1__["HttpException"]('No clinet id is provided', _nestjs_common__WEBPACK_IMPORTED_MODULE_1__["HttpStatus"].BAD_REQUEST);
+            throw new _nestjs_common__WEBPACK_IMPORTED_MODULE_1__["HttpException"]('No client id is provided', _nestjs_common__WEBPACK_IMPORTED_MODULE_1__["HttpStatus"].BAD_REQUEST);
         }
         const room = this.pokerService.createRoom();
         room.addPlayer({
             id: request.clientId,
-            type: _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__[/* PlayerType */ "h"].HOST
+            type: _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_3__["PlayerType"].HOST
         });
-        return {
+        const token = this.pokerService.createUserToken(request.clientId, room.id);
+        this.pokerService.setJwtCookie(token, response);
+        response.send({
             id: room.id,
             gameState: room.state
-        };
+        });
     }
     joinRoomCode(request) {
         return {
@@ -624,155 +201,98 @@ let PokerController = class PokerController {
     roomInfo(request) {
         return this.pokerService.getRoomInfo(request.id);
     }
-    checkPlayerInRoom(playerId, roomNumber) {
-        const room = this.pokerService.findPlayerRoom(playerId);
-        return room ? room.id === roomNumber : false;
+    checkPlayerInRoom(request) {
+        const token = this.pokerService.getJwtCookie(request);
+        const decodedToken = this.pokerService.decodeJwt(token);
+        const room = this.pokerService.findPlayerRoom(decodedToken.playerId);
+        return room ? room.id === decodedToken.roomNumber : false;
     }
-    checkHostOfRoom(playerId, roomNumber) {
-        const room = this.pokerService.getRoom(roomNumber);
-        return room ? room.host.id === playerId : false;
+    checkHostOfRoom(request) {
+        const token = this.pokerService.getJwtCookie(request);
+        const decodedToken = this.pokerService.decodeJwt(token);
+        const room = this.pokerService.getRoom(decodedToken.roomNumber);
+        return room ? room.host.id === decodedToken.playerId : false;
     }
     getAppInfo() {
         return {
-            info: 'version ' + _package_json__WEBPACK_IMPORTED_MODULE_3__[/* version */ "a"]
+            info: 'version ' + _package_json__WEBPACK_IMPORTED_MODULE_4__["version"]
         };
     }
 };
 Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
     Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Post"])('create-room'),
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__param"])(0, Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Body"])()),
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__param"])(0, Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Res"])()), Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__param"])(1, Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Body"])()),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:type", Function),
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [typeof (_a = typeof _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["CreateRoomDto"] !== "undefined" && _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["CreateRoomDto"]) === "function" ? _a : Object]),
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:returntype", typeof (_b = typeof _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["RoomInfo"] !== "undefined" && _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["RoomInfo"]) === "function" ? _b : Object)
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [typeof (_a = typeof express__WEBPACK_IMPORTED_MODULE_2__["Response"] !== "undefined" && express__WEBPACK_IMPORTED_MODULE_2__["Response"]) === "function" ? _a : Object, typeof (_b = typeof _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_3__["CreateRoomDto"] !== "undefined" && _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_3__["CreateRoomDto"]) === "function" ? _b : Object]),
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:returntype", void 0)
 ], PokerController.prototype, "createRoom", null);
 Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
     Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Post"])('join-room-code'),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__param"])(0, Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Body"])()),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:type", Function),
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [typeof (_c = typeof _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["JoinRoomCodeRequestDto"] !== "undefined" && _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["JoinRoomCodeRequestDto"]) === "function" ? _c : Object]),
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:returntype", typeof (_d = typeof _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["JoinRoomCodeResponseDto"] !== "undefined" && _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["JoinRoomCodeResponseDto"]) === "function" ? _d : Object)
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [typeof (_c = typeof _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_3__["JoinRoomCodeRequestDto"] !== "undefined" && _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_3__["JoinRoomCodeRequestDto"]) === "function" ? _c : Object]),
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:returntype", typeof (_d = typeof _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_3__["JoinRoomCodeResponseDto"] !== "undefined" && _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_3__["JoinRoomCodeResponseDto"]) === "function" ? _d : Object)
 ], PokerController.prototype, "joinRoomCode", null);
 Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
     Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Post"])('room-info'),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__param"])(0, Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Body"])()),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:type", Function),
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [typeof (_e = typeof _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["JoinRoomCodeRequestDto"] !== "undefined" && _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["JoinRoomCodeRequestDto"]) === "function" ? _e : Object]),
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:returntype", typeof (_f = typeof _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["RoomInfo"] !== "undefined" && _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["RoomInfo"]) === "function" ? _f : Object)
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [typeof (_e = typeof _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_3__["JoinRoomCodeRequestDto"] !== "undefined" && _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_3__["JoinRoomCodeRequestDto"]) === "function" ? _e : Object]),
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:returntype", typeof (_f = typeof _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_3__["RoomInfo"] !== "undefined" && _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_3__["RoomInfo"]) === "function" ? _f : Object)
 ], PokerController.prototype, "roomInfo", null);
 Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
-    Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Get"])('check-player-in-room/:playerId/:roomNumber'),
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__param"])(0, Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Param"])('playerId')), Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__param"])(1, Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Param"])('roomNumber')),
+    Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Get"])('check-player-in-room'),
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__param"])(0, Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Req"])()),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:type", Function),
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [String, String]),
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [typeof (_g = typeof express__WEBPACK_IMPORTED_MODULE_2__["Request"] !== "undefined" && express__WEBPACK_IMPORTED_MODULE_2__["Request"]) === "function" ? _g : Object]),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:returntype", Boolean)
 ], PokerController.prototype, "checkPlayerInRoom", null);
 Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
-    Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Get"])('check-host-of-room/:playerId/:roomNumber'),
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__param"])(0, Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Param"])('playerId')), Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__param"])(1, Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Param"])('roomNumber')),
+    Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Get"])('check-host-of-room'),
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__param"])(0, Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Req"])()),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:type", Function),
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [String, String]),
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [typeof (_h = typeof express__WEBPACK_IMPORTED_MODULE_2__["Request"] !== "undefined" && express__WEBPACK_IMPORTED_MODULE_2__["Request"]) === "function" ? _h : Object]),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:returntype", Boolean)
 ], PokerController.prototype, "checkHostOfRoom", null);
 Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
     Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Get"])('app-info'),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:type", Function),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", []),
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:returntype", typeof (_g = typeof _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["AppInfoDtoInterface"] !== "undefined" && _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_2__["AppInfoDtoInterface"]) === "function" ? _g : Object)
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:returntype", typeof (_j = typeof _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_3__["AppInfoDtoInterface"] !== "undefined" && _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_3__["AppInfoDtoInterface"]) === "function" ? _j : Object)
 ], PokerController.prototype, "getAppInfo", null);
 PokerController = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
     Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Controller"])(),
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [typeof (_h = typeof _poker_service__WEBPACK_IMPORTED_MODULE_4__[/* PokerService */ "a"] !== "undefined" && _poker_service__WEBPACK_IMPORTED_MODULE_4__[/* PokerService */ "a"]) === "function" ? _h : Object])
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [typeof (_k = typeof _poker_service__WEBPACK_IMPORTED_MODULE_5__["PokerService"] !== "undefined" && _poker_service__WEBPACK_IMPORTED_MODULE_5__["PokerService"]) === "function" ? _k : Object])
 ], PokerController);
 
 
 
 /***/ }),
-/* 34 */
-/***/ (function(module) {
 
-module.exports = JSON.parse("{\"a\":\"1.2.0\"}");
-
-/***/ }),
-/* 35 */
+/***/ "./apps/api/src/app/poker/poker.gateway.ts":
+/*!*************************************************!*\
+  !*** ./apps/api/src/app/poker/poker.gateway.ts ***!
+  \*************************************************/
+/*! exports provided: PokerGateway */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Room; });
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(rxjs__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
-
-
-class Room {
-    constructor() {
-        this.playersMap = new Map();
-        this.stateSubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_0__["BehaviorSubject"](_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_1__[/* GameStates */ "c"].IN_PROGRESS);
-        this.generateRoomNumber();
-    }
-    static generateRandomNumber() {
-        const calculation = Math.floor(Math.random() * 90000) + 10000;
-        return calculation.toString();
-    }
-    get state() {
-        return this.stateSubject$.getValue();
-    }
-    set state(roomState) {
-        this.stateSubject$.next(roomState);
-    }
-    get players() {
-        return this.allPlayersArray
-            .filter((player) => player.type === _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_1__[/* PlayerType */ "h"].VOTER)
-            .sort((firstPlayer, secondPlayer) => secondPlayer.date - firstPlayer.date);
-    }
-    get host() {
-        return this.allPlayersArray
-            .find((player) => player.type === _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_1__[/* PlayerType */ "h"].HOST);
-    }
-    generateRoomNumber() {
-        this.id = Room.generateRandomNumber();
-    }
-    addPlayer(player) {
-        this.playersMap.set(player.id, player);
-    }
-    getPlayer(playerId) {
-        return this.playersMap.get(playerId);
-    }
-    removePlayer(playerId) {
-        this.playersMap.delete(playerId);
-    }
-    patchPlayer(playerId, patchData) {
-        const player = this.playersMap.get(playerId);
-        this.playersMap.set(playerId, Object.assign(Object.assign({}, player), patchData));
-    }
-    hasRoomPlayer(playerId) {
-        return this.playersMap.has(playerId);
-    }
-    get allPlayersArray() {
-        return Array.from(this.playersMap.values());
-    }
-}
-
-
-/***/ }),
-/* 36 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PokerGateway; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PokerGateway", function() { return PokerGateway; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "tslib");
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(tslib__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _nestjs_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var _nestjs_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 /* harmony import */ var _nestjs_common__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _nestjs_websockets__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(4);
+/* harmony import */ var _nestjs_websockets__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @nestjs/websockets */ "@nestjs/websockets");
 /* harmony import */ var _nestjs_websockets__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_nestjs_websockets__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(6);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "rxjs");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(rxjs__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(7);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators */ "rxjs/operators");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var socket_io__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(3);
+/* harmony import */ var socket_io__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! socket.io */ "socket.io");
 /* harmony import */ var socket_io__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(socket_io__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(1);
-/* harmony import */ var _poker_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(5);
+/* harmony import */ var _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @planning-poker/api-interfaces */ "./libs/api-interfaces/src/index.ts");
+/* harmony import */ var _poker_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./poker.service */ "./apps/api/src/app/poker/poker.service.ts");
 var PokerGateway_1, _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
 
 
@@ -805,7 +325,7 @@ let PokerGateway = PokerGateway_1 = class PokerGateway {
         Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["of"])(client.id)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["delay"])(15000), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["takeUntil"])(this.untilClientReconnect$(client.id)))
             .subscribe((id) => {
-            if (player && player.type === _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__[/* PlayerType */ "h"].HOST) {
+            if (player && player.type === _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__["PlayerType"].HOST) {
                 this.onHostDisconnect(room, id);
             }
             else if (room) {
@@ -821,12 +341,12 @@ let PokerGateway = PokerGateway_1 = class PokerGateway {
      */
     onVote(client, { card, roomNumber }) {
         const room = this.pokerService.findPlayerRoom(client.id);
-        if (!room || room.state === _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__[/* GameStates */ "c"].REVIEW) {
+        if (!room || room.state === _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__["GameStates"].REVIEW) {
             return;
         }
         room.patchPlayer(client.id, {
             card,
-            status: _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__[/* PlayerStatuses */ "g"].VOTED
+            status: _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__["PlayerStatuses"].VOTED
         });
         this.emitPlayerVoted(room, client.id);
     }
@@ -841,8 +361,8 @@ let PokerGateway = PokerGateway_1 = class PokerGateway {
         const broadcastMessage = {
             state
         };
-        this.serverEmitTo(roomNumber, _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__[/* SocketEvents */ "j"].STATE, broadcastMessage);
-        if (state === _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__[/* GameStates */ "c"].IN_PROGRESS) {
+        this.serverEmitTo(roomNumber, _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__["SocketEvents"].STATE, broadcastMessage);
+        if (state === _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__["GameStates"].IN_PROGRESS) {
             this.pokerService.resetVotingForRoom(roomNumber);
         }
         else {
@@ -898,18 +418,18 @@ let PokerGateway = PokerGateway_1 = class PokerGateway {
                 name: player.name
             };
         });
-        this.serverEmitTo(roomNumber, _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__[/* SocketEvents */ "j"].PLAYERS, { players });
+        this.serverEmitTo(roomNumber, _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__["SocketEvents"].PLAYERS, { players });
     }
     onRoomJoined(client) {
         const room = this.pokerService.findPlayerRoom(client.id);
-        if (room.state === _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__[/* GameStates */ "c"].REVIEW) {
+        if (room.state === _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__["GameStates"].REVIEW) {
             const results = this.getRoomResults(room.id);
-            this.serverEmitTo(client.id, _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__[/* SocketEvents */ "j"].RESULTS, results);
+            this.serverEmitTo(client.id, _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__["SocketEvents"].RESULTS, results);
         }
     }
     emitResultsToRoom(roomNumber) {
         const results = this.getRoomResults(roomNumber);
-        this.serverEmitTo(roomNumber, _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__[/* SocketEvents */ "j"].RESULTS, results);
+        this.serverEmitTo(roomNumber, _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__["SocketEvents"].RESULTS, results);
     }
     getRoomResults(roomNumber) {
         const room = this.pokerService.getRoom(roomNumber);
@@ -930,10 +450,10 @@ let PokerGateway = PokerGateway_1 = class PokerGateway {
         this.emitRoomRemoved(roomNumber);
     }
     emitRoomRemoved(roomNumber) {
-        this.serverEmitTo(roomNumber, _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__[/* SocketEvents */ "j"].ROOM_REMOVED);
+        this.serverEmitTo(roomNumber, _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__["SocketEvents"].ROOM_REMOVED);
     }
     emitPlayerVoted(room, clientId) {
-        this.server.to(room.host.id).emit(_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__[/* SocketEvents */ "j"].VOTED, clientId);
+        this.server.to(room.host.id).emit(_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__["SocketEvents"].VOTED, clientId);
     }
     onHostDisconnect(room, id) {
         this.removeRoom(room.id);
@@ -955,59 +475,307 @@ Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:type", typeof (_a = typeof socket_io__WEBPACK_IMPORTED_MODULE_5__["Server"] !== "undefined" && socket_io__WEBPACK_IMPORTED_MODULE_5__["Server"]) === "function" ? _a : Object)
 ], PokerGateway.prototype, "server", void 0);
 Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
-    Object(_nestjs_websockets__WEBPACK_IMPORTED_MODULE_2__["SubscribeMessage"])(_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__[/* SocketEvents */ "j"].VOTE),
+    Object(_nestjs_websockets__WEBPACK_IMPORTED_MODULE_2__["SubscribeMessage"])(_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__["SocketEvents"].VOTE),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:type", Function),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [typeof (_b = typeof socket_io__WEBPACK_IMPORTED_MODULE_5__["Socket"] !== "undefined" && socket_io__WEBPACK_IMPORTED_MODULE_5__["Socket"]) === "function" ? _b : Object, typeof (_c = typeof _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__["Vote"] !== "undefined" && _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__["Vote"]) === "function" ? _c : Object]),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:returntype", void 0)
 ], PokerGateway.prototype, "onVote", null);
 Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
-    Object(_nestjs_websockets__WEBPACK_IMPORTED_MODULE_2__["SubscribeMessage"])(_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__[/* SocketEvents */ "j"].STATE),
+    Object(_nestjs_websockets__WEBPACK_IMPORTED_MODULE_2__["SubscribeMessage"])(_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__["SocketEvents"].STATE),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:type", Function),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [typeof (_d = typeof socket_io__WEBPACK_IMPORTED_MODULE_5__["Socket"] !== "undefined" && socket_io__WEBPACK_IMPORTED_MODULE_5__["Socket"]) === "function" ? _d : Object, String]),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:returntype", void 0)
 ], PokerGateway.prototype, "onState", null);
 Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
-    Object(_nestjs_websockets__WEBPACK_IMPORTED_MODULE_2__["SubscribeMessage"])(_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__[/* SocketEvents */ "j"].JOIN),
+    Object(_nestjs_websockets__WEBPACK_IMPORTED_MODULE_2__["SubscribeMessage"])(_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__["SocketEvents"].JOIN),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:type", Function),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [typeof (_e = typeof socket_io__WEBPACK_IMPORTED_MODULE_5__["Socket"] !== "undefined" && socket_io__WEBPACK_IMPORTED_MODULE_5__["Socket"]) === "function" ? _e : Object, typeof (_f = typeof _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__["JoinRequestDto"] !== "undefined" && _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__["JoinRequestDto"]) === "function" ? _f : Object]),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:returntype", void 0)
 ], PokerGateway.prototype, "onJoin", null);
 Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
-    Object(_nestjs_websockets__WEBPACK_IMPORTED_MODULE_2__["SubscribeMessage"])(_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__[/* SocketEvents */ "j"].LEAVE),
+    Object(_nestjs_websockets__WEBPACK_IMPORTED_MODULE_2__["SubscribeMessage"])(_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__["SocketEvents"].LEAVE),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:type", Function),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [typeof (_g = typeof socket_io__WEBPACK_IMPORTED_MODULE_5__["Socket"] !== "undefined" && socket_io__WEBPACK_IMPORTED_MODULE_5__["Socket"]) === "function" ? _g : Object]),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:returntype", void 0)
 ], PokerGateway.prototype, "onLeave", null);
 Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
-    Object(_nestjs_websockets__WEBPACK_IMPORTED_MODULE_2__["SubscribeMessage"])(_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__[/* SocketEvents */ "j"].CLOSE_ROOM),
+    Object(_nestjs_websockets__WEBPACK_IMPORTED_MODULE_2__["SubscribeMessage"])(_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__["SocketEvents"].CLOSE_ROOM),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:type", Function),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [typeof (_h = typeof socket_io__WEBPACK_IMPORTED_MODULE_5__["Socket"] !== "undefined" && socket_io__WEBPACK_IMPORTED_MODULE_5__["Socket"]) === "function" ? _h : Object, String]),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:returntype", void 0)
 ], PokerGateway.prototype, "onCloseRoom", null);
 Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
-    Object(_nestjs_websockets__WEBPACK_IMPORTED_MODULE_2__["SubscribeMessage"])(_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__[/* SocketEvents */ "j"].ROOM_JOINED),
+    Object(_nestjs_websockets__WEBPACK_IMPORTED_MODULE_2__["SubscribeMessage"])(_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_6__["SocketEvents"].ROOM_JOINED),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:type", Function),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [typeof (_j = typeof socket_io__WEBPACK_IMPORTED_MODULE_5__["Socket"] !== "undefined" && socket_io__WEBPACK_IMPORTED_MODULE_5__["Socket"]) === "function" ? _j : Object]),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:returntype", void 0)
 ], PokerGateway.prototype, "onRoomJoined", null);
 PokerGateway = PokerGateway_1 = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
     Object(_nestjs_websockets__WEBPACK_IMPORTED_MODULE_2__["WebSocketGateway"])(),
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [typeof (_k = typeof _poker_service__WEBPACK_IMPORTED_MODULE_7__[/* PokerService */ "a"] !== "undefined" && _poker_service__WEBPACK_IMPORTED_MODULE_7__[/* PokerService */ "a"]) === "function" ? _k : Object])
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [typeof (_k = typeof _poker_service__WEBPACK_IMPORTED_MODULE_7__["PokerService"] !== "undefined" && _poker_service__WEBPACK_IMPORTED_MODULE_7__["PokerService"]) === "function" ? _k : Object])
 ], PokerGateway);
 
 
 
 /***/ }),
-/* 37 */
+
+/***/ "./apps/api/src/app/poker/poker.module.ts":
+/*!************************************************!*\
+  !*** ./apps/api/src/app/poker/poker.module.ts ***!
+  \************************************************/
+/*! exports provided: PokerModule */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NotFoundExceptionFilter; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PokerModule", function() { return PokerModule; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "tslib");
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(tslib__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _nestjs_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var _nestjs_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 /* harmony import */ var _nestjs_common__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(38);
+/* harmony import */ var _poker_controller__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./poker.controller */ "./apps/api/src/app/poker/poker.controller.ts");
+/* harmony import */ var _poker_gateway__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./poker.gateway */ "./apps/api/src/app/poker/poker.gateway.ts");
+/* harmony import */ var _poker_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./poker.service */ "./apps/api/src/app/poker/poker.service.ts");
+
+
+
+
+
+let PokerModule = class PokerModule {
+};
+PokerModule = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+    Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Module"])({
+        controllers: [
+            _poker_controller__WEBPACK_IMPORTED_MODULE_2__["PokerController"]
+        ],
+        providers: [
+            _poker_gateway__WEBPACK_IMPORTED_MODULE_3__["PokerGateway"],
+            _poker_service__WEBPACK_IMPORTED_MODULE_4__["PokerService"]
+        ]
+    })
+], PokerModule);
+
+
+
+/***/ }),
+
+/***/ "./apps/api/src/app/poker/poker.service.ts":
+/*!*************************************************!*\
+  !*** ./apps/api/src/app/poker/poker.service.ts ***!
+  \*************************************************/
+/*! exports provided: PokerService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PokerService", function() { return PokerService; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "tslib");
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(tslib__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _nestjs_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+/* harmony import */ var _nestjs_common__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! fs */ "fs");
+/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(fs__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var jsonwebtoken__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! jsonwebtoken */ "jsonwebtoken");
+/* harmony import */ var jsonwebtoken__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(jsonwebtoken__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @planning-poker/api-interfaces */ "./libs/api-interfaces/src/index.ts");
+/* harmony import */ var _room__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./room */ "./apps/api/src/app/poker/room.ts");
+
+
+
+
+
+
+let PokerService = class PokerService {
+    constructor() {
+        this.rooms = new Map();
+        this.players = new Map();
+        this.jwtCookieName = 'jwt';
+    }
+    toggleGameState(currentState) {
+        switch (currentState) {
+            case _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_4__["GameStates"].IN_PROGRESS:
+                return _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_4__["GameStates"].REVIEW;
+            case _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_4__["GameStates"].REVIEW:
+                return _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_4__["GameStates"].IN_PROGRESS;
+        }
+    }
+    toggleRoomGameState(roomNumber) {
+        const room = this.rooms.get(roomNumber);
+        if (!room) {
+            return;
+        }
+        room.state = this.toggleGameState(room.state);
+        this.rooms.set(roomNumber, room);
+    }
+    getRoomGameState(roomNumber) {
+        const room = this.rooms.get(roomNumber);
+        return room.state;
+    }
+    createRoom() {
+        const room = new _room__WEBPACK_IMPORTED_MODULE_5__["Room"]();
+        if (this.checkIsRoomExists(room.id)) {
+            while (!this.checkIsRoomExists(room.id)) {
+                room.generateRoomNumber();
+            }
+        }
+        this.rooms.set(room.id, room);
+        return room;
+    }
+    removeRoom(id) {
+        this.rooms.delete(id);
+    }
+    addPlayer(player) {
+        this.players.set(player.id, player);
+    }
+    removePlayer(id) {
+        this.players.delete(id);
+    }
+    checkIsRoomExists(id) {
+        return this.rooms.has(id);
+    }
+    resetVotingForRoom(roomNumber) {
+        const room = this.getRoom(roomNumber);
+        room.players.forEach((player) => {
+            room.patchPlayer(player.id, {
+                card: null,
+                status: _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_4__["PlayerStatuses"].WAITING
+            });
+        });
+    }
+    getRoom(roomNumber) {
+        return this.rooms.get(roomNumber);
+    }
+    findPlayerRoom(playerId) {
+        const roomsArray = Array.from(this.rooms.values());
+        const foundRoom = roomsArray.find((room) => room.hasRoomPlayer(playerId));
+        return foundRoom || null;
+    }
+    getRoomInfo(roomNumber) {
+        const room = this.getRoom(roomNumber);
+        return {
+            id: room.id,
+            gameState: room.state
+        };
+    }
+    createUserToken(playerId, roomNumber) {
+        const privateKey = fs__WEBPACK_IMPORTED_MODULE_2__["readFileSync"]('keys/poker_key');
+        return jsonwebtoken__WEBPACK_IMPORTED_MODULE_3___default.a.sign({
+            playerId,
+            roomNumber
+        }, privateKey, { algorithm: 'RS256' });
+    }
+    setJwtCookie(token, response) {
+        response.cookie(this.jwtCookieName, token, {
+            sameSite: 'strict',
+            httpOnly: true
+        });
+    }
+    getJwtCookie(request) {
+        return request.cookies[this.jwtCookieName];
+    }
+    decodeJwt(token) {
+        const privateKey = fs__WEBPACK_IMPORTED_MODULE_2__["readFileSync"]('keys/poker_key');
+        let decoded;
+        try {
+            decoded = jsonwebtoken__WEBPACK_IMPORTED_MODULE_3___default.a.verify(token, privateKey);
+        }
+        catch (err) {
+            // err
+            throw Error('Token decode error');
+        }
+        return decoded;
+    }
+};
+PokerService = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+    Object(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Injectable"])()
+], PokerService);
+
+
+
+/***/ }),
+
+/***/ "./apps/api/src/app/poker/room.ts":
+/*!****************************************!*\
+  !*** ./apps/api/src/app/poker/room.ts ***!
+  \****************************************/
+/*! exports provided: Room */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Room", function() { return Room; });
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs */ "rxjs");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(rxjs__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @planning-poker/api-interfaces */ "./libs/api-interfaces/src/index.ts");
+
+
+class Room {
+    constructor() {
+        this.playersMap = new Map();
+        this.stateSubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_0__["BehaviorSubject"](_planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_1__["GameStates"].IN_PROGRESS);
+        this.generateRoomNumber();
+    }
+    static generateRandomNumber() {
+        const calculation = Math.floor(Math.random() * 90000) + 10000;
+        return calculation.toString();
+    }
+    get state() {
+        return this.stateSubject$.getValue();
+    }
+    set state(roomState) {
+        this.stateSubject$.next(roomState);
+    }
+    get players() {
+        return this.allPlayersArray
+            .filter((player) => player.type === _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_1__["PlayerType"].VOTER)
+            .sort((firstPlayer, secondPlayer) => secondPlayer.date - firstPlayer.date);
+    }
+    get host() {
+        return this.allPlayersArray
+            .find((player) => player.type === _planning_poker_api_interfaces__WEBPACK_IMPORTED_MODULE_1__["PlayerType"].HOST);
+    }
+    generateRoomNumber() {
+        this.id = Room.generateRandomNumber();
+    }
+    addPlayer(player) {
+        this.playersMap.set(player.id, player);
+    }
+    getPlayer(playerId) {
+        return this.playersMap.get(playerId);
+    }
+    removePlayer(playerId) {
+        this.playersMap.delete(playerId);
+    }
+    patchPlayer(playerId, patchData) {
+        const player = this.playersMap.get(playerId);
+        this.playersMap.set(playerId, Object.assign(Object.assign({}, player), patchData));
+    }
+    hasRoomPlayer(playerId) {
+        return this.playersMap.has(playerId);
+    }
+    get allPlayersArray() {
+        return Array.from(this.playersMap.values());
+    }
+}
+
+
+/***/ }),
+
+/***/ "./apps/api/src/frontend-redirect.ts":
+/*!*******************************************!*\
+  !*** ./apps/api/src/frontend-redirect.ts ***!
+  \*******************************************/
+/*! exports provided: NotFoundExceptionFilter */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NotFoundExceptionFilter", function() { return NotFoundExceptionFilter; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "tslib");
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(tslib__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _nestjs_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+/* harmony import */ var _nestjs_common__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! path */ "path");
 /* harmony import */ var path__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(path__WEBPACK_IMPORTED_MODULE_2__);
 
 
@@ -1026,32 +794,26 @@ NotFoundExceptionFilter = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"
 
 
 /***/ }),
-/* 38 */
-/***/ (function(module, exports) {
 
-module.exports = require("path");
-
-/***/ }),
-/* 39 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(40);
-
-
-/***/ }),
-/* 40 */
+/***/ "./apps/api/src/main.ts":
+/*!******************************!*\
+  !*** ./apps/api/src/main.ts ***!
+  \******************************/
+/*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "tslib");
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(tslib__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _nestjs_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var _nestjs_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 /* harmony import */ var _nestjs_common__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_nestjs_common__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _nestjs_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(29);
+/* harmony import */ var _nestjs_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @nestjs/core */ "@nestjs/core");
 /* harmony import */ var _nestjs_core__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_nestjs_core__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _app_app_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(30);
-/* harmony import */ var _frontend_redirect__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(37);
+/* harmony import */ var cookie_parser__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! cookie-parser */ "cookie-parser");
+/* harmony import */ var cookie_parser__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(cookie_parser__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _app_app_module__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./app/app.module */ "./apps/api/src/app/app.module.ts");
+/* harmony import */ var _frontend_redirect__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./frontend-redirect */ "./apps/api/src/frontend-redirect.ts");
 /**
  * This is not a production server yet!
  * This is only a minimal backend to get started.
@@ -1061,13 +823,15 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 function bootstrap() {
     return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
-        const app = yield _nestjs_core__WEBPACK_IMPORTED_MODULE_2__["NestFactory"].create(_app_app_module__WEBPACK_IMPORTED_MODULE_3__[/* AppModule */ "a"]);
+        const app = yield _nestjs_core__WEBPACK_IMPORTED_MODULE_2__["NestFactory"].create(_app_app_module__WEBPACK_IMPORTED_MODULE_4__["AppModule"]);
         const globalPrefix = 'api';
+        app.use(cookie_parser__WEBPACK_IMPORTED_MODULE_3__());
         app.setGlobalPrefix(globalPrefix);
         const port = process.env.PORT || 3333;
-        app.useGlobalFilters(new _frontend_redirect__WEBPACK_IMPORTED_MODULE_4__[/* NotFoundExceptionFilter */ "a"]());
+        app.useGlobalFilters(new _frontend_redirect__WEBPACK_IMPORTED_MODULE_5__["NotFoundExceptionFilter"]());
         yield app.listen(port, () => {
             _nestjs_common__WEBPACK_IMPORTED_MODULE_1__["Logger"].log('Listening at http://localhost:' + port + '/' + globalPrefix);
         });
@@ -1076,6 +840,572 @@ function bootstrap() {
 bootstrap();
 
 
+/***/ }),
+
+/***/ "./libs/api-interfaces/src/index.ts":
+/*!******************************************!*\
+  !*** ./libs/api-interfaces/src/index.ts ***!
+  \******************************************/
+/*! exports provided: Cards, GameStates, SocketEvents, PlayerStatuses, PlayerType */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _lib_model_app_info_dto_interface__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./lib/model/app-info-dto.interface */ "./libs/api-interfaces/src/lib/model/app-info-dto.interface.ts");
+/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_vote_interface__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./lib/model/vote.interface */ "./libs/api-interfaces/src/lib/model/vote.interface.ts");
+/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_state_interface__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./lib/model/state.interface */ "./libs/api-interfaces/src/lib/model/state.interface.ts");
+/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_room_info__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./lib/model/room.info */ "./libs/api-interfaces/src/lib/model/room.info.ts");
+/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_player_interface__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./lib/model/player.interface */ "./libs/api-interfaces/src/lib/model/player.interface.ts");
+/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_create_room_dto_interface__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./lib/model/create-room-dto.interface */ "./libs/api-interfaces/src/lib/model/create-room-dto.interface.ts");
+/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_game_state_dto_interface__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./lib/model/game-state-dto.interface */ "./libs/api-interfaces/src/lib/model/game-state-dto.interface.ts");
+/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_game_state_broadcast_dto_interface__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./lib/model/game-state-broadcast-dto.interface */ "./libs/api-interfaces/src/lib/model/game-state-broadcast-dto.interface.ts");
+/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_join_room_code_request_dto_interface__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./lib/model/join-room-code-request-dto.interface */ "./libs/api-interfaces/src/lib/model/join-room-code-request-dto.interface.ts");
+/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_join_room_code_response_dto_interface__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./lib/model/join-room-code-response-dto.interface */ "./libs/api-interfaces/src/lib/model/join-room-code-response-dto.interface.ts");
+/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_join_room_name_request_dto_interface__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./lib/model/join-room-name-request-dto.interface */ "./libs/api-interfaces/src/lib/model/join-room-name-request-dto.interface.ts");
+/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_join_request_dto_interface__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./lib/model/join-request-dto.interface */ "./libs/api-interfaces/src/lib/model/join-request-dto.interface.ts");
+/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_results_dto_interface__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./lib/model/results-dto.interface */ "./libs/api-interfaces/src/lib/model/results-dto.interface.ts");
+/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_result_interface__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./lib/model/result.interface */ "./libs/api-interfaces/src/lib/model/result.interface.ts");
+/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_users_response_dto_interface__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./lib/model/users-response-dto.interface */ "./libs/api-interfaces/src/lib/model/users-response-dto.interface.ts");
+/* empty/unused harmony star reexport *//* harmony import */ var _lib_model_voted_interface__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./lib/model/voted.interface */ "./libs/api-interfaces/src/lib/model/voted.interface.ts");
+/* empty/unused harmony star reexport *//* harmony import */ var _lib_enum_cards_enum__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./lib/enum/cards.enum */ "./libs/api-interfaces/src/lib/enum/cards.enum.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Cards", function() { return _lib_enum_cards_enum__WEBPACK_IMPORTED_MODULE_16__["Cards"]; });
+
+/* harmony import */ var _lib_enum_game_states_enum__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./lib/enum/game-states.enum */ "./libs/api-interfaces/src/lib/enum/game-states.enum.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "GameStates", function() { return _lib_enum_game_states_enum__WEBPACK_IMPORTED_MODULE_17__["GameStates"]; });
+
+/* harmony import */ var _lib_enum_socket_events__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./lib/enum/socket.events */ "./libs/api-interfaces/src/lib/enum/socket.events.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SocketEvents", function() { return _lib_enum_socket_events__WEBPACK_IMPORTED_MODULE_18__["SocketEvents"]; });
+
+/* harmony import */ var _lib_enum_player_statuses_enum__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./lib/enum/player-statuses.enum */ "./libs/api-interfaces/src/lib/enum/player-statuses.enum.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PlayerStatuses", function() { return _lib_enum_player_statuses_enum__WEBPACK_IMPORTED_MODULE_19__["PlayerStatuses"]; });
+
+/* harmony import */ var _lib_enum_player_type_enum__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./lib/enum/player-type.enum */ "./libs/api-interfaces/src/lib/enum/player-type.enum.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PlayerType", function() { return _lib_enum_player_type_enum__WEBPACK_IMPORTED_MODULE_20__["PlayerType"]; });
+
+/**
+ * Model
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Enum
+ */
+
+
+
+
+
+
+
+/***/ }),
+
+/***/ "./libs/api-interfaces/src/lib/enum/cards.enum.ts":
+/*!********************************************************!*\
+  !*** ./libs/api-interfaces/src/lib/enum/cards.enum.ts ***!
+  \********************************************************/
+/*! exports provided: Cards */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Cards", function() { return Cards; });
+var Cards;
+(function (Cards) {
+    Cards[Cards["ZERO"] = 0] = "ZERO";
+    Cards["HALF"] = "1/2";
+    Cards[Cards["ONE"] = 1] = "ONE";
+    Cards[Cards["TWO"] = 2] = "TWO";
+    Cards[Cards["THREE"] = 3] = "THREE";
+    Cards[Cards["FIVE"] = 5] = "FIVE";
+    Cards[Cards["EIGHT"] = 8] = "EIGHT";
+    Cards[Cards["THIRTEEN"] = 13] = "THIRTEEN";
+    Cards[Cards["TWENTY"] = 20] = "TWENTY";
+    Cards[Cards["FORTY"] = 40] = "FORTY";
+    Cards[Cards["HUNDRED"] = 100] = "HUNDRED";
+    Cards["QUESTION_MARK"] = "?";
+    Cards["COFFEE"] = "coffee";
+    Cards["INFINITE"] = "infinite";
+})(Cards || (Cards = {}));
+
+
+/***/ }),
+
+/***/ "./libs/api-interfaces/src/lib/enum/game-states.enum.ts":
+/*!**************************************************************!*\
+  !*** ./libs/api-interfaces/src/lib/enum/game-states.enum.ts ***!
+  \**************************************************************/
+/*! exports provided: GameStates */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GameStates", function() { return GameStates; });
+var GameStates;
+(function (GameStates) {
+    GameStates["IN_PROGRESS"] = "IN_PROGRESS";
+    GameStates["REVIEW"] = "REVIEW";
+})(GameStates || (GameStates = {}));
+
+
+/***/ }),
+
+/***/ "./libs/api-interfaces/src/lib/enum/player-statuses.enum.ts":
+/*!******************************************************************!*\
+  !*** ./libs/api-interfaces/src/lib/enum/player-statuses.enum.ts ***!
+  \******************************************************************/
+/*! exports provided: PlayerStatuses */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PlayerStatuses", function() { return PlayerStatuses; });
+var PlayerStatuses;
+(function (PlayerStatuses) {
+    PlayerStatuses["WAITING"] = "WAITING";
+    PlayerStatuses["VOTED"] = "VOTED";
+})(PlayerStatuses || (PlayerStatuses = {}));
+
+
+/***/ }),
+
+/***/ "./libs/api-interfaces/src/lib/enum/player-type.enum.ts":
+/*!**************************************************************!*\
+  !*** ./libs/api-interfaces/src/lib/enum/player-type.enum.ts ***!
+  \**************************************************************/
+/*! exports provided: PlayerType */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PlayerType", function() { return PlayerType; });
+var PlayerType;
+(function (PlayerType) {
+    PlayerType["VOTER"] = "VOTER";
+    PlayerType["HOST"] = "HOST";
+})(PlayerType || (PlayerType = {}));
+
+
+/***/ }),
+
+/***/ "./libs/api-interfaces/src/lib/enum/socket.events.ts":
+/*!***********************************************************!*\
+  !*** ./libs/api-interfaces/src/lib/enum/socket.events.ts ***!
+  \***********************************************************/
+/*! exports provided: SocketEvents */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SocketEvents", function() { return SocketEvents; });
+var SocketEvents;
+(function (SocketEvents) {
+    SocketEvents["VOTE"] = "VOTE";
+    SocketEvents["PLAYERS"] = "PLAYERS";
+    SocketEvents["STATE"] = "STATE";
+    SocketEvents["JOIN"] = "JOIN";
+    SocketEvents["ROOM_JOINED"] = "ROOM_JOINED";
+    SocketEvents["LEAVE"] = "LEAVE";
+    SocketEvents["CLOSE_ROOM"] = "CLOSE_ROOM";
+    SocketEvents["ROOM_REMOVED"] = "ROOM_REMOVED";
+    SocketEvents["VOTED"] = "VOTED";
+    SocketEvents["RESULTS"] = "RESULTS";
+})(SocketEvents || (SocketEvents = {}));
+
+
+/***/ }),
+
+/***/ "./libs/api-interfaces/src/lib/model/app-info-dto.interface.ts":
+/*!*********************************************************************!*\
+  !*** ./libs/api-interfaces/src/lib/model/app-info-dto.interface.ts ***!
+  \*********************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+
+
+/***/ }),
+
+/***/ "./libs/api-interfaces/src/lib/model/create-room-dto.interface.ts":
+/*!************************************************************************!*\
+  !*** ./libs/api-interfaces/src/lib/model/create-room-dto.interface.ts ***!
+  \************************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+
+
+/***/ }),
+
+/***/ "./libs/api-interfaces/src/lib/model/game-state-broadcast-dto.interface.ts":
+/*!*********************************************************************************!*\
+  !*** ./libs/api-interfaces/src/lib/model/game-state-broadcast-dto.interface.ts ***!
+  \*********************************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+
+
+/***/ }),
+
+/***/ "./libs/api-interfaces/src/lib/model/game-state-dto.interface.ts":
+/*!***********************************************************************!*\
+  !*** ./libs/api-interfaces/src/lib/model/game-state-dto.interface.ts ***!
+  \***********************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+
+
+/***/ }),
+
+/***/ "./libs/api-interfaces/src/lib/model/join-request-dto.interface.ts":
+/*!*************************************************************************!*\
+  !*** ./libs/api-interfaces/src/lib/model/join-request-dto.interface.ts ***!
+  \*************************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+
+
+/***/ }),
+
+/***/ "./libs/api-interfaces/src/lib/model/join-room-code-request-dto.interface.ts":
+/*!***********************************************************************************!*\
+  !*** ./libs/api-interfaces/src/lib/model/join-room-code-request-dto.interface.ts ***!
+  \***********************************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+
+
+/***/ }),
+
+/***/ "./libs/api-interfaces/src/lib/model/join-room-code-response-dto.interface.ts":
+/*!************************************************************************************!*\
+  !*** ./libs/api-interfaces/src/lib/model/join-room-code-response-dto.interface.ts ***!
+  \************************************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+
+
+/***/ }),
+
+/***/ "./libs/api-interfaces/src/lib/model/join-room-name-request-dto.interface.ts":
+/*!***********************************************************************************!*\
+  !*** ./libs/api-interfaces/src/lib/model/join-room-name-request-dto.interface.ts ***!
+  \***********************************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+
+
+/***/ }),
+
+/***/ "./libs/api-interfaces/src/lib/model/player.interface.ts":
+/*!***************************************************************!*\
+  !*** ./libs/api-interfaces/src/lib/model/player.interface.ts ***!
+  \***************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+
+
+/***/ }),
+
+/***/ "./libs/api-interfaces/src/lib/model/result.interface.ts":
+/*!***************************************************************!*\
+  !*** ./libs/api-interfaces/src/lib/model/result.interface.ts ***!
+  \***************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+
+
+/***/ }),
+
+/***/ "./libs/api-interfaces/src/lib/model/results-dto.interface.ts":
+/*!********************************************************************!*\
+  !*** ./libs/api-interfaces/src/lib/model/results-dto.interface.ts ***!
+  \********************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+
+
+/***/ }),
+
+/***/ "./libs/api-interfaces/src/lib/model/room.info.ts":
+/*!********************************************************!*\
+  !*** ./libs/api-interfaces/src/lib/model/room.info.ts ***!
+  \********************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+
+
+/***/ }),
+
+/***/ "./libs/api-interfaces/src/lib/model/state.interface.ts":
+/*!**************************************************************!*\
+  !*** ./libs/api-interfaces/src/lib/model/state.interface.ts ***!
+  \**************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+
+
+/***/ }),
+
+/***/ "./libs/api-interfaces/src/lib/model/users-response-dto.interface.ts":
+/*!***************************************************************************!*\
+  !*** ./libs/api-interfaces/src/lib/model/users-response-dto.interface.ts ***!
+  \***************************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+
+
+/***/ }),
+
+/***/ "./libs/api-interfaces/src/lib/model/vote.interface.ts":
+/*!*************************************************************!*\
+  !*** ./libs/api-interfaces/src/lib/model/vote.interface.ts ***!
+  \*************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+
+
+/***/ }),
+
+/***/ "./libs/api-interfaces/src/lib/model/voted.interface.ts":
+/*!**************************************************************!*\
+  !*** ./libs/api-interfaces/src/lib/model/voted.interface.ts ***!
+  \**************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+
+
+/***/ }),
+
+/***/ "./package.json":
+/*!**********************!*\
+  !*** ./package.json ***!
+  \**********************/
+/*! exports provided: name, version, license, scripts, private, dependencies, devDependencies, default */
+/***/ (function(module) {
+
+module.exports = JSON.parse("{\"name\":\"planning-poker\",\"version\":\"1.2.0\",\"license\":\"MIT\",\"scripts\":{\"ng\":\"nx\",\"postinstall\":\"node ./decorate-angular-cli.js && ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points\",\"nx\":\"nx\",\"start\":\"ng serve\",\"build\":\"ng build\",\"build:frontend:prod\":\"ng lint && ng build --prod\",\"build:backend:prod\":\"ng lint api && ng build api --prod\",\"test\":\"ng test\",\"lint\":\"nx workspace-lint && ng lint\",\"e2e\":\"ng e2e\",\"affected:apps\":\"nx affected:apps\",\"affected:libs\":\"nx affected:libs\",\"affected:build\":\"nx affected:build\",\"affected:e2e\":\"nx affected:e2e\",\"affected:test\":\"nx affected:test\",\"affected:lint\":\"nx affected:lint\",\"affected:dep-graph\":\"nx affected:dep-graph\",\"affected\":\"nx affected\",\"format\":\"nx format:write\",\"format:write\":\"nx format:write\",\"format:check\":\"nx format:check\",\"update\":\"ng update @nrwl/workspace\",\"workspace-schematic\":\"nx workspace-schematic\",\"dep-graph\":\"nx dep-graph\",\"help\":\"nx help\"},\"private\":true,\"dependencies\":{\"@angular/animations\":\"^11.0.7\",\"@angular/common\":\"^11.0.7\",\"@angular/compiler\":\"^11.0.7\",\"@angular/core\":\"^11.0.7\",\"@angular/forms\":\"^11.0.7\",\"@angular/platform-browser\":\"^11.0.7\",\"@angular/platform-browser-dynamic\":\"^11.0.7\",\"@angular/router\":\"^11.0.7\",\"@nestjs/common\":\"^7.0.0\",\"@nestjs/core\":\"^7.0.0\",\"@nestjs/platform-express\":\"^7.0.0\",\"@nestjs/platform-socket.io\":\"^7.4.4\",\"@nestjs/websockets\":\"^7.4.4\",\"@ngxs/store\":\"^3.7.0\",\"@ngxs/websocket-plugin\":\"^3.7.0\",\"@nrwl/angular\":\"10.3.0\",\"@rx-angular/state\":\"^1.4.1\",\"@rx-angular/template\":\"^1.0.0-beta.0\",\"cookie-parser\":\"^1.4.5\",\"jsonwebtoken\":\"^8.5.1\",\"ngx-cookie-service\":\"^11.0.2\",\"ngx-google-analytics\":\"^9.0.1\",\"ngx-socket-io\":\"^3.2.0\",\"normalize.css\":\"^8.0.1\",\"reflect-metadata\":\"^0.1.13\",\"rxjs\":\"~6.5.5\",\"zone.js\":\"^0.10.2\"},\"devDependencies\":{\"@angular-devkit/build-angular\":\"~0.1100.6\",\"@angular/cli\":\"~11.0.6\",\"@angular/compiler-cli\":\"^11.0.7\",\"@angular/language-service\":\"^11.0.7\",\"@nestjs/schematics\":\"^7.0.0\",\"@nestjs/testing\":\"^7.0.0\",\"@ngxs/devtools-plugin\":\"^3.7.0\",\"@ngxs/logger-plugin\":\"^3.7.0\",\"@nrwl/cli\":\"10.3.0\",\"@nrwl/cypress\":\"10.3.0\",\"@nrwl/jest\":\"10.3.0\",\"@nrwl/nest\":\"10.3.0\",\"@nrwl/node\":\"10.3.0\",\"@nrwl/workspace\":\"10.3.0\",\"@types/cookie-parser\":\"^1.4.2\",\"@types/jest\":\"26.0.8\",\"@types/node\":\"~8.9.4\",\"@types/socket.io\":\"^2.1.11\",\"codelyzer\":\"^6.0.0\",\"cypress\":\"^4.1.0\",\"dotenv\":\"6.2.0\",\"eslint\":\"7.10.0\",\"jest\":\"26.2.2\",\"jest-preset-angular\":\"8.3.1\",\"prettier\":\"2.0.4\",\"ts-jest\":\"26.4.0\",\"ts-node\":\"~7.0.0\",\"tslint\":\"~6.1.3\",\"typescript\":\"~4.0.3\"}}");
+
+/***/ }),
+
+/***/ 0:
+/*!************************************!*\
+  !*** multi ./apps/api/src/main.ts ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! /Users/jarek/Projects/planning-poker/apps/api/src/main.ts */"./apps/api/src/main.ts");
+
+
+/***/ }),
+
+/***/ "@nestjs/common":
+/*!*********************************!*\
+  !*** external "@nestjs/common" ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@nestjs/common");
+
+/***/ }),
+
+/***/ "@nestjs/core":
+/*!*******************************!*\
+  !*** external "@nestjs/core" ***!
+  \*******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@nestjs/core");
+
+/***/ }),
+
+/***/ "@nestjs/websockets":
+/*!*************************************!*\
+  !*** external "@nestjs/websockets" ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@nestjs/websockets");
+
+/***/ }),
+
+/***/ "cookie-parser":
+/*!********************************!*\
+  !*** external "cookie-parser" ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("cookie-parser");
+
+/***/ }),
+
+/***/ "express":
+/*!**************************!*\
+  !*** external "express" ***!
+  \**************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("express");
+
+/***/ }),
+
+/***/ "fs":
+/*!*********************!*\
+  !*** external "fs" ***!
+  \*********************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("fs");
+
+/***/ }),
+
+/***/ "jsonwebtoken":
+/*!*******************************!*\
+  !*** external "jsonwebtoken" ***!
+  \*******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("jsonwebtoken");
+
+/***/ }),
+
+/***/ "path":
+/*!***********************!*\
+  !*** external "path" ***!
+  \***********************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("path");
+
+/***/ }),
+
+/***/ "rxjs":
+/*!***********************!*\
+  !*** external "rxjs" ***!
+  \***********************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("rxjs");
+
+/***/ }),
+
+/***/ "rxjs/operators":
+/*!*********************************!*\
+  !*** external "rxjs/operators" ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("rxjs/operators");
+
+/***/ }),
+
+/***/ "socket.io":
+/*!****************************!*\
+  !*** external "socket.io" ***!
+  \****************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("socket.io");
+
+/***/ }),
+
+/***/ "tslib":
+/*!************************!*\
+  !*** external "tslib" ***!
+  \************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("tslib");
+
 /***/ })
-/******/ ])));
+
+/******/ })));
 //# sourceMappingURL=main.js.map

@@ -12,10 +12,10 @@ import { ConnectionStatus, TakeUntilDestroy, untilDestroyed } from '@planning-po
 import { EnvironmentService } from '@shared/services/environment/environment.service';
 import { SocketState } from '@store/states/socket.state';
 
-import { AppService } from '../../../app.service';
-import { GuestService } from '../guest.service';
-import { GuestActions } from '../store/actions/guest.actions';
-import { GuestState } from '../store/states/guest.state';
+import { AppService } from '../../../../app.service';
+import { GuestService } from '../../guest.service';
+import { GuestActions } from '../../store/actions/guest.actions';
+import { GuestState } from '../../store/states/guest.state';
 import { ModalGameResultsConfig } from './modal-game-results-review/modal-game-results-config';
 import { ModalGameResultsReviewComponent } from './modal-game-results-review/modal-game-results-review.component';
 import ChooseCard = GuestActions.ChooseCard;
@@ -184,7 +184,7 @@ export class GameComponent implements OnInit, OnDestroy {
             data: {
               players$: this.players$,
               gameState$: this.gameState$,
-              cardsInRow: 7
+              cardsInRow$: this.getCardsInRow$()
             }
           };
 
@@ -194,5 +194,21 @@ export class GameComponent implements OnInit, OnDestroy {
           this.resultsModal.instance.closeModal();
         }
       });
+  }
+
+  private getCardsInRow$(): Observable<number> {
+    return this.players$
+      .pipe(
+        map((players: Player[]) => players ? players.length : 0),
+        map((playersCount: number) => {
+          if (playersCount <= 14) {
+            return 7;
+          } else if (playersCount <= 18) {
+            return Math.ceil(playersCount / 2);
+          } else {
+            return 9
+          }
+        })
+      );
   }
 }

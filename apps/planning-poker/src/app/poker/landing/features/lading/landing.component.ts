@@ -11,7 +11,7 @@ import { TakeUntilDestroy } from '@planning-poker/utils';
 import { StoreName } from '@store/store-name.enum';
 import { StoreModel } from '@store/store.model';
 
-import { GuestService } from '../../guest/guest.service';
+import { GuestService } from '../../../guest/guest.service';
 import { LandingService } from './landing.service';
 
 @Component({

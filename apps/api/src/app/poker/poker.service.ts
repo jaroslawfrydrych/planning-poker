@@ -1,4 +1,7 @@
 import { Injectable } from '@nestjs/common';
+import { Request, Response } from 'express';
+import * as fs from 'fs';
+import jwt from 'jsonwebtoken';
 
 import { GameStates, Player, PlayerStatuses, RoomInfo } from '@planning-poker/api-interfaces';
 
@@ -8,6 +11,7 @@ import { Room } from './room';
 export class PokerService {
   public rooms: Map<string, Room> = new Map<string, Room>();
   public players: Map<string, Player> = new Map<string, Player>();
+  private jwtCookieName = 'jwt';
 
   public toggleGameState(currentState: GameStates): GameStates {
     switch (currentState) {
@@ -72,7 +76,7 @@ export class PokerService {
       room.patchPlayer(player.id, {
         card: null,
         status: PlayerStatuses.WAITING
-      })
+      });
     });
   }
 
@@ -93,6 +97,41 @@ export class PokerService {
       id: room.id,
       gameState: room.state
     };
+  }
 
+  public createUserToken(playerId: string, roomNumber: string): string {
+    const privateKey = fs.readFileSync('keys/poker_key');
+
+    return jwt.sign({
+      playerId,
+      roomNumber
+    }, privateKey, { algorithm: 'RS256' });
+  }
+
+  public setJwtCookie(token: string, response: Response): void {
+    response.cookie(
+        this.jwtCookieName,
+        token, {
+          sameSite: 'strict',
+          httpOnly: true
+        });
+  }
+
+  public getJwtCookie(request: Request): string {
+    return request.cookies[this.jwtCookieName];
+  }
+
+  public decodeJwt(token: string): any {
+    const privateKey = fs.readFileSync('keys/poker_key');
+    let decoded;
+
+    try {
+      decoded = jwt.verify(token, privateKey);
+    } catch(err) {
+      // err
+      throw Error('Token decode error');
+    }
+
+    return decoded;
   }
 }

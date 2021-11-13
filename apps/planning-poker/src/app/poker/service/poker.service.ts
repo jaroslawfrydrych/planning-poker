@@ -105,11 +105,11 @@ export class PokerService {
     return this.socket.fromEvent<string>(SocketEvents.VOTED);
   }
 
-  public getIsPlayerInRoom(roomNumber: string): Observable<boolean> {
-    return this.httpClient.get<boolean>(`/api/check-player-in-room/${this.socket.ioSocket.id}/${roomNumber}`);
+  public getIsPlayerInRoom(): Observable<boolean> {
+    return this.httpClient.get<boolean>(`/api/check-player-in-room`);
   }
 
-  public getIsHostOfRoom(roomNumber: string): Observable<boolean> {
-    return this.httpClient.get<boolean>(`/api/check-host-of-room/${this.socket.ioSocket.id}/${roomNumber}`);
+  public getIsHostOfRoom(): Observable<boolean> {
+    return this.httpClient.get<boolean>(`/api/check-host-of-room`);
   }
 }

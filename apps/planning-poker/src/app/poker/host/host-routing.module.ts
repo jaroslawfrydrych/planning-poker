@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { BoardComponent } from './board/board.component';
-import { BoardGuard } from './board/board.guard';
-import { WaitComponent } from './wait/wait.component';
+import { BoardComponent } from './features/board/board.component';
+import { BoardGuard } from './features/board/board.guard';
+import { WaitComponent } from './features/wait/wait.component';
 
 const routes: Routes = [
   {

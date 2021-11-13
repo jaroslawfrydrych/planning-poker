@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 import { GameStates, Player, PlayerStatuses } from '@planning-poker/api-interfaces';
 
@@ -13,7 +13,7 @@ export class TableComponent {
 
   @Input() public players$: Observable<Player[]>;
   @Input() public gameState$: Observable<GameStates>;
-  @Input() public cardsInRow = 5;
+  @Input() public cardsInRow$ = of(5);
 
   public isPlayerReady(player: Player): boolean {
     return player.status === PlayerStatuses.VOTED;

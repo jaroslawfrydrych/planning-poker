@@ -1,8 +1,8 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
-import { BehaviorSubject, interval, Observable } from 'rxjs';
-import { debounceTime, filter, map, mergeMap, startWith, take } from 'rxjs/operators';
+import { BehaviorSubject, interval, Observable, of } from 'rxjs';
+import { debounceTime, filter, flatMap, map, mergeMap, startWith, take } from 'rxjs/operators';
 
 import { GameStates, Player, PlayerStatuses } from '@planning-poker/api-interfaces';
 import { ModalService } from '@planning-poker/modal';
@@ -13,12 +13,11 @@ import { CopyToClipboardService } from '@shared/services/copy-to-clipboard/copy-
 import { EnvironmentService } from '@shared/services/environment/environment.service';
 import { SocketState } from '@store/states/socket.state';
 
-import { AppService } from '../../../app.service';
-import { HostService } from '../host.service';
-import { HostActions } from '../store/actions/host.actions';
-import { HostState } from '../store/states/host.state';
+import { AppService } from '../../../../app.service';
+import { HostService } from '../../host.service';
+import { HostActions } from '../../store/actions/host.actions';
+import { HostState } from '../../store/states/host.state';
 import { BoardGuard } from './board.guard';
-
 import CloseRoom = HostActions.CloseRoom;
 import GetGameState = HostActions.GetGameState;
 import GetPlayers = HostActions.GetPlayers;
@@ -110,6 +109,22 @@ export class BoardComponent implements OnInit, OnDestroy {
     }
   }
 
+  public getCardsInRow$(): Observable<number> {
+    return this.players$
+      .pipe(
+        map((players: Player[]) => players ? players.length : 0),
+        map((playersCount: number) => {
+          if (playersCount <= 10) {
+            return 5;
+          } else if (playersCount <= 14) {
+            return Math.ceil(playersCount / 2);
+          } else {
+            return 7;
+          }
+        })
+      );
+  }
+
   private dispatchOnInitActions(): void {
     this.store.dispatch([
       new GetPlayers(),
@@ -144,7 +159,7 @@ export class BoardComponent implements OnInit, OnDestroy {
       .pipe(
         mergeMap(() => this.roomNumber$),
         take(1),
-        mergeMap((roomNumber: string) => this.getIfIsHostOfRoom(roomNumber)),
+        mergeMap(() => this.getIfIsHostOfRoom()),
         untilDestroyed(this)
       )
       .subscribe(() => this.handleConnectionFailed());
@@ -154,8 +169,8 @@ export class BoardComponent implements OnInit, OnDestroy {
    * Helper function to get data from api check-host-of-room/:playerId/:roomNumber
    * @param roomNumber
    */
-  private getIfIsHostOfRoom(roomNumber: string): Observable<boolean> {
-    return this.hostService.getIsHostOfRoom(roomNumber)
+  private getIfIsHostOfRoom(): Observable<boolean> {
+    return this.hostService.getIsHostOfRoom()
       .pipe(
         filter((isHostOfRoom: boolean) => !isHostOfRoom)
       );
@@ -174,7 +189,7 @@ export class BoardComponent implements OnInit, OnDestroy {
         mergeMap(() => this.roomNumber$
           .pipe(take(1))
         ),
-        mergeMap((roomNumber: string) => this.getIfIsHostOfRoom(roomNumber)),
+        mergeMap(() => this.getIfIsHostOfRoom()),
         untilDestroyed(this)
       )
       .subscribe(() => this.handleConnectionFailed());

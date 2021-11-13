@@ -9,9 +9,9 @@ import { ConnectionStatus, TakeUntilDestroy, untilDestroyed } from '@planning-po
 
 import { SocketState } from '@store/states/socket.state';
 
-import { AppService } from '../../../app.service';
-import { HostActions } from '../store/actions/host.actions';
-import { HostState } from '../store/states/host.state';
+import { AppService } from '../../../../app.service';
+import { HostActions } from '../../store/actions/host.actions';
+import { HostState } from '../../store/states/host.state';
 import CreateRoom = HostActions.CreateRoom;
 
 @Component({

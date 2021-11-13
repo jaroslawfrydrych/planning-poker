@@ -6,7 +6,7 @@ import { first, map, tap } from 'rxjs/operators';
 
 import { ModalService } from '@planning-poker/modal';
 
-import { HostBaseGuard } from '../host-base.guard';
+import { HostBaseGuard } from '../../host-base.guard';
 import { BoardComponent } from './board.component';
 
 @Injectable({
