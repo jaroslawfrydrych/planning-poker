@@ -91,17 +91,6 @@
             "browserTarget": "planning-poker:build"
           }
         },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "apps/planning-poker/tsconfig.app.json",
-              "apps/planning-poker/tsconfig.spec.json",
-              "apps/planning-poker/tsconfig.editor.json"
-            ],
-            "exclude": ["**/node_modules/**", "!apps/planning-poker/**/*"]
-          }
-        },
         "test": {
           "builder": "@nrwl/jest:jest",
           "options": {
@@ -130,13 +119,6 @@
             "production": {
               "devServerTarget": "planning-poker:serve:production"
             }
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": ["apps/planning-poker-e2e/tsconfig.e2e.json"],
-            "exclude": ["**/node_modules/**", "!apps/planning-poker-e2e/**/*"]
           }
         }
       }
@@ -176,16 +158,6 @@
             "buildTarget": "api:build"
           }
         },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "apps/api/tsconfig.app.json",
-              "apps/api/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!apps/api/**/*"]
-          }
-        },
         "test": {
           "builder": "@nrwl/jest:jest",
           "options": {
@@ -201,16 +173,6 @@
       "projectType": "library",
       "schematics": {},
       "architect": {
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "libs/api-interfaces/tsconfig.lib.json",
-              "libs/api-interfaces/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!libs/api-interfaces/**/*"]
-          }
-        },
         "test": {
           "builder": "@nrwl/jest:jest",
           "options": {
@@ -226,16 +188,6 @@
       "sourceRoot": "libs/ui/src",
       "prefix": "planning-poker",
       "architect": {
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "libs/ui/tsconfig.lib.json",
-              "libs/ui/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!libs/ui/**/*"]
-          }
-        },
         "test": {
           "builder": "@nrwl/jest:jest",
           "options": {
@@ -256,16 +208,6 @@
       "sourceRoot": "libs/utils/src",
       "prefix": "planning-poker",
       "architect": {
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "libs/utils/tsconfig.lib.json",
-              "libs/utils/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!libs/utils/**/*"]
-          }
-        },
         "test": {
           "builder": "@nrwl/jest:jest",
           "options": {
@@ -286,16 +228,6 @@
       "sourceRoot": "libs/modal/src",
       "prefix": "planning-poker",
       "architect": {
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "libs/modal/tsconfig.lib.json",
-              "libs/modal/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!libs/modal/**/*"]
-          }
-        },
         "test": {
           "builder": "@nrwl/jest:jest",
           "options": {
