@@ -50,7 +50,7 @@
     "@ngxs/websocket-plugin": "^3.7.0",
     "@nrwl/angular": "13.1.4",
     "@rx-angular/state": "^1.4.1",
-    "@rx-angular/template": "^1.0.0-beta.0",
+    "@rx-angular/template": "^1.0.0-beta.28",
     "ngx-cookie-service": "^11.0.2",
     "ngx-google-analytics": "^9.0.1",
     "ngx-socket-io": "^3.2.0",

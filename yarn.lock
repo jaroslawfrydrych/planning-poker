@@ -261,13 +261,6 @@
   dependencies:
     tslib "^2.3.0"
 
-"@angular/platform-browser@^10.1.1":
-  version "10.2.3"
-  resolved "https://registry.yarnpkg.com/@angular/platform-browser/-/platform-browser-10.2.3.tgz#14ef92fb3e6e2ba0647ab56e71b0b655fca16083"
-  integrity sha512-ElTuRF4SWhYxJypDlaa/n49DrqrWV2tYU5kkgF+VNbVbvzKHnVEZe4x1KSWrEzIyewcjxwwE6ZF0oXMdd4AZQQ==
-  dependencies:
-    tslib "^2.0.0"
-
 "@angular/platform-browser@^13.0.1":
   version "13.0.1"
   resolved "https://registry.yarnpkg.com/@angular/platform-browser/-/platform-browser-13.0.1.tgz#77cd7f69ba160de29f3a034fbd359861c0f7a34c"
@@ -2525,12 +2518,11 @@
     benchmark "^2.1.4"
     tslib "^2.0.0"
 
-"@rx-angular/template@^1.0.0-beta.0":
-  version "1.0.0-beta.0"
-  resolved "https://registry.yarnpkg.com/@rx-angular/template/-/template-1.0.0-beta.0.tgz#a5ee2ed10b17b4d4c14123cc56ebfa37935dfc7e"
-  integrity sha512-/6Lw3BN83gpf8m+DgexDx2APz0yZ+cJFRuVRnEX6c5Q8EBKzOMBYG0YZSiGi69HL97lPGmutKU9mRv1ju8bzWA==
+"@rx-angular/template@^1.0.0-beta.28":
+  version "1.0.0-beta.28"
+  resolved "https://registry.yarnpkg.com/@rx-angular/template/-/template-1.0.0-beta.28.tgz#18715b0e1852b71e5c2fc714f888be8b6d93a94a"
+  integrity sha512-yM1xfLLEPOjoJ0G430GVYxS8aG9a5c15z6XYDY1+mZ8FhQhy9bCNlrhFN2qL8wFZIJMIG7WEUqfdFKmrDSIx8Q==
   dependencies:
-    "@angular/platform-browser" "^10.1.1"
     tslib "^2.0.0"
 
 "@samverschueren/stream-to-observable@^0.3.0":
