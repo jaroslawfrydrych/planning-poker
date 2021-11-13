@@ -10,8 +10,8 @@
     "start:frontend": "npm run start",
     "start:backend": "npm run nx serve api",
     "build": "ng build",
-    "build:frontend:prod": "ng lint && ng build --prod",
-    "build:backend:prod": "ng lint api && ng build api --prod",
+    "build:frontend:prod": "ng lint && ng build --configuration production",
+    "build:backend:prod": "ng lint api && ng build api --configuration production",
     "test": "ng test",
     "lint": "nx workspace-lint && ng lint",
     "e2e": "ng e2e",
@@ -33,14 +33,14 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^11.0.7",
-    "@angular/common": "^11.0.7",
-    "@angular/compiler": "^11.0.7",
-    "@angular/core": "^11.0.7",
-    "@angular/forms": "^11.0.7",
-    "@angular/platform-browser": "^11.0.7",
-    "@angular/platform-browser-dynamic": "^11.0.7",
-    "@angular/router": "^11.0.7",
+    "@angular/animations": "^12.2.13",
+    "@angular/common": "^12.2.13",
+    "@angular/compiler": "^12.2.13",
+    "@angular/core": "^12.2.13",
+    "@angular/forms": "^12.2.13",
+    "@angular/platform-browser": "^12.2.13",
+    "@angular/platform-browser-dynamic": "^12.2.13",
+    "@angular/router": "^12.2.13",
     "@nestjs/common": "^7.0.0",
     "@nestjs/core": "^7.0.0",
     "@nestjs/platform-express": "^7.0.0",
@@ -57,13 +57,13 @@
     "normalize.css": "^8.0.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "~6.5.5",
-    "zone.js": "^0.10.2"
+    "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.1100.6",
-    "@angular/cli": "~11.0.6",
-    "@angular/compiler-cli": "^11.0.7",
-    "@angular/language-service": "^11.0.7",
+    "@angular-devkit/build-angular": "~12.2.13",
+    "@angular/cli": "~12.2.13",
+    "@angular/compiler-cli": "^12.2.13",
+    "@angular/language-service": "^12.2.13",
     "@nestjs/schematics": "^7.0.0",
     "@nestjs/testing": "^7.0.0",
     "@ngxs/devtools-plugin": "^3.7.0",
@@ -87,6 +87,6 @@
     "ts-jest": "26.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~6.1.3",
-    "typescript": "~4.0.3"
+    "typescript": "~4.3.5"
   }
 }

@@ -20,7 +20,6 @@
             "main": "apps/planning-poker/src/main.ts",
             "polyfills": "apps/planning-poker/src/polyfills.ts",
             "tsConfig": "apps/planning-poker/tsconfig.app.json",
-            "aot": true,
             "assets": [
               "apps/planning-poker/src/favicon.ico",
               "apps/planning-poker/src/assets"
@@ -35,7 +34,13 @@
                 "./libs/ui/styles"
               ]
             },
-            "scripts": []
+            "scripts": [],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -65,7 +70,8 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
