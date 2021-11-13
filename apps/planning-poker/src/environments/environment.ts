@@ -6,7 +6,7 @@ import { Environment } from '@environments/utils';
 
 export const environment: Environment = {
   production: false,
-  socketReconnectionDelay: 1000
+  socketReconnectionDelay: 1000,
 };
 
 /*
