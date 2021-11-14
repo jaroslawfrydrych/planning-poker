@@ -12,12 +12,10 @@ import { Server, Socket } from 'socket.io';
 
 import {
   GameStateBroadcastDto,
-  GameStates,
-  JoinRequestDto,
+  GameStates, JoinRequestDto,
   Player,
   PlayerStatuses,
-  PlayerType,
-  ResultsDto,
+  PlayerType, ResultsDto,
   SocketEvents,
   Vote
 } from '@planning-poker/api-interfaces';

@@ -1,6 +1,88 @@
 {
   "version": 1,
   "projects": {
+    "api": {
+      "root": "apps/api",
+      "sourceRoot": "apps/api/src",
+      "projectType": "application",
+      "prefix": "api",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "options": {
+            "outputPath": "dist/api",
+            "main": "apps/api/src/main.ts",
+            "tsConfig": "apps/api/tsconfig.app.json",
+            "assets": ["apps/api/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/api/src/environments/environment.ts",
+                  "with": "apps/api/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "api:build"
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/api/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
+    "api-interfaces": {
+      "root": "libs/api-interfaces",
+      "sourceRoot": "libs/api-interfaces/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/api-interfaces/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
+    "modal": {
+      "projectType": "library",
+      "root": "libs/modal",
+      "sourceRoot": "libs/modal/src",
+      "prefix": "planning-poker",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/modal/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "tags": []
+    },
     "planning-poker": {
       "projectType": "application",
       "schematics": {
@@ -101,7 +183,8 @@
             }
           }
         }
-      }
+      },
+      "tags": []
     },
     "planning-poker-e2e": {
       "root": "apps/planning-poker-e2e",
@@ -121,66 +204,9 @@
             }
           }
         }
-      }
-    },
-    "api": {
-      "root": "apps/api",
-      "sourceRoot": "apps/api/src",
-      "projectType": "application",
-      "prefix": "api",
-      "schematics": {},
-      "architect": {
-        "build": {
-          "builder": "@nrwl/node:build",
-          "options": {
-            "outputPath": "dist/api",
-            "main": "apps/api/src/main.ts",
-            "tsConfig": "apps/api/tsconfig.app.json",
-            "assets": ["apps/api/src/assets"]
-          },
-          "configurations": {
-            "production": {
-              "optimization": true,
-              "extractLicenses": true,
-              "inspect": false,
-              "fileReplacements": [
-                {
-                  "replace": "apps/api/src/environments/environment.ts",
-                  "with": "apps/api/src/environments/environment.prod.ts"
-                }
-              ]
-            }
-          }
-        },
-        "serve": {
-          "builder": "@nrwl/node:execute",
-          "options": {
-            "buildTarget": "api:build"
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "apps/api/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
-    "api-interfaces": {
-      "root": "libs/api-interfaces",
-      "sourceRoot": "libs/api-interfaces/src",
-      "projectType": "library",
-      "schematics": {},
-      "architect": {
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/api-interfaces/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
+      },
+      "tags": [],
+      "implicitDependencies": ["planning-poker"]
     },
     "ui": {
       "projectType": "library",
@@ -200,7 +226,8 @@
         "@schematics/angular:component": {
           "style": "scss"
         }
-      }
+      },
+      "tags": []
     },
     "utils": {
       "projectType": "library",
@@ -220,31 +247,9 @@
         "@schematics/angular:component": {
           "style": "scss"
         }
-      }
-    },
-    "modal": {
-      "projectType": "library",
-      "root": "libs/modal",
-      "sourceRoot": "libs/modal/src",
-      "prefix": "planning-poker",
-      "architect": {
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/modal/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
       },
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "scss"
-        }
-      }
+      "tags": []
     }
-  },
-  "cli": {
-    "defaultCollection": "@nrwl/angular"
   },
   "schematics": {
     "@nrwl/workspace": {
@@ -288,6 +293,5 @@
     "@nrwl/angular:library": {
       "unitTestRunner": "jest"
     }
-  },
-  "defaultProject": "planning-poker"
+  }
 }

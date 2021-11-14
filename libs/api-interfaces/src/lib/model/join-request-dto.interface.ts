@@ -1,4 +1,4 @@
-import { PlayerType } from '@planning-poker/api-interfaces';
+import { PlayerType } from '../enum/player-type.enum';
 
 export interface JoinRequestDto {
   name: string;

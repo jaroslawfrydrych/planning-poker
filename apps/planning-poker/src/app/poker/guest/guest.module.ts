@@ -18,7 +18,7 @@ import { LetModule } from '@rx-angular/template/let';
     RoomCodeComponent,
     YourNameComponent,
     GameComponent,
-    ModalGameResultsReviewComponent
+    ModalGameResultsReviewComponent,
   ],
   imports: [
     CommonModule,
@@ -26,11 +26,8 @@ import { LetModule } from '@rx-angular/template/let';
     UiModule,
     SharedModule,
     ReactiveFormsModule,
-    NgxsModule.forFeature([
-      GuestState
-    ]),
-    LetModule
-  ]
+    NgxsModule.forFeature([GuestState]),
+    LetModule,
+  ],
 })
-export class GuestModule {
-}
+export class GuestModule {}
